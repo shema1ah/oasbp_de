@@ -6,13 +6,623 @@
       <el-button type="text" @click="cancelHandler"><i class="el-icon-close"></i><span>{{$t('common.close')}}</span>
       </el-button>
     </header>
-    <el-steps :active="active" finish-status="finish">
-      <el-step :title="$t('merchant.newMerchant.step1')"></el-step>
-      <el-step :title="$t('merchant.newMerchant.step3')"></el-step>
-    </el-steps>
+   <!-- <el-tabs v-model="activeName" @tab-click="isBusiness = !isBusiness">
+    <el-tab-pane label="Business Onboarding" name="first"> -->
+  
+    <div class="top-tabs"> 
+     <span class="change-btn flag"  :class="{ isChoose: isChoose }" tag="1" @click="changeBoard">
+         Business Onboarding
+     </span>
+<hr/>
+      <span class="change-btn" :class="{ isChoose: !isChoose }"  @click="changeBoard">
+        Person Onboarding
+     </span>
+    </div>
+       
 
-    <el-form v-show="active === 0" v-loading="isLoading" ref="baseinfo" :model="formData" :rules="baseRules">
-      <h3>{{$t('merchant.newMerchant.basic.cap1')}}</h3>
+      <el-form v-show="active === 0" v-loading="isLoading" ref="baseinfo" :model="formData" :rules="baseRules" label-width="10px" >
+      <h3>{{isBusiness? $t('merchant.newMerchant.basic.cap1') : $t('merchant.newMerchant.basic.cap7')}}</h3>
+
+      <el-form-item :label="$t('merchant.newMerchant.form.channel')" prop="primary_uid" v-if="!isUpdate">
+        <el-select v-model="formData.primary_uid" @change="selectChannelHandler">
+          <el-option :label="item.name" :value="item.qd_uid" v-for="item in channels1" :key="item.qd_uid"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item :label="$t('merchant.newMerchant.form.channel2')" prop="secondary_uid" v-if="!isUpdate">
+        <el-select v-model="formData.secondary_uid" :placeholder="$t('merchant.form.ph')" @change="selectChannel2Handler">
+          <el-option :label="item.name" :value="item.qd_uid" v-for="item in channels2" :key="item.qd_uid"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item :label="$t('merchant.newMerchant.form.saleMan')" prop="sls_uid" v-if="!isUpdate">
+        <el-select v-model="formData.sls_uid">
+         <el-option :label="item.name" :value="item.userid" v-for="item in salesperson" :key="item.userid"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item :label="$t('merchant.newMerchant.form.bigMerchant')" prop="cate" v-if="isBusiness">
+        <el-select v-model="formData.cate" ref="cate" :disabled="isUpdate">
+          <el-option :label="$t('merchant.newMerchant.form.sub')" value="merchant"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.big')" value="bigmerchant"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.meiname')" v-if="isBusiness">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+         <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.mertype')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+
+       <el-form-item prop="first_name" :label="$t('merchant.newMerchant.form.first_name')" v-if="!isBusiness">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+       <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.last_name')" v-if="!isBusiness">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="br_expire_time" :label="$t('merchant.newMerchant.form.date_of_birth')" v-if="!isBusiness">
+        <el-date-picker
+          v-model.trim="formData.br_expire_time"
+          type="date"
+          format='dd/MM/yyyy'
+          value-format="yyyy/MM/dd HH:mm:ss"
+          :placeholder="$t('common.chooseDate')">
+        </el-date-picker>
+      </el-form-item>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.nationality')" v-if="!isBusiness">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+
+     <el-form-item prop="br_expire_time" :label="$t('merchant.newMerchant.form.foundation_date')" v-if="isBusiness">
+        <el-date-picker
+          v-model.trim="formData.br_expire_time"
+          type="date"
+          format='dd/MM/yyyy'
+          value-format="yyyy/MM/dd HH:mm:ss"
+          :placeholder="$t('common.chooseDate')">
+        </el-date-picker>
+      </el-form-item>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.business_purpose')" v-if="isBusiness">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+
+<!-- 
+      <el-form-item :label="$t('merchant.newMerchant.form.status')" prop="status" v-if="isUpdate&&isStatus">
+        <el-select v-model="formData.status">
+         <el-option :label="item.name" :value="item.val" v-for="item in statusList" :key="item.val"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item :label="$t('merchant.newMerchant.form.contact')" prop="slsm_name" v-if="isUpdate">
+          <el-input id="op_type" v-model="formData.slsm_name"
+                :placeholder="$t('merchant.newMerchant.rule43')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showTreeComponent"></i></template>
+          </el-input>
+          <el-tree id="op-type-tree" :data="salesperson" :props="defaultProps"        @node-click="handleNodeClick"
+                v-show="isShowTree"
+                node-key="uid"
+                ref="tree"
+                style="position:absolute;top:38px;z-index:9;width:299px;overflow-y:auto;height:320px;"></el-tree>
+      </el-form-item> -->
+
+
+      <!-- <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')">
+        <el-input
+          v-model.trim="formData.contact_email"
+          :disabled="isUpdate"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="contact" :label="$t('merchant.newMerchant.form.concatName')">
+        <el-input v-model.trim="formData.contact"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="telephone" :label="$t('merchant.newMerchant.form.concatNumber')">
+        <el-input
+          v-model.trim="formData.telephone"
+          :disabled="isUpdate"
+          maxlength='8'></el-input>
+      </el-form-item>
+
+      <el-form-item prop="documentType" :label="$t('merchant.newMerchant.form.documentType')">
+        <el-select
+            v-model="formData.documentType"
+            :disabled="isUpdate">
+          <el-option :label="$t('merchant.newMerchant.doctype.type1')" value="passport"></el-option>
+          <el-option :label="$t('merchant.newMerchant.doctype.type2')" value="eep"></el-option>
+          <el-option :label="$t('merchant.newMerchant.doctype.type3')" value="idnumber"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item prop="documentNum" :label="$t('merchant.newMerchant.form.doucumentNum')">
+        <el-input
+          v-model.trim="formData.documentNum"
+          maxlength='15'
+        ></el-input>
+      </el-form-item> -->
+
+      <!-- <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry')">
+        <el-select v-model.trim="formData.mcc" ref="mcc">
+          <el-option :label="item.name" :value="item.id" v-for="item in shopTypes" :key="item.id"></el-option>
+        </el-select>
+      </el-form-item> -->
+
+      <!-- <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry')">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item> -->
+
+      <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+     <el-form-item prop="address" :label="$t('merchant.newMerchant.form.city')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+         <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+
+        <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.empeoyment_sataus')" v-if="!isBusiness">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+      <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
+        <el-input
+          v-model.trim="formData.contact_email"
+          :disabled="isUpdate"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.concatNumber')" v-if="!isBusiness">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+       <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
+        <el-input  v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry')" v-if="isBusiness">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry_key')" v-if="isBusiness">
+        <el-input  v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+      <!-- <el-form-item prop="br" :label="$t('merchant.newMerchant.form.BRnumber')">
+        <el-input v-model.trim="formData.br"></el-input>
+      </el-form-item>
+
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.CInumber')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="businessaddr" :label="$t('merchant.newMerchant.form.registeredAddress')">
+        <el-input v-model="formData.businessaddr"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="website" :label="$t('merchant.newMerchant.form.companyWebsite')">
+        <el-input v-model="formData.website"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="legalperson" :label="$t('merchant.newMerchant.form.legalName')">
+        <el-input v-model="formData.legalperson"></el-input>
+      </el-form-item> -->
+
+
+      <!-- 股东信息 -->
+ <transition-group name="fade" tag="div" v-if="isBusiness"> 
+    <div v-for="n in ownerNum" :key="n">
+
+      <div class="title-gap"> <h3 v-if="n === 1">{{$t('merchant.newMerchant.basic.cap2')}}</h3> 
+        <el-button v-if="n === 1" class="puls" type="text" tag="plus" icon="el-icon-plus" @click.prevent="changeShow"></el-button>
+        <el-button v-else-if="n === ownerNum" class="puls" type="text" icon="el-icon-minus" @click.prevent="changeShow"></el-button>
+      </div>
+
+       <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.first_name')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+       <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.last_name')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="br_expire_time" :label="$t('merchant.newMerchant.form.date_of_birth')">
+        <el-date-picker
+          v-model.trim="formData.br_expire_time"
+          type="date"
+          format='dd/MM/yyyy'
+          value-format="yyyy/MM/dd HH:mm:ss"
+          :placeholder="$t('common.chooseDate')">
+        </el-date-picker>
+      </el-form-item>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.nationality')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+  
+         <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+ 
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+      
+          <el-form-item prop="address" :label="$t('merchant.newMerchant.form.city')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+            <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.empeoyment_sataus')">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+           <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.vofing_share')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')">
+        <el-input
+          v-model.trim="formData.contact_email"
+          :disabled="isUpdate"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.concatNumber')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+       <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.legal_rep')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+       <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.represeutation')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+    
+        </div>
+        </transition-group>
+    
+
+  <!-- 法定代表人 -->
+   <transition-group name="fade" tag="div" v-if="isBusiness">
+    <div v-for="n in legalNum" :key="n">
+
+      <div class="title-gap"> <h3 v-if="n === 1">{{$t('merchant.newMerchant.basic.cap3')}}</h3> 
+        <el-button v-if="n === 1" class="puls" type="text" tag="plus" icon="el-icon-plus" @click="changeShow2"></el-button>
+        <el-button v-else-if="n === legalNum" class="puls" type="text" icon="el-icon-minus" @click="changeShow2"></el-button>
+      </div>
+
+       <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.first_name')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+       <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.last_name')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="br_expire_time" :label="$t('merchant.newMerchant.form.date_of_birth')">
+        <el-date-picker
+          v-model.trim="formData.br_expire_time"
+          type="date"
+          format='dd/MM/yyyy'
+          value-format="yyyy/MM/dd HH:mm:ss"
+          :placeholder="$t('common.chooseDate')">
+        </el-date-picker>
+      </el-form-item>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.nationality')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+  
+         <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+ 
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+      
+          <el-form-item prop="address" :label="$t('merchant.newMerchant.form.city')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+            <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.empeoyment_sataus')">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+           <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.represeutation')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')">
+        <el-input
+          v-model.trim="formData.contact_email"
+          :disabled="isUpdate"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.concatNumber')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+    
+        </div>
+        </transition-group>
+      
+
+
+
+      <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
+      <!-- <div :label="item.name" v-for="(item, index0) in radioList" :key="item.name" prop="tenpay_ratio">
+        <h4>{{item.name}}</h4>
+        <el-form-item :label="fee.trade_type_name" v-for="(fee, index) in item.busicd" :error="fee.error" :key="fee.trade_type_name">
+            <el-input-number @change="ratioMinRule($event, fee.ratioMin, fee.trade_type, index, index0)" v-model="fee.ratio" :precision="2" :step="0.01" :min="0" :max="5"></el-input-number>
+        </el-form-item>
+      </div> -->
+      <el-form-item v-if="!isUpdate">
+        <el-select v-model="pid_select" :placeholder="$t('merchant.newMerchant.requiredRule.rule25')">
+          <el-option
+            v-for="(item, index) in list"
+            :key="index"
+            :label="item.pid_name"
+            :value="item.pid_name"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item>
+        <el-button v-if="!isUpdate" class="el-button el-button--primary" @click="addList()">{{$t('common.confirm')}}</el-button>
+      </el-form-item>
+
+      <div class="payList" v-for="(item, index) in list_Select" :key="index">
+        <el-form-item :label="item.pid_name">
+          <el-input-number v-model="item.ratio" :precision="2" :step="0.01" :min="Number(item.ratioMin)"></el-input-number>
+        </el-form-item>
+        <el-form-item v-if="item.line_type !== ''" :label="$t('merchant.newMerchant.form.accessType')">
+          <el-select :disabled="true" v-model="item.line_type">
+            <el-option :label="$t('merchant.newMerchant.accessTypes.offline')" value="offline"></el-option>
+            <el-option :label="$t('merchant.newMerchant.accessTypes.online')" value="online"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item v-if="item.finance_type !== ''" :label="$t('merchant.newMerchant.form.applicationType')">
+          <el-select :disabled="true" v-model="item.finance_type">
+            <el-option :label="$t('merchant.newMerchant.applicationTypes.direct')" value="direct"></el-option>
+            <el-option :label="$t('merchant.newMerchant.applicationTypes.indirect')" value="indirect"></el-option>
+          </el-select>
+        </el-form-item>
+        <div v-if="!isUpdate" class="icon_remove">
+          <i class="el-icon-remove" @click="pid_name_remove(item.pid_name)"></i>
+        </div>
+      </div>
+      <h3>{{$t('merchant.newMerchant.basic.cap5')}}</h3>
+
+      <el-form-item prop="shopname" :label="$t('merchant.newMerchant.form.storename')">
+        <el-input
+          v-model.trim="formData.shopname"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
+        <el-input id="op_type" v-model="formData.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+            <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.expected_volume_transactions')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+
+          <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.expected_couut_transactions')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+
+      <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+
+      <el-form-item prop="ci" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="formData.ci"></el-input>
+      </el-form-item>
+
+           <el-form-item prop="address" :label="$t('merchant.newMerchant.form.city')">
+        <el-input v-model.trim="formData.address"></el-input>
+      </el-form-item>
+
+           <el-form-item prop="user_type" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="formData.user_type">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+
+
+
+
+
+      <h3>{{$t('merchant.newMerchant.basic.cap6')}}</h3>
+      <!-- <el-form-item prop="bankuser" :label="$t('merchant.newMerchant.form.accountName')">
+        <el-input v-model.trim="formData.bankuser"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="headbankname" :label="$t('merchant.newMerchant.form.accountType')">
+        <el-input v-model.trim="formData.headbankname"></el-input>
+      </el-form-item> -->
+
+      <el-form-item prop="bankaccount" :label="$t('merchant.newMerchant.form.accountH')">
+        <el-input v-model.trim="formData.bankaccount" @change="GetRemit"></el-input>
+      </el-form-item>
+
+      <!-- <el-form-item prop="bankProvince" :label="$t('merchant.newMerchant.form.accountAddress')">
+        <el-input v-model.trim="formData.bankProvince"></el-input>
+      </el-form-item> -->
+
+      <el-form-item prop="bankcode" :label="$t('merchant.newMerchant.form.bic')">
+        <el-input v-model.trim="formData.bankcode"></el-input>
+      </el-form-item>
+
+      <!-- <el-form-item prop="remit_amt" :label="$t('merchant.newMerchant.form.moneySettment')">
+        <el-input
+          v-model.trim="formData.remit_amt"
+          :disabled="IsRemit"
+          maxlength='5'></el-input>
+      </el-form-item> -->
+    </el-form>
+    <!-- </el-tab-pane> -->
+<!-- Person Onboarding -->
+    <!-- <el-tab-pane label="Person Onboarding" name="second"> -->
+      <!-- <el-form v-show="active === 0" v-loading="isLoading" ref="baseinfo" :model="formData" :rules="baseRules">
+      <h3>{{$t('个人信息')}}</h3>
 
       <el-form-item :label="$t('merchant.newMerchant.form.channel')" prop="primary_uid" v-if="!isUpdate">
         <el-select v-model="formData.primary_uid" @change="selectChannelHandler">
@@ -97,27 +707,7 @@
         ></el-input>
       </el-form-item>
 
-      <!-- <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry')">
-        <el-select v-model.trim="formData.mcc" ref="mcc">
-          <el-option :label="item.name" :value="item.id" v-for="item in shopTypes" :key="item.id"></el-option>
-        </el-select>
-      </el-form-item> -->
-
-      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.industry')">
-        <el-input id="op_type" v-model="formData.mcc"
-                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
-                readonly
-                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
-        </el-input>
-        <el-tree
-          :data="shopTypes"
-          @node-click="IndustyhandleNodeClick"
-          v-show="isShowIndustyTree"
-          node-key="id"
-          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
-          draggable
-        ></el-tree>
-      </el-form-item>
+    
 
       <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
         <el-input v-model.trim="formData.address"></el-input>
@@ -161,12 +751,6 @@
       </el-form-item>
 
       <h3>{{$t('merchant.newMerchant.basic.cap2')}}</h3>
-      <!-- <div :label="item.name" v-for="(item, index0) in radioList" :key="item.name" prop="tenpay_ratio">
-        <h4>{{item.name}}</h4>
-        <el-form-item :label="fee.trade_type_name" v-for="(fee, index) in item.busicd" :error="fee.error" :key="fee.trade_type_name">
-            <el-input-number @change="ratioMinRule($event, fee.ratioMin, fee.trade_type, index, index0)" v-model="fee.ratio" :precision="2" :step="0.01" :min="0" :max="5"></el-input-number>
-        </el-form-item>
-      </div> -->
       <el-form-item v-if="!isUpdate">
         <el-select v-model="pid_select" :placeholder="$t('merchant.newMerchant.requiredRule.rule25')">
           <el-option
@@ -231,341 +815,20 @@
           :disabled="IsRemit"
           maxlength='5'></el-input>
       </el-form-item>
-    </el-form>
-    <!-- step2 -->
-    <el-form v-show="active === 1" ref="bankinfos" :model="formData" :rules="bankRules">
-      <section v-if="!isUpdate">
-        <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
-        <el-form-item prop="shopnameT" :label="$t('merchant.newMerchant.form.storename')">
-          <el-input v-model.trim="formData.shopnameT"></el-input>
-        </el-form-item>
-
-        <el-form-item prop="short_name" :label="$t('merchant.newMerchant.form.shopAbbreviation')">
-          <el-input v-model="formData.short_name"></el-input>
-        </el-form-item>
-
-        <el-form-item prop="addressT" :label="$t('merchant.newMerchant.form.storeAddress')">
-          <el-input
-            v-model.trim="formData.addressT"
-            maxlength='50'
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item prop="telephoneT" :label="$t('merchant.newMerchant.form.storephone')">
-          <el-input
-            v-model.trim="formData.telephoneT"
-            maxlength='8'
-          ></el-input>
-        </el-form-item>
-
-        <el-form-item prop="operatingT" :label="$t('merchant.newMerchant.form.storeoperating')">
-          <el-input v-model.trim="formData.operatingT"></el-input>
-        </el-form-item>
-      </section>
-      <!-- 上传证件 -->
-      <div class="uploaders">
-        <el-upload
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="idcardfrontloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'idcardfront',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.idcardfront_url" class="avatar-wrap">
-            <img :src="voucherInfo.idcardfront_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.idcardfront')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="licensephotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'licensephoto',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.licensephoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.licensephoto_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.licensephoto')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="goodsphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'goodsphoto',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.goodsphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.goodsphoto_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.goodsphoto')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="shopphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'shopphoto',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.shopphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.shopphoto_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.shopphoto')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="paypointloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'paypoint',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.paypoint_url" class="avatar-wrap">
-            <img :src="voucherInfo.paypoint_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.paypoint')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="otherphoto1loading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.otherphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.otherDocument1')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="otherphoto2loading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto1',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.otherphoto1_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto1_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.otherDocument2')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <el-upload
-          v-if="!isUpdate"
-          :with-credentials="true"
-          :file-list="formData.vouchers"
-          v-loading="otherphoto3loading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto2',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.otherphoto2_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto2_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.otherDocument3')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-      </div>
-      <h3>{{$t('merchant.detail.document.doctitle1')}}</h3>
-      <div class="uploaders">
-          <el-upload
-            :with-credentials="true"
-            :file-list="formData.vouchers"
-            v-loading="ciphotoloading"
-            :on-progress="startAvatarUpload"
-            class="avatar-uploader"
-            :action="uploadInterface"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :on-success="avatarSuccess"
-            :on-error="avatarFailed"
-            :data="{
-                category: 1,
-                source: 1,
-                tag: 'ciphoto',
-                enuserid: 'EPeRaNEt',
-                format: 'cors'
-            }">
-            <div v-if="voucherInfo.ciphoto_url" class="avatar-wrap">
-              <img :src="voucherInfo.ciphoto_url" class="avatar">
-              <span class="img-tip">{{$t('common.reupload')}}</span>
-            </div>
-            <div v-else class="avatar-uploader-wrap">
-              <i class="avatar-uploader-icon el-icon-plus"></i>
-              <div class="avatar-desc">{{$t('merchant.newMerchant.picture.certificate')}}</div>
-              <div class="avatar-tip">{{$t('common.format')}}</div>
-            </div>
-          </el-upload>
-          <el-upload
-            :with-credentials="true"
-            :file-list="formData.vouchers"
-            v-loading="bankcheckphotoloading"
-            :on-progress="startAvatarUpload"
-            class="avatar-uploader"
-            :action="uploadInterface"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :on-success="avatarSuccess"
-            :on-error="avatarFailed"
-            :data="{
-                category: 1,
-                source: 1,
-                tag: 'bankcheckphoto',
-                format: 'cors',
-                enuserid: 'EPeRaNEt'
-            }">
-            <div v-if="voucherInfo.bankcheckphoto_url" class="avatar-wrap">
-              <img :src="voucherInfo.bankcheckphoto_url" class="avatar">
-              <i class="img-tip">{{$t('common.reupload')}}</i>
-            </div>
-            <div v-else class="avatar-uploader-wrap">
-              <i class="avatar-uploader-icon el-icon-plus"></i>
-              <div class="avatar-desc">{{$t('merchant.newMerchant.picture.bankStatement')}}</div>
-              <div class="avatar-tip">{{$t('common.format')}}</div>
-            </div>
-          </el-upload>
-        </div>
-    </el-form>
-
+    </el-form> -->
+    <!-- </el-tab-pane>
+  </el-tabs> -->
+     
     <footer v-if="isUpdate">
-      <el-button v-show="active === 0" type="primary" @click="next">{{$t('common.next')}}</el-button>
-      <el-button v-show="active === 1" @click="pre">{{$t('common.prev')}}</el-button>
-      <el-button v-show="active === 1" @click="next">{{$t('common.done')}}</el-button>
+      <!-- <el-button v-show="active === 0" type="primary" @click="next">{{$t('common.next')}}</el-button> -->
+      <!-- <el-button v-show="active === 1" @click="pre">{{$t('common.prev')}}</el-button> -->
+      <el-button type="primary" @click="next">{{$t('common.register')}}</el-button>
     </footer>
     <footer v-else>
       <el-button type="primary" @click="next">
-        {{active === 1 ? $t('common.done') : $t('common.next')}}
+        {{$t('common.register')}}
       </el-button>
-      <el-button v-show="active !== 0" @click="pre">{{$t('common.prev')}}</el-button>
+      <!-- <el-button v-show="active !== 0" @click="pre">{{$t('common.prev')}}</el-button> -->
     </footer>
   </div>
 </template>
@@ -612,6 +875,12 @@
         qd_uid: '', // 所有代理商id
         isShowTree: false,
         forFlag: false,
+        isBusiness: true,
+        isChoose: true,
+        radioList: [],
+        activeName: 'first',
+        ownerNum: 1,
+        legalNum: 1,
         formData: {
           cate: '', // 注册商户的类型
           sls_uid: '', // 业务员id
@@ -860,7 +1129,7 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule23'), trigger: 'blur'},
           ]
         },
-        radioList: []
+
       }
     },
     created() {
@@ -1057,6 +1326,7 @@
         } else {
           this.$message.error(res.resperr);
         }
+        // 兼容火狐
         this[file['__ob__'].dep.subs[0].vm.$options.propsData.data.tag + 'loading'] = false;
       },
       avatarFailed(err, file) {
@@ -1367,8 +1637,44 @@
           return element.pid_name !== pid_name
         })
         this.list_Select = new_list_select
-      }
+      },
+      changeShow(event) {  
+        console.log(event.currentTarget.attributes);
+if(event.currentTarget.attributes.tag){
+        if(this.ownerNum<4){
+        this.ownerNum++;
+        console.log(1);
+        }
+        } else {
+        if(this.ownerNum>1){
+        this.ownerNum--;
+        console.log(2);
+        }
+        }
+      },
+      changeShow2(event) {
+      console.log(event.target.attributes.tag);
+if(event.currentTarget.attributes.tag){
+        if(this.legalNum<4){
+        this.legalNum++;
+        }
+        } else {
+        if(this.legalNum>1){
+        this.legalNum--;
+        }
+        }
+      },
+     changeBoard(event) {
+    if(event.currentTarget.attributes.tag){
+      this.isChoose = true;
+      this.isBusiness = true;
+    }else{
+      this.isChoose = false;  
+      this.isBusiness = false;
     }
+    }
+    },
+
   }
 </script>
 <style lang="scss">
@@ -1387,7 +1693,7 @@
     .el-form {
       background-color: #F7F9FA;
       margin-bottom: 24px;
-      padding: 15px 30px 30px 30px;
+      padding: 15px 0 30px 30px;
       .el-loading-mask {
         width: 300px;
       }
@@ -1418,12 +1724,34 @@
           transition: all .3s;
         }
       }
-
+    
       h3 {
         position: relative;
         padding: 12px 0;
         margin: 0 0 20px;
         font-size: 20px;
+        color: #1D1D24;
+
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 50px;
+          height: 2px;
+          background-color: #232629;
+        }
+      }
+  .title-gap{
+        position: relative;
+        padding: 12px 0;
+        margin: 0 0 20px;
+        height: 30px;
+
+   h3 {
+        position: absolute;
+        font-size: 20px;
+        line-height: 20px;
         color: #1D1D24;
         &:after {
           content: '';
@@ -1435,6 +1763,20 @@
           background-color: #232629;
         }
       }
+     .puls{    
+     position: absolute;
+     right: 10%;
+   .el-icon-plus, .el-icon-minus{
+     &:before{
+       font-size: 20px;
+       font-weight: bold;
+     }
+   }
+    }
+
+
+      }
+
       h4 {
         position: relative;
         padding: 10px 0;
@@ -1452,12 +1794,12 @@
         }
       }
       .el-form-item {
-        width: 300px;
+        width: 260px;
         display: inline-block;
         vertical-align: top;
-        margin-right: 80px;
+        margin-right: 40px;
         .el-form-item__content {
-          width: 300px;
+          width: 250px;
           .rate_label {
             font-size: 14px;
             color: #717283;
@@ -1580,12 +1922,6 @@
 
       }
       .payList {
-        .el-form-item {
-          width: 220px;
-          .el-form-item__content {
-            width: 220px;
-          }
-        }
         .icon_remove {
           width: $midGap;
           display: inline-block;
@@ -1611,5 +1947,57 @@
       margin-top: 6px;
       box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
     }
+
+
+.top-tabs{
+     position: relative;
+    height: 100px;
+    line-height: 140px;
+    color: #717283;
+    display: flex;
+    justify-content: space-between;
+    width: 700px;
+    margin: 0 auto;
+hr{
+    display: inline-block;
+    width: 557px;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+}
+   .change-btn{
+     cursor: pointer;
+     position: relative;
+      font-size: 14px;
+     &:before{
+ content: '';
+    position: absolute;
+    left: 48px;
+    bottom: 40px;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #717283;
+    border-radius: 50%;
+     }
+   }
+   .isChoose{
+     color: #2974FF;
+      &:before{
+   background-color: #2974FF;
+   border-color: #2974FF;
+      }
+   }
+}
+
+
+.fade-enter-active, .fade-leave-active {
+  transition: all 0.5s ;
+}
+.fade-enter, .fade-leave-to{
+  transform: translateY(-10px) ;
+  opacity: 0 ;
+}
   }
+
 </style>

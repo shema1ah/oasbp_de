@@ -37,6 +37,7 @@ import salesDetail from 'components/salesman/salesDetail'
 import logList from 'components/system/logList'
 import tradeLimit from 'components/system/tradeLimit'
 import whiteList from 'components/system/whiteList'
+import text from 'components/text/text'
 
 Vue.use(Router)
 
@@ -243,6 +244,11 @@ export default new Router({
           path: 'refund_white_list',
           name: 'whiteList',
           component: whiteList
+        },
+        {
+          path: 'text',
+          name: 'text',
+          component: text
         }
       ]
     }
