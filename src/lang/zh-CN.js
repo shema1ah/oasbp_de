@@ -463,10 +463,9 @@ const zh = {
         expected_volume_transactions: '预计交易额',
         expected_couut_transactions: '预计交易量',
         represeutation: '代表权',
-        legal_rep: '是否为Legal Representatives'
-
-
-      
+        legal_rep: '是否为Legal Representatives',
+        reg_number: '注册号码',
+        reg_issuer: '注册机构名'
       },
       applicationTypes: {
         direct: '直连',
@@ -486,7 +485,7 @@ const zh = {
         rule7: '请选择证件类型',
         rule8: '请输入证件编号',
         rule9: '请选择行业类别',
-        rule10: '请输入商户地址',
+        rule10: '请输入地址',
         rule11: '请输入BR编号',
         rule12: '请输入BR有效期',
         rule13: '请输入CI编号',
@@ -507,7 +506,29 @@ const zh = {
         rule28: '请输入法人姓名',
         rule29: '请输入注册地址',
         rule30: '请输入公司网址',
-        rule31: '请输入店铺简称'
+        rule31: '请输入店铺简称',
+        rule32: '请选择一级代理',
+        rule33: '请选择二级代理',
+        rule34: '请输入名',
+        rule35: '请输入姓',
+        rule36: '请选择出生日期',
+        rule37: '请选择国籍',
+        rule38: '请选择成立日期',
+        rule39: '请输入商业目的',
+        rule40: '请输入邮政编码',
+        rule41: '请输入城市',
+        rule42: '请选择国家',
+        rule43: '请选择职业',
+        rule44: '请选择一级行业',
+        rule45: '请选择二级行业',
+        rule46: '请选择三级行业',
+        rule47: '请输入投票份额',
+        rule48: '请选择是否为Legal Representatives',
+        rule49: '请输入预计交易额',
+        rule50: '请输入预计交易量',
+        rule51: '请选择代表权',
+        rule52: '请输入注册号码',
+        rule53: '请输入注册机构名'
       },
       lengthRule: {
         rule1: '最多输入4个字符',

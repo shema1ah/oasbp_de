@@ -7,43 +7,13 @@
       </el-button>
     </header>
     <el-form :model="storeModel" :rules="storeRules" ref="store-form">
-      <h3>{{$t('shop.detail.basic.subtitle')}}</h3>
-
-      <el-form-item prop="shopname" :label="$t('shop.newStore.model.storename')">
-        <el-input v-model.trim="storeModel.shopname"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="short_name" :label="$t('shop.newStore.model.short_name')">
-        <el-input v-model.trim="storeModel.short_name"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="address" :label="$t('shop.newStore.model.storeaddress')">
-        <el-input v-model.trim="storeModel.address"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="telephone" :label="$t('shop.newStore.model.mobile')">
-        <el-input
-          v-model.trim="storeModel.telephone"
-          maxlength="8"
-          :disabled="isUpdate"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="operating" :label="$t('shop.newStore.model.operation')">
-        <el-input v-model.trim="storeModel.operating"></el-input>
-      </el-form-item>
-
-      <el-form-item :label="$t('merchant.table.stostatus')" prop="status" v-if="!isAllow">
-        <el-select v-model="storeModel.status" :disabled="!isUpdate">
-         <el-option :label="item.name" :value="item.val" v-for="item in statusList" :key="item.val"></el-option>
-        </el-select>
-      </el-form-item>
-
-      <h3>{{$t('merchant.newMerchant.basic.cap2')}}</h3>
+    
+     <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
       <el-form-item v-if="!isUpdate">
         <el-select v-model="pid_select" :placeholder="$t('merchant.newMerchant.requiredRule.rule25')">
           <el-option
             v-for="item in list"
-            :key="item.chnl_code"
+            :key="item.pid_name"
             :label="item.pid_name"
             :value="item.pid_name"
           >
@@ -76,206 +46,71 @@
         </el-form-item>
       </div>
 
+      <h3>{{$t('merchant.newMerchant.basic.cap5')}}</h3>
+
+    <el-form-item prop="store_shopname" :label="$t('merchant.newMerchant.form.storename')">
+        <el-input
+          v-model.trim="storeModel.store_shopname"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
+        <el-input id="op_type" v-model="storeModel.mcc"
+                :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+                readonly
+                class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
+        </el-input>
+        <el-tree
+          :data="shopTypes"
+          @node-click="IndustyhandleNodeClick"
+          v-show="isShowIndustyTree"
+          node-key="id"
+          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+          draggable
+        ></el-tree>
+      </el-form-item>
+
+      <el-form-item prop="expect_amt" :label="$t('merchant.newMerchant.form.expected_volume_transactions')">
+        <el-input v-model.trim="storeModel.expect_amt"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="expect_count" :label="$t('merchant.newMerchant.form.expected_couut_transactions')">
+        <el-input v-model.trim="storeModel.expect_count"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="storeModel.address"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="store_post" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="storeModel.store_post"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="store_city" :label="$t('merchant.newMerchant.form.city')">
+        <el-input v-model.trim="storeModel.store_city"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="store_country" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="storeModel.store_country">
+          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item prop="store_telephone" :label="$t('merchant.newMerchant.form.concatNumber')" >
+        <el-input
+          v-model.trim="storeModel.store_telephone"
+          maxlength='11'></el-input>
+      </el-form-item>
+
       <h3>{{$t('merchant.detail.rates.setitle')}}</h3>
 
-      <el-form-item prop="bankuser" :label="$t('merchant.newMerchant.form.accountName')">
-        <el-input v-model.trim="storeModel.bankuser"></el-input>
+      <el-form-item prop="iban" :label="$t('merchant.newMerchant.form.accountH')">
+        <el-input v-model.trim="storeModel.iban"></el-input>
       </el-form-item>
 
-      <el-form-item prop="headbankname" :label="$t('merchant.newMerchant.form.accountType')">
-        <el-input v-model.trim="storeModel.headbankname"></el-input>
+      <el-form-item prop="bic" :label="$t('common.SWIFT')">
+        <el-input v-model.trim="storeModel.bic"></el-input>
       </el-form-item>
-
-      <el-form-item prop="bankaccount" :label="$t('merchant.newMerchant.form.accountH')">
-        <el-input v-model.trim="storeModel.bankaccount" @change="GetRemit"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="bankProvince" :label="$t('merchant.newMerchant.form.accountAddress')">
-        <el-input v-model.trim="storeModel.bankProvince"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="bankcode" :label="$t('common.SWIFT')">
-        <el-input v-model.trim="storeModel.bankcode"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="remit_amt" :label="$t('merchant.newMerchant.form.moneySettment')">
-        <el-input
-          v-model.trim="storeModel.remit_amt"
-          :disabled="IsRemit"
-          maxlength='5'></el-input>
-      </el-form-item>
-
-      <h3>{{$t('merchant.detail.document.doctitle')}}</h3>
-      <div class="uploaders">
-        <!-- 经营场所内景照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="goodsphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'goodsphoto',
-              enuserid: 'EPeRaNEt',
-              format: 'cors'
-          }">
-          <div v-if="voucherInfo.goodsphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.goodsphoto_url" class="avatar">
-            <span class="img-tip">{{$t('common.reupload')}}</span>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.goodsphoto')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <!-- 经营场所外景照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="shopphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'shopphoto',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.shopphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.shopphoto_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('merchant.newMerchant.picture.shopphoto')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <!-- 收银台照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="paypointloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'paypoint',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.paypoint_url" class="avatar-wrap">
-            <img :src="voucherInfo.paypoint_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('shop.newStore.casher')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <!-- 补充资料照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="otherphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.otherphoto_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('shop.newStore.other')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <!-- 补充资料照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="otherphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto1',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.otherphoto1_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto1_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('shop.newStore.other1')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-        <!-- 补充资料照片上传-->
-        <el-upload
-          :file-list="storeModel.vouchers"
-          v-loading="otherphotoloading"
-          :on-progress="startAvatarUpload"
-          class="avatar-uploader"
-          :action="uploadInterface"
-          :show-file-list="false"
-          :before-upload="beforeAvatarUpload"
-          :on-success="avatarSuccess"
-          :on-error="avatarFailed"
-          :data="{
-              category: 1,
-              source: 1,
-              tag: 'otherphoto2',
-              format: 'cors',
-              enuserid: 'EPeRaNEt'
-          }">
-          <div v-if="voucherInfo.otherphoto2_url" class="avatar-wrap">
-            <img :src="voucherInfo.otherphoto2_url" class="avatar">
-            <i class="img-tip">{{$t('common.reupload')}}</i>
-          </div>
-          <div v-else class="avatar-uploader-wrap">
-            <i class="avatar-uploader-icon el-icon-plus"></i>
-            <div class="avatar-desc">{{$t('shop.newStore.other2')}}</div>
-            <div class="avatar-tip">{{$t('common.format')}}</div>
-          </div>
-        </el-upload>
-      </div>
     </el-form>
     <footer>
       <el-button @click="next" :disabled="isLoading">{{$t('common.done')}}</el-button>
@@ -301,88 +136,77 @@
   export default {
     data() {
       return {
+        select: this.$i18n.locale,
         pid_select: [],
         list: [],
         list_Select: [],
+        shopTypes: [], // 门店行业列表
         isUpdate: false,
         isLoading: false,
-        IsRemit: false,
-        goodsphotoloading: false,
-        shopphotoloading: false,
-        paypointloading: false,
-        otherphotoloading: false,
-        uploadInterface: `${config.imgUpload}/util/v1/uploadfile`,
+        // IsRemit: false,
         isAllow: false,
-        statusList: [
-          {name: this.$t('common.enable'), val: 3},
-          {name: this.$t('common.disable'), val: 4},
-        ],
+        shopTypeProps_en: {
+          children: 'shoptypes',
+          label: 'name_en',
+          value: 'id'
+        },
+        shopTypeProps_zh: {
+          children: 'shoptypes',
+          label: 'name',
+          value: 'id'
+        },
+        isShowIndustyTree: false,
          // 上传接口
         storeModel: {
-          big_uid: '',
-          short_name: '',
-          shopname: '',
-          address: '',
-          telephone: '',
-          operating: '',
-          headbankname: '', // 开户行名称
-          bankuser: '', // 开户行
-          bankaccount: '', // 银行账号
-          bankProvince: '', // 银行地址
-          bankcode: '', // SWIFT码
-          remit_amt: null, // 结算资金起点
-          vouchers: [],
-          status: 3
-        },
-        voucherInfo: {
-          goodsphoto_url: '', // 经营场所内景照片url
-          goodsphoto_name: '',
-          shopphoto_url: '',
-          shopphoto_name: '',
-          paypoint_url: '', // 收银柜台照片url
-          paypoint_name: '',
-          otherphoto_url: '', // 补充资料照片
-          otherphoto_name: '',
-          otherphoto1_url: '', // 补充资料照片
-          otherphoto1_name: '',
-          otherphoto2_url: '', // 补充资料照片
-          otherphoto2_name: ''
+          store_shopname: '', // 店铺名称
+          mcc: '', // 店铺行业
+          unify_mcc: '',
+          expect_amt: '', //预计交易额
+          expect_count: '',  //预计交易量
+          address: '', // 门店地址
+          store_post: '',  //门店邮编
+          store_city: '',   //门店城市
+          store_country: '', //门店国家
+          iban: '', // 银行账号
+          bic: '', // SWIFT码
+          store_telephone: '', // SWIFT码
+          format :'cors'
         },
         storeRules: {
-          'shopname': [
-            {required: true, message: this.$t('shop.newStore.rule1'), trigger: 'blur'},
+          'store_shopname': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
             {max: 60, min: 0, message: this.$t('merchant.newMerchant.rule10'), trigger: 'blur'}
           ],
-          'short_name': [
-            {required: true, message: this.$t('shop.newStore.rule5'), trigger: 'blur'}
-          ],
+
           'address': [
-            {required: true, message: this.$t('shop.newStore.rule2'), trigger: 'blur'},
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule21')},
           ],
-          'operating': [
-            {required: true, message: this.$t('shop.newStore.rule4'), trigger: 'blur'},
+
+          'mcc': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
           ],
-          'telephone': [
-            {required: true, message: this.$t('shop.newStore.rule3'), trigger: 'blur'},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.rule6')));
-                } else {
-                  cb();
-                }
-              }
-            }
+
+          'expect_amt': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')}
           ],
-          'bankuser': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule15')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule7'), trigger: 'blur'}
+
+          'expect_count': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule50')}
           ],
-          'headbankname': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule16')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
+
+           'store_post': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule40')},
           ],
-          'bankaccount': [
+            
+          'store_city': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule41')}
+          ],
+
+          'store_country': [
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule42')}
+          ],
+
+          'iban': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
             {
               validator: (rule, val, cb) => {
@@ -395,26 +219,24 @@
             },
             {max: 15, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule6'), trigger: 'blur'}
           ],
-          'bankProvince': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule18')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
-          ],
-          'bankcode': [
+
+          'bic': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule24')}
           ],
-          'remit_amt': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule19')},
+
+         'store_telephone': [
+            {required: true, message: this.$t('salesman.newsale.rule8')},
             {
               validator: (rule, val, cb) => {
                 if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule1')));
+                  cb(new Error(this.$t('salesman.newsale.rule10')));
                 } else {
                   cb();
                 }
               }
             }
-            // {max: 5, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule2')}
-          ]
+          ],
+
         }
       }
     },
@@ -424,6 +246,7 @@
         this.storeModel.big_uid = this.$route.query.big_uid;
         this.getPid();
         this.isUpdate && this.getStoreInfo();
+       !this.isUpdate && this.getShopTypes()
 
       }
     },
@@ -438,8 +261,7 @@
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
-              this.IsRemit = true;
-
+              // this.IsRemit = true;
               let da =  data.data;
               Object.assign(this.storeModel, {
                 short_name: da.userinfo.short_name,
@@ -449,21 +271,12 @@
                 operating: da.userinfo.operating,
                 headbankname: da.bankinfo.headbankname, // 开户行名称
                 bankuser: da.bankinfo.bankuser, // 开户行
-                bankaccount: da.bankinfo.bankaccount, // 银行账号
+                iban: da.bankinfo.iban, // 银行账号
                 bankProvince: da.bankinfo.bankProvince, // 银行地址
-                bankcode: da.bankinfo.bankcode, // SWIFT码
+                bic: da.bankinfo.bic, // SWIFT码
                 remit_amt: da.userinfo.remit_amt, // 结算资金起点
-                status: da.userinfo.status
               });
-              this.isAllow = this.storeModel.status === 3 || this.storeModel.status === 4 ? false : true;
               this.list_Select = da.fee_ratios;
-              da.vouchers.forEach((item) =>{
-                if(~'goodsphoto|shopphoto|paypoint|otherphoto|otherphoto1|otherphoto2'.indexOf(item.name)) {
-                  this.storeModel.vouchers.push(item);
-                  this.voucherInfo[item.name + '_url'] = item.url;
-                  this.voucherInfo[item.name + '_name'] = item.imgname;
-                }
-              })
             } else {
               this.$message.error(data.respmsg);
             }
@@ -472,84 +285,40 @@
         });
       },
 
-      // 根据银行账号获得
-      GetRemit() {
-        axios.get(`${config.host}/org/tools/remit_amt`, {
-          params: {
-            bankaccount: this.storeModel.bankaccount,
-            format: 'cors'
-          }
-        }).then((res) => {
-          let data = res.data;
-          if(data.respcd === config.code.OK) {
-            this.storeModel.remit_amt = data.data.remit_amt;
-            if(data.data.remit_amt !== "") {
-              this.IsRemit = true;
-            }else {
-              this.IsRemit = false;
-            }
-          }else {
-            this.$message.error(data.respmsg);
-          }
-        })
-      },
-
       cancelHandler() {
         this.$router.push({name: 'shop_manage_list'})
       },
-      startAvatarUpload(event, file, fileList) {
-        this[file['__ob__'].dep.subs[0].vm.$options.propsData.data.tag + 'loading'] = true;
-      },
-      beforeAvatarUpload(file) {
-        const isRightImgType = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isRightImgType) {
-          this.$message.error(this.$t('merchant.newMerchant.rule8'));
+
+      IndustyhandleNodeClick(data, node) {
+        if(data.level ===3) {
+            this.storeModel.unify_mcc = data.id;
+            this.isShowIndustyTree = false;
+            this.select === 'en-us'?this.storeModel.mcc = data.name_en:this.storeModel.mcc = data.name;
         }
-        return isRightImgType;
       },
 
-      avatarSuccess(res, file, fileList) {
-        let data = res.data;
-        if (res.respcd === config.code.OK) {
-          this.voucherInfo[data.tag + '_url'] = data.url;
-          this.voucherInfo[data.tag + '_name'] = data.name;
-          let _target = _.find(this.storeModel.vouchers, _.matchesProperty('name', file.response.data.tag))
-          if (_target) {
-            let idx = _.findIndex(this.storeModel.vouchers, function (_target) {
-              return _target.name == file.response.data.tag;
-            });
-            this.storeModel.vouchers[idx].name = file.response.data.tag;
-            this.storeModel.vouchers[idx].imgname = file.response.data.name;
-            this.storeModel.vouchers[idx].url = file.response.data.url;
-          } else {
-            this.storeModel.vouchers.push({
-              name: file.response.data.tag,
-              imgname: file.response.data.name,
-              url: file.response.data.url,
-            });
+      showIndustyTreeComponent(e) {
+        this.isShowIndustyTree = !this.isShowIndustyTree;
+      },
+
+      getShopTypes(){
+        axios.get(`${config.host}/org/tools/get_shop_types`, {
+          params: {
+            format: 'cors'
           }
-        } else {
-          this.$message.error(res.resperr);
-        }
-        this[file['__ob__'].dep.subs[0].vm.$options.propsData.data.tag + 'loading'] = false;
-      },
-      avatarFailed(err, file) {
-        this.$message.error(err);
-      },
-      checkPhotosIsUpdated() {
-        if (!this.voucherInfo.goodsphoto_url) {
-          this.$message.error(this.$t('merchant.newMerchant.rule28'));
-          return false;
-        }
-        if (!this.voucherInfo.shopphoto_url) {
-          this.$message.error(this.$t('merchant.newMerchant.rule29'));
-          return false;
-        }
-        if (!this.voucherInfo.paypoint_url) {
-          this.$message.error(this.$t('shop.newStore.warmcasher'));
-          return false;
-        }
-        return true
+        })
+          .then((res) => {
+            let data = res.data;
+            this.isLoading = false;
+            if (data.respcd === config.code.OK) {
+                this.shopTypes = data.data.shop_types;
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          }).catch(() => {
+          this.isLoading = false;
+          this.$message.error(this.$t('common.netError'));
+          })
       },
 
       next() {
@@ -567,7 +336,7 @@
           })
         }
       },
-
+ 
       confirm() {
         this.$confirm(this.$t('common.sure'), this.$t('common.tip'), {
           confirmButtonText: this.$t('common.confirm'),
@@ -581,29 +350,19 @@
 
       commit() {
         let params = Object.assign({}, this.storeModel)
-        let url = this.isUpdate ? `${config.host}/org/mchnt/sub/edit` : `${config.host}/org/mchnt/sub/signup`
-        params.format = 'cors';
-        params.mchnt_ratios = JSON.stringify(this.list_Select);
+        params.mchnt_ratios = this.list_Select;
+        params.big_uid = this.$route.query.big_uid || getParams('big_uid')
+        let url = this.isUpdate ? `${config.host}/org/mchnt/sub/edit` : `${config.host}/org/v1/store/signup`;
         if (this.isUpdate) {
           params.type = 'submerchant';
-          params.userid = this.$route.query.userid || getParams('userid')
         }
-        let converted = _.map(_.cloneDeep(this.storeModel.vouchers), (item) => {
-          return _.pick(item, ['name', 'imgname']);
-        })
-        params.vouchers = {};
-        converted.forEach((item) => {
-          let vals = _.values(item);
-          params.vouchers[vals[0]] = vals[1]
-        })
-        params.vouchers.enuserid = 'EPeRaNEt';
-        params.vouchers = JSON.stringify(params.vouchers);
         this.isLoading = true;
-        axios.post(url, qs.stringify(params), {
+        console.log(params);
+        axios.post(url, JSON.stringify(params), {
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
           }
-        })
+          })
           .then((res) => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
@@ -717,12 +476,11 @@
         }
       }
       .el-form-item {
-        width: 300px;
+        width: 280px;
         display: inline-block;
         vertical-align: top;
-        margin-right: 80px;
         .el-form-item__content {
-          width: 300px;
+          width: 280px;
           .rate_label {
             font-size: 14px;
             color: #717283;
@@ -841,14 +599,17 @@
         }
 
       }
+    .el-tree {
+      overflow-x: scroll;
+      padding: 5px 12px 5px 5px;
+      position: absolute;
+      min-width: 100%;
+      z-index: 99;
+      margin-top: 6px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+    }
     }
     .payList {
-      .el-form-item {
-        width: 220px;
-        .el-form-item__content {
-          width: 220px;
-        }
-      }
       .icon_remove {
         .el-form-item__content {
           font-size: 24px;
@@ -857,6 +618,9 @@
           }
         }
       }
+    }
+      footer {
+      text-align: center;
     }
   }
 </style>

@@ -2,504 +2,470 @@
   <div class="mchnt-detail">
     <header class="page-header style2">
       <h2 class="page-title">{{$t('merchant.detail.basic.title')}}</h2>
-      <el-button type="text" @click="cancel"><i class="el-icon-close"></i><span>{{$t('merchant.detail.basic.close')}}</span></el-button>
+      <el-button type="text" @click="cancel">
+        <i class="el-icon-close"></i>
+        <span>{{$t('merchant.detail.basic.close')}}</span>
+      </el-button>
     </header>
     <section class="basic">
       <div class="banner">
-        <div class="title">{{$t('merchant.detail.basic.subtitle')}}</div>
+        <div class="title">{{$t('merchant.newMerchant.basic.cap1')}}</div>
         <div class="divider"></div>
       </div>
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la1')}}</span>
-          <span class="basic-content">{{form.qdinfo.qd_name}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.channel')+':'}}</span>
+          <span class="basic-content">{{form.base.first_agent}}</span>
         </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la2')}}</span>
-          <span class="basic-content">{{form.qdinfo.slsm_name}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.channel2')+':'}}</span>
+          <span class="basic-content">{{form.base.second_agent}}</span>
         </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la3')}}</span>
-          <span class="basic-content">{{form.userinfo.shopname}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la24')}}</span>
-          <span class="basic-content">{{cate[form.userinfo.cate]}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.contact')+':'}}</span>
+          <span class="basic-content">{{form.base.sls_uid}}</span>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la11')}}</span>
-          <span class="basic-content">{{form.userinfo.contact_email}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.bigMerchant')+':'}}</span>
+          <span class="basic-content">{{cate[form.base.cate]}}</span>
         </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la6')}}</span>
-          <span class="basic-content">{{isSigned[form.userinfo.status]}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.meiname')+':'}}</span>
+          <span class="basic-content">{{form.base.shopname}}</span>
         </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la7')}}</span>
-          <span class="basic-content">{{form.userinfo.contact}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la8')}}</span>
-          <span class="basic-content">{{form.userinfo.telephone}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.mertype')+':'}}</span>
+          <span class="basic-content">{{form.special.mchnt_type}}</span>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la9')}}</span>
-          <span v-if="form.userinfo.eep" class="basic-content">{{$t('merchant.newMerchant.doctype.type2')}}</span>
-          <span v-else-if="form.userinfo.passport" class="basic-content">{{$t('merchant.newMerchant.doctype.type1')}}</span>
-          <span v-else-if="form.userinfo.idnumber" class="basic-content">{{$t('merchant.newMerchant.doctype.type3')}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.foundation_date')+':'}}</span>
+          <span class="basic-content">{{form.special.foundation_date}}</span>
         </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la10')}}</span>
-          <span class="basic-content">{{form.number}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
+          <span class="basic-content">{{form.special.business_purpose}}</span>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la5')}}</span>
-          <span class="basic-content">{{form.userinfo.mcc_str}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
+          <span class="basic-content">{{form.special.sector}}</span>
         </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la12')}}</span>
-          <span class="basic-content">{{form.userinfo.address}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.industry')+':'}}</span>
+          <span class="basic-content">{{form.special.industry}}</span>
         </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la13')}}</span>
-          <span class="basic-content">{{form.userinfo.br}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la14')}}</span>
-          <span class="basic-content">{{form.userinfo.br_expire_time}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.industry_key')+':'}}</span>
+          <span class="basic-content">{{form.special.industry_key}}</span>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la15')}}</span>
-          <span class="basic-content">{{form.userinfo.ci}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
+          <span class="basic-content">{{form.base.address}}</span>
         </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la16')}}</span>
-          <span class="basic-content">{{form.userinfo.businessaddr}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
+          <span class="basic-content">{{form.ext.post}}</span>
         </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la22')}}</span>
-          <span class="basic-content">{{form.userinfo.website}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la23')}}</span>
-          <span class="basic-content">{{form.userinfo.legalperson}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
+          <span class="basic-content">{{form.special.city}}</span>
         </el-col>
       </el-row>
 
       <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la4')}}</span>
-          <span class="basic-content">{{merchantType[form.userinfo.user_type]}}</span>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
+          <span class="basic-content">{{form.ext.country}}</span>
+        </el-col>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.reg_number')+':'}}</span>
+          <span class="basic-content">{{form.special.regi_number}}</span>
+        </el-col>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.reg_issuer')+':'}}</span>
+          <span class="basic-content">{{form.special.regi_name}}</span>
         </el-col>
       </el-row>
     </section>
-
-    <section class="rates">
+    <!-- 股东信息 -->
+    <section class="basic">
       <div class="banner">
-        <div class="title">{{$t('merchant.detail.basic.paymenttitle')}}</div>
+        <div class="title">{{$t('merchant.newMerchant.basic.cap2')}}</div>
         <div class="divider"></div>
       </div>
-
-      <div v-for="item in form.fee_ratios" :key="item.pid_name">
-        <h3>{{item.pid_name}}</h3>
+      <div class="list-gap" v-for="(n,i) in form.special.owners" :key="i">
         <el-row>
           <el-col :span="8">
-            <span class="basic-label">{{$t('merchant.newMerchant.form.ratio')}}:</span>
-            <span class="basic-content">{{item.ratio}}</span>
+            <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
+            <span class="basic-content">{{n.first_name}}</span>
           </el-col>
-          <el-col :span="8" v-if="item.line_type !== ''">
-            <span class="basic-label">{{$t('merchant.newMerchant.form.accessType')}}:</span>
-            <span class="basic-content">{{accessType[item.line_type]}}</span>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.last_name')+':'}}</span>
+            <span class="basic-content">{{n.last_name}}</span>
           </el-col>
-          <el-col :span="8" v-if="item.finance_type !== ''">
-            <span class="basic-label">{{$t('merchant.newMerchant.form.applicationType')}}:</span>
-            <span class="basic-content">{{applicationType[item.finance_type]}}</span>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
+            <span class="basic-content">{{n.birthday}}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
+            <span class="basic-content">{{n.nation}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
+            <span class="basic-content">{{n.address}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
+            <span class="basic-content">{{n.post}}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
+            <span class="basic-content">{{n.city}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
+            <span class="basic-content">{{n.country}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
+            <span class="basic-content">{{n.empeoy_status}}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.vofing_share')+':'}}</span>
+            <span class="basic-content">{{n.vofing}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
+            <span class="basic-content">{{n.email}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
+            <span class="basic-content">{{n.mobile}}</span>
           </el-col>
         </el-row>
       </div>
     </section>
 
-    <section class="rates">
+    <section class="basic">
       <div class="banner">
-        <div class="title">{{$t('merchant.detail.rates.setitle')}}</div>
+        <div class="title">{{$t('merchant.newMerchant.basic.cap3')}}</div>
         <div class="divider"></div>
       </div>
 
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la17')}}</span>
-          <span class="basic-content">{{form.bankinfo.bankuser}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la18')}}</span>
-          <span class="basic-content">{{form.bankinfo.headbankname}}</span>
-        </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la19')}}</span>
-          <span class="basic-content">{{form.bankinfo.bankaccount}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la20')}}</span>
-          <span class="basic-content">{{form.bankinfo.bankProvince}}</span>
-        </el-col>
-      </el-row>
-
-      <el-row>
-        <el-col :span="10">
-          <span class="basic-label">{{$t('shop.detail.basic.la13')}}</span>
-          <span class="basic-content">{{form.bankinfo.bankcode}}</span>
-        </el-col>
-        <el-col :span="14">
-          <span class="basic-label">{{$t('merchant.detail.basic.la21')}}</span>
-          <span class="basic-content">{{form.userinfo.remit_amt}}</span>
-        </el-col>
-      </el-row>
-    </section>
-
-    <section v-if="pictures.length>0">
-      <div class="banner">
-        <div class="title">{{$t('merchant.detail.document.doctitle')}}</div>
-        <div class="divider"></div>
+      <div class="list-gap" v-for="(n,i) in form.special.legals" :key="i">
         <el-row>
-         <el-col :span="24">
-           <span class="basic-content-p">
-             <img :src="item.url" v-for="(item,url) in pictures" class="voucher_photo" :key="url"/>
-          </span>
-         </el-col>
-       </el-row>
-      </div>
-    </section>
-
-    <section v-if="dossierPictures.length>0">
-      <div class="banner">
-        <div class="title">{{$t('merchant.detail.document.doctitle1')}}</div>
-        <div class="divider"></div>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
+            <span class="basic-content">{{n.first_name}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.last_name')+':'}}</span>
+            <span class="basic-content">{{n.last_name}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
+            <span class="basic-content">{{n.birthday}}</span>
+          </el-col>
+        </el-row>
         <el-row>
-         <el-col :span="24">
-           <span class="basic-content-p">
-             <img :src="item.url" v-for="(item,url) in dossierPictures" class="voucher_photo" :key="url"/>
-          </span>
-         </el-col>
-       </el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
+            <span class="basic-content">{{n.nation}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
+            <span class="basic-content">{{n.address}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
+            <span class="basic-content">{{n.post}}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
+            <span class="basic-content">{{n.city}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
+            <span class="basic-content">{{n.country}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
+            <span class="basic-content">{{n.empeoy_status}}</span>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.represeutation')+':'}}</span>
+            <span class="basic-content">{{n.represe}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
+            <span class="basic-content">{{n.email}}</span>
+          </el-col>
+          <el-col :span="8">
+            <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
+            <span class="basic-content">{{n.mobile}}</span>
+          </el-col>
+        </el-row>
       </div>
     </section>
 
-    <section class="audit-log" v-if="form.userinfo.status==0">
-      <div class="banner">
-        <div class="title">{{$t('audit.detail.title')}}</div>
-        <div class="divider"></div>
-      </div>
-      <el-table :data="audit_logs" stripe v-loading="isLoading">
-        <el-table-column prop="create_user" :label="$t('audit.detail.table.creator')">
-          <template slot-scope="scope">
-            {{ scope.row.create_user }}
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="create_date" :label="$t('audit.detail.table.create_date')">
-          <template slot-scope="scope">
-            {{ scope.row.create_date }}
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="result"  :label="$t('audit.detail.table.result')">
-          <template slot-scope="scope">
-            {{ auditresult[scope.row.result] }}
-          </template>
-        </el-table-column>
-
-        <el-table-column prop="memo"  :label="$t('audit.detail.table.memo')">
-          <template slot-scope="scope">
-            {{ scope.row.memo }}
-          </template>
-        </el-table-column>
-      </el-table>
-    </section>
-    <footer>
+    <!-- <footer>
       <el-button v-if="isEditable&&!isReEditable&&form.userinfo.is_edit" @click="editHandler">{{$t('merchant.detail.edit')}}</el-button>
       <el-button v-if="isCreateShop&&!isReEditable" @click="createShop">{{$t('merchant.detail.createShop')}}</el-button>
-    </footer>
-    <footer v-if="isReEditable && form.userinfo.is_edit">
+    </footer>-->
+    <!-- <footer v-if="isReEditable && form.userinfo.is_edit">
       <el-button @click="editHandler">{{$t('merchant.detail.redit')}}</el-button>
       <el-button @click="cancel">{{$t('merchant.detail.basic.close')}}</el-button>
+    </footer>-->
+    <footer>
+      <el-button v-if="isCreateShop" @click="createShop">{{$t('merchant.detail.createShop')}}</el-button>
     </footer>
   </div>
 </template>
 <script>
-  import config from 'config'
-  import axios from 'axios'
-  import { formatDate } from '../../common/js/util'
-  const getParams = (key) => {
-    // 获取参数
-    let url = window.location.hash.split('?')[1] || '';
-    // 正则筛选地址栏
-    let reg = new RegExp('(^|&)' + key + '=([^&]*)(&|$)')
-    // 匹配目标参数
-    let result = url.match(reg)
-    // 返回参数值
-    return result ? decodeURIComponent(result[2]) : ''
-  }
-  export default {
-    data() {
-      return {
-        isLoading: false,
-        isEditable: false,
-        isReEditable: false,
-        isCreateShop: false,
-        license: '',
-        temp: [],
-        audit_logs: [],
-        cate: {
-          "merchant": this.$t('merchant.detail.cate.merchant'),
-          "bigmerchant": this.$t('merchant.detail.cate.big')
+import config from "config";
+import axios from "axios";
+import { formatDate } from "../../common/js/util";
+const getParams = key => {
+  // 获取参数
+  let url = window.location.hash.split("?")[1] || "";
+  // 正则筛选地址栏
+  let reg = new RegExp("(^|&)" + key + "=([^&]*)(&|$)");
+  // 匹配目标参数
+  let result = url.match(reg);
+  // 返回参数值
+  return result ? decodeURIComponent(result[2]) : "";
+};
+export default {
+  data() {
+    return {
+      isLoading: false,
+      isEditable: false,
+      isReEditable: false,
+      isCreateShop: false,
+      cate: {
+        merchant: this.$t("merchant.detail.cate.merchant"),
+        bigmerchant: this.$t("merchant.detail.cate.big")
+      },
+      form: {
+        ext: {
+          country: "",
+          post: "",
+          unify_mcc: ""
         },
-        banktype: {
-          "1": this.$t('common.privata'),
-          "2": this.$t('common.pub')
+        base: {
+          userid: this.$route.query.userid || getParams("userid"), // 商户ID
+          shopname: "",
+          user_type: "",
+          address: "",
+          first_agent: "",
+          second_agent: "",
+          sls_uid: "", // 业务员id
+          cate: ""
         },
-        isSigned: {
-          "3": this.$t('common.enable'),
-          "4": this.$t('common.disable'),
-          "-1": this.$t('common.audit'),
-          "0": this.$t('common.refuse'),
-          "5": this.$t('common.toSubmit'),
-        },
-        statusList: [
-          {name: this.$t('common.enable'), val: 3},
-          {name: this.$t('common.disable'), val: 4},
-          {name: this.$t('common.refuse'), val: 0},
-          {name: this.$t('common.audit'), val: -1},
-        ],
-        period: {
-          month: this.$t('merchant.detail.p.m'),
-          week: this.$t('merchant.detail.p.w'),
-          date: this.$t('merchant.detail.p.d'),
-        },
-        status: {
-            0: this.$t('common.enable'),
-            1: this.$t('common.disable')
-         },
-        auditresult: {
-          '0': this.$t('audit.deny'),
-          '1': this.$t('audit.succ'),
-          '2': this.$t('audit.fail'),
-          '-1': this.$t('audit.going'),
-        },
-        accessType: {
-          'offline': this.$t('merchant.newMerchant.accessTypes.offline'),
-          'online': this.$t('merchant.newMerchant.accessTypes.online')
-        },
-        applicationType: {
-          'direct': this.$t('merchant.newMerchant.applicationTypes.direct'),
-          'indirect': this.$t('merchant.newMerchant.applicationTypes.indirect')
-        },
-        merchantType: {
-          2: this.$t('merchant.newMerchant.form.personal'),
-          3: this.$t('merchant.newMerchant.form.enterprise')
-        },
-        form: {
-          number: '',
-          userinfo: {
-            userid: this.$route.query.userid || getParams('userid'), // 商户ID
-            user_type: '',
-            groupid: '',
-            cate: '',
-            businessaddr: '', // 注册地址
-            address: '', // 公司地址
-            provice: '',
-            city: '',
-            contact_email: '',
-            mobile: '',
-            remit_amt: '',
-            contact: '', // 公司联系人
-            legalperson: '', // 法人
-            shopname: '', // 商户名称
-            name: '', // 公司名称
-            audit_status_str: '',
-            jointime: '',
-            mcc: '', // 店铺类型编码，仅可以填数字
-            unify_mcc: '',
-            mcc_str: '', // 商户类型名称
-            website: '', // 公司网址
-            qd_uid: '',
-            is_edit: 0
-          },
-          qdinfo: {
-            qd_name: '', // 所属代理商名称
-            qd_uid: '', //  所属代理商ID
-            slsm_name: '', // 业务员名称
-            slsm_uid: '', //  业务员ID
-            slsm_mobile: '' // 业务员手机号
-          },
-          bankinfo: {
-            headbankname: '',
-            bankuser: '',
-            bankaccount: '',
-            bankProvince: ''
-          },
-          fee_ratios: []
-        },
-        pictures: [],
-        dossierPictures: []
+        special: {
+          sector: "",
+          city: "",
+          regi_number: "",
+          regi_name: "",
+          owners: [
+            {
+              city: "",
+              first_name: "",
+              last_name: "",
+              mobile: "",
+              country: "",
+              userid: "",
+              empeoy_status: "",
+              nation: "",
+              vofing: "",
+              birthday: "",
+              is_legal: "",
+              address: "",
+              represe: "",
+              post: "",
+              email: ""
+            }
+          ],
+          foundation_date: "",
+          industry: "",
+          mchnt_type: "",
+          business_purpose: "",
+          legals: [
+            {
+              city: "",
+              first_name: "",
+              last_name: "",
+              mobile: "",
+              country: "",
+              userid: "",
+              empeoy_status: "",
+              nation: "",
+              birthday: "",
+              is_legal: "",
+              address: "",
+              represe: "",
+              post: "",
+              email: ""
+            }
+          ],
+          industry_key: ""
+        }
       }
+    };
+  },
+  created() {
+    this.isEditable = this.$route.query.from === "old";
+    this.isReEditable = this.$route.query.from === "edit";
+    this.fetchDetailData();
+  },
+  methods: {
+    cancel() {
+      this.$router.push({ name: "mchnt_manage_list" });
     },
-    created() {
-      this.isEditable = this.$route.query.from === 'old'
-      this.isReEditable = this.$route.query.from === 'edit'
-      this.fetchDetailData()
+    editHandler() {
+      this.$router.push({
+        name: "mchntCreate",
+        query: {
+          command: "edit",
+          userid: this.form.base.userid,
+          qd_uid: this.form.base.qd_uid
+        }
+      });
     },
-    methods: {
-      getAuditResult() {
-        axios.get(`${config.host}/org/tools/audit_logs_list`, {
+    fetchDetailData() {
+      axios
+        .get(`${config.host}/org/v1/mchnt/info`, {
           params: {
-            userid: this.form.userinfo.userid,
-            format: 'cors'
-          }})
-          .then((res) => {
-            let data = res.data;
-            if (data.respcd === '0000') {
-              this.audit_logs = data.data;
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          })
-          .catch((e) => {
-            // console.log(e);
-          });
-      },
-      cancel() {
-        this.$router.push({name: 'mchnt_manage_list'})
-      },
-      editHandler() {
-        this.$router.push({name: 'mchntCreate', query: {command: 'edit', userid: this.form.userinfo.userid, qd_uid: this.form.userinfo.qd_uid}})
-      },
-      fetchDetailData() {
-        axios.get(`${config.host}/org/mchnt/info`, {
-          params: {
-            userid: this.form.userinfo.userid,
-            type: 'bigmerchant',
-            format: 'cors'
-          }})
-          .then((res) => {
-            let data = res.data;
-            this.isLoading = false;
-            if (data.respcd === config.code.OK) {
-                this.form = data.data
-                this.picturesSelect(this.pictures, this.form.vouchers)
-                this.dossierSelect(this.dossierPictures, this.form.vouchers)
-                // this.form.userinfo.ci_expire_time = formatDate(this.form.userinfo.ci_expire_time, 'dd/MM/yyyy')
-                this.form.userinfo.br_expire_time = formatDate(this.form.userinfo.br_expire_time, 'dd/MM/yyyy')
-                this.form.number = this.form.userinfo['idnumber'] || this.form.userinfo['passport'] || this.form.userinfo['eep']
-                this.isCreateShop = this.form.userinfo.cate === 'bigmerchant' ? 1 : 0
-                // this.isEditable = this.form.userinfo.status !== -1 ? 1 : 0
-                // if(this.isReEditable) {
-                //   this.isReEditable = this.form.userinfo.status !== -1 ? 1 : 0
-                // }
-              if(data.data.userinfo.status == 0) {
-                this.getAuditResult()
-              }
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          }).catch(() => {
+            userid: this.form.base.userid,
+            // type: 'bigmerchant',
+            format: "cors"
+          }
+        })
+        .then(res => {
+          let data = res.data;
           this.isLoading = false;
-          this.$message.error(this.$t('common.netError'));
+          if (data.respcd === config.code.OK) {
+            this.form = data.data;
+            this.form.special.foundation_date = formatDate(
+              this.form.special.foundation_date,
+              "dd/MM/yyyy"
+            );
+            this.form.special.owners.forEach(function(i){
+            i.birthday = formatDate(
+              i.birthday,
+              "dd/MM/yyyy"
+            );
+            })
+            this.form.special.legals.forEach(function(i){
+            i.birthday = formatDate(
+              i.birthday,
+              "dd/MM/yyyy"
+            );
+            })
+            this.isCreateShop = this.form.base.cate === "bigmerchant" ? 1 : 0;
+            // this.isEditable = this.form.userinfo.status !== -1 ? 1 : 0
+            // if(this.isReEditable) {
+            //   this.isReEditable = this.form.userinfo.status !== -1 ? 1 : 0
+            // }
+            // if(data.data.userinfo.status == 0) {
+            //   this.getAuditResult()
+            // }
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        })
+        .catch(() => {
+          this.isLoading = false;
+          this.$message.error(this.$t("common.netError"));
         });
-      },
-      createShop() {
-        this.$router.push({name: 'createStore', query: {big_uid: this.form.userinfo.userid, qd_uid: this.form.userinfo.qd_uid}})
-      },
-      picturesSelect(a, b) {
-        for(let i of b) {
-          if(i['name'] === "idcardfront" || i['name'] === 'licensephoto') {
-             a.push(i)
-          }
-        }
-      },
-      dossierSelect(a, b) {
-        for(let i of b) {
-          if(i['name'] === "ciphoto" || i['name'] === 'bankcheckphoto') {
-             a.push(i)
-          }
-        }
-      }
+    },
+    createShop() {
+      this.$router.push({
+        name: "createStore",
+        query: { big_uid: this.userid }
+      });
     }
   }
+};
 </script>
 <style lang="scss">
-  .mchnt-detail {
-    background-color: #fff;
-    padding: 0 $baseGap $baseGap $baseGap;
-    .noborder {border:none !important;}
-    footer {
-      padding-top: $baseGap;
+.mchnt-detail {
+  background-color: #fff;
+  padding: 0 $baseGap $baseGap $baseGap;
+  .noborder {
+    border: none !important;
+  }
+  footer {
+    padding-top: $baseGap;
+  }
+  .banner {
+    padding: 28px $baseGap 0 0;
+    margin-bottom: $miderGap;
+    .title {
+      font-size: $bigSize;
+      font-weight: bold;
+      color: #1d1d24;
     }
-    .banner {
-        padding: 28px $baseGap 0 0; margin-bottom: $miderGap;
-        .title {
-          font-size:$bigSize;
-          font-weight:bold;
-          color:#1D1D24;
-        }
-        .divider {
-          width:50px;
-          height:2px;
-          margin-top:$miderGap;
-          background-color:#232629;
-        }
-    }
-
-    .basic,.shop,.rates,.payment {
-      .el-row {
-        padding: $smGap 0 0 0;
-        .basic-label {
-          font-size:$baseSize;
-          font-weight:$bolderW;
-          color:rgba(29,29,36,1);
-          line-height:$baseSize;
-        }
-        .basic-content {
-          margin-left: $smGap;
-          font-size:$baseSize;
-          font-weight:$baseW;
-          color:#717283;
-          line-height:$baseSize;
-        }
-      }
-    }
-    .voucher_photo {
-      width:300px;
-      height:200px;
-      display:inline-block;
-      margin-left:$smGap;
-      margin-top:$smGap;
+    .divider {
+      width: 50px;
+      height: 2px;
+      margin-top: $miderGap;
+      background-color: #232629;
     }
   }
+
+  .basic,
+  .shop,
+  .rates,
+  .payment {
+    .el-row {
+      padding: $smGap 0 0 0;
+      .basic-label {
+        font-size: $baseSize;
+        font-weight: $bolderW;
+        color: rgba(29, 29, 36, 1);
+        line-height: $baseSize;
+      }
+      .basic-content {
+        margin-left: $smGap;
+        font-size: $baseSize;
+        font-weight: $baseW;
+        color: #717283;
+        line-height: $baseSize;
+      }
+    }
+  }
+  .list-gap {
+    margin-bottom: 20px;
+  }
+  .voucher_photo {
+    width: 300px;
+    height: 200px;
+    display: inline-block;
+    margin-left: $smGap;
+    margin-top: $smGap;
+  }
+}
 </style>

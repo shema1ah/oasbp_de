@@ -505,7 +505,9 @@ const en = {
         expected_volume_transactions: 'Expected Volume Transactions',
         expected_couut_transactions: 'Expected Couut Transactions',
         represeutation: 'Type Of Represeutation',
-        legal_rep: 'Whether it is Legal Representatives'
+        legal_rep: 'Whether it is Legal Representatives',
+        reg_number: 'Register Number',
+        reg_issuer: 'Register Issuer'
       },
       applicationTypes: {
         direct: 'direct',
@@ -546,7 +548,29 @@ const en = {
         rule28: 'Please input Legal Person Name',
         rule29: 'Please input register address',
         rule30: 'Please input company website',
-        rule31: 'Please input merchant abbreviation'
+        rule31: 'Please input merchant abbreviation',
+        rule32: 'Please select primary agent',
+        rule33: 'Please select secondary agent',
+        rule34: 'Please input first name',
+        rule35: 'Please input last name',
+        rule36: 'Please select date of birth',
+        rule37: 'Please select nationality',
+        rule38: 'Please select foundation date',
+        rule39: 'Please input business purpose',
+        rule40: 'Please input postal code',
+        rule41: 'Please input city',
+        rule42: 'Please select country',
+        rule43: 'Please select empeoyment sataus',
+        rule44: 'Please select sector',
+        rule45: 'Please select industry',
+        rule46: 'Please select industry key',
+        rule47: 'Please input vofing share',
+        rule48: 'Please select whether it is Legal Representatives',
+        rule49: 'Please input expected volume transactions',
+        rule50: 'Please input expected couut transactions',
+        rule51: 'Please select type of represeutation',
+        rule52: 'Please input registration number',
+        rule53: 'Please input registration issuer'
       },
       lengthRule: {
         rule1: 'The maxlength is 4',
