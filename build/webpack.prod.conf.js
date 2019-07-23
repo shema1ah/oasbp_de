@@ -91,6 +91,19 @@ const webpackConfig = merge(baseWebpackConfig, {
         )
       }
     }),
+        //新增打包文件
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor_1', //新打包文件名
+      chunks: ['vendor'], //拆分模块名
+      minChunks: function (module) {
+            // 以下是拆分规则，返回true 则拆分，以下规则是将 libs 下的文件单独打包
+          return (
+            module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf('lib') >= 0
+                  )
+          }
+        }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({

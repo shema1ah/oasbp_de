@@ -290,7 +290,10 @@ const zh = {
       pid: '服务商号',
       wechatM: '微信商户号',
       wechatpay: '微信支付',
-
+      bank: '银行',
+      reg_success: '注册成功',
+      under_review: '审核中',
+      review_pass: '审核通过',
     },
     detail: {
       up: '启用',
@@ -606,9 +609,7 @@ const zh = {
       rule41: '请输入店铺网址',
       rule42: '请输入可访问的店铺网址',
       rule43: '请选择销售员',
-      rule44: '请上传身份证正面/法人身份证正面',
-      rule45: '请上传营业执照',
-      rule46: '请上传收银台照片'
+      rule44: '投票份额的总数不能超过100',
     },
     api: {
       title: 'API管理',
@@ -694,6 +695,7 @@ const zh = {
       other: '其它文件1',
       other1: '其它文件2',
       other2: '其它文件3',
+      Ger: '德国',
       warmother: ''
     }
   },
@@ -987,7 +989,8 @@ const zh = {
       zero: '交易额不能为0',
       negative: '交易额不能为负数',
       decimal: '只支持小数点后两位的数值格式',
-      numerical: '商户ID只支持数值格式'
+      numerical: '商户ID只支持数值格式',
+      overhundred: '输入的数值不能大于100'
     },
     refund: {
       title: '合并退款白名单管理',

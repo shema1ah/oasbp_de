@@ -273,7 +273,11 @@ const en = {
       payment: 'Payment Setting',
       pid: 'Alipay Service Provider ID',
       wechatM: 'WeChat Official Account ID',
-      wechatpay: 'WeChat Pay'
+      wechatpay: 'WeChat Pay',
+      bank: 'SolerisBank',
+      reg_success: 'registration success',
+      under_review: 'under review',
+      review_pass: 'examination passed',
     },
     payment: {
       title: 'Payment Channel',
@@ -646,7 +650,8 @@ const en = {
       rule40: 'Please select settlement period',
       rule41: 'Please input website',
       rule42: 'Please input a valid website',
-      rule43: 'Please select salesperson'
+      rule43: 'Please select salesperson',
+      rule44: 'The total number of vofing share cannot exceed 100',
     },
     api: {
       title: 'API Management',
@@ -740,6 +745,7 @@ const en = {
       other: 'Other supporting document 1',
       other1: 'Other supporting document 2',
       other2: 'Other supporting document 3',
+      Ger: 'Germany',
       warmother: ''
     }
   },
@@ -1033,7 +1039,8 @@ const en = {
       zero: "Transaction value can't be zero",
       negative: "Transaction value can't be negative",
       decimal: 'Decimal with two digit only',
-      numerical: 'Merchant ID with numerical value only'
+      numerical: 'Merchant ID with numerical value only',
+      overhundred: 'The input value cannot be more than 100'
     },
     refund: {
       title: 'The Management Of Merged Refund White List',

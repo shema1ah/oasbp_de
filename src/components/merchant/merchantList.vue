@@ -39,38 +39,52 @@
       </div>
     </el-form>
 
-    <el-table :data="merchents" stripe v-loading="isLoading" class="table-hover" @current-change="selectCurrentRowHandler">
+    <el-table :data="merchents" stripe v-loading="isLoading" class="table-hover" @cell-click="selectCurrentRowHandler">
       <el-table-column prop="userid" :label="$t('merchant.table.mchtid')" min-width="120"></el-table-column>
       <el-table-column prop="shopname" :label="$t('merchant.table.mchtname')" min-width="100"></el-table-column>
       <el-table-column prop="mcc_str" :label="$t('merchant.table.industry')" min-width="140"></el-table-column>
-      <el-table-column prop="telephone" :label="$t('merchant.table.mobile')" min-width="110"></el-table-column>
       <el-table-column prop="source" :label="$t('merchant.table.source')" min-width="100"></el-table-column>
       <el-table-column prop="qd_name" :label="$t('merchant.table.agent1')" min-width="100"></el-table-column>
       <el-table-column prop="username" :label="$t('merchant.table.account')" min-width="100"></el-table-column>
+      <el-table-column prop="user_type" :label="$t('audit.table.cate')" min-width="100">
+      <template slot-scope="scope">
+          {{ merchantTypeList[scope.row.user_type] }}
+        </template>
+      </el-table-column>
       <el-table-column :label="$t('merchant.table.type')" min-width="130">
         <template slot-scope="scope">
           {{ cate[scope.row.cate] }}
         </template>
       </el-table-column>
-      <el-table-column :label="$t('merchant.table.store')" min-width="80">
-        <template slot-scope="scope">
-          <el-button type="text" @click.stop="shopList(scope.row.userid)">{{ $t('common.look') }}</el-button>
-        </template>
-      </el-table-column>
 
-      <el-table-column :label="$t('merchant.table.detail')" min-width="80">
+      <el-table-column prop="detail" :label="$t('merchant.table.detail')" min-width="80">
         <template slot-scope="scope">
           <el-button type="text">{{ $t('common.look') }}</el-button>
         </template>
       </el-table-column>
 
-       <el-table-column :label="$t('merchant.table.merstatus')" min-width="100">
+       <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
         <template slot-scope="scope">
           {{ isSigned[scope.row.status] }}
         </template>
       </el-table-column>
 
     </el-table>
+
+<el-dialog
+  :title="$t('merchant.table.merstatus')"
+  :visible.sync="statusDialogVisible"
+  width="30%"
+  center>
+  <div>
+    <ul class="merchant-status">
+      <li :class="{'el-icon-caret-bottom' : n , 'complete-status' : n < 5}" v-for="(i,n) in merStatusList" :key="n">{{i}}</li>
+    </ul>
+  </div>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="statusDialogVisible = false">{{ $t('common.close') }}</el-button>
+  </span>
+</el-dialog>
 
     <el-pagination
       v-show="merchents.length > 0"
@@ -91,6 +105,7 @@
     data() {
       return {
         isLoading: false,
+        statusDialogVisible: false,
         formData: {
           shopname: '',
           userid: '',
@@ -106,9 +121,6 @@
         statusList: [
           {name: this.$t('common.enable'), val: 3},
           {name: this.$t('common.disable'), val: 4},
-          {name: this.$t('common.refuse'), val: 0},
-          {name: this.$t('common.audit'), val: -1},
-          {name: this.$t('common.toSubmit'), val: 5},
         ],
         isSigned: {
           "3": this.$t('common.enable'),
@@ -122,6 +134,18 @@
           "bigmerchant": this.$t('merchant.detail.cate.big'),
           "submerchant": this.$t('merchant.detail.cate.sub')
         },
+        merchantTypeList: {
+          2: this.$t('merchant.newMerchant.form.personal'),
+          3: this.$t('merchant.newMerchant.form.enterprise')
+        },
+        merStatusList:[
+        this.$t('merchant.table.bank'),
+        this.$t('merchant.table.reg_success'),
+        this.$t('merchant.table.under_review'),
+        'Alipay_Global',
+        this.$t('merchant.table.reg_success'),
+        this.$t('merchant.table.under_review'),
+        this.$t('merchant.table.review_pass')],
         total: 0,
         pageSize: 10,
         currentPage: 0,
@@ -238,11 +262,18 @@
       },
 
       // 选择列表项，进入详情页
-      selectCurrentRowHandler(currentRow) {
-        this.$router.push({
+      selectCurrentRowHandler(row, column) {
+        if(column.property === "detail") {
+          this.$router.push({
           name: 'mchntDetail',
-          query: {userid: currentRow.userid, from: 'old'}
+          query: {userid: row.userid, from: 'old'}
         })
+        }
+        // else if(column.property === "status"){
+        //  if(row.status === -1 ){
+        // this.statusDialogVisible = true
+        //  } 
+        // }
       },
 
       handleSizeChange(size = 10) {
@@ -267,4 +298,41 @@
       cursor: pointer;
     }
   }
+  .merchant-status {
+    // width: 300px;
+    margin: 0 auto;
+    padding: 0;
+    li {
+    list-style: none;
+    text-align: center;
+    display: block;
+    position: relative;
+    margin: 40px auto;
+    font-size: 18px;
+    color: $submenu-font-color;
+    }
+    .el-icon-caret-bottom{
+    &::before {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    margin-left: -8px;
+    }
+    &::after {
+    content: '';
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    height: 20px;
+    border: 1px dashed;
+    }
+    }
+    .complete-status{
+    color: $baseColor;
+     &::after {
+    border: 1px solid;
+    }
+    }
+  }
+
 </style>

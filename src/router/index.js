@@ -1,43 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from 'components/login/login'
-import main from 'components/main/main'
-import home from 'components/home/home'
-import agencyList from 'components/agency/list'
-import agencyDetail from 'components/agency/detail'
-import agencyModify from 'components/agency/modify'
-import tradeList from 'components/trade/list'
-import tradeTotal from 'components/trade/total'
-import refundManage from 'components/trade/refund'
-import refundCheck from 'components/trade/check'
-import roleList from 'components/authority/roleList'
-import roleModify from 'components/authority/modify'
-import userList from 'components/authority/userList'
-import forgetPassword from 'components/forgetPassword'
-import bussinessList from 'components/merchant/bussinessList'
-import merchantList from 'components/merchant/merchantList'
-import batchImport from 'components/merchant/batchImport'
-import shopBatchImport from 'components/merchant/shopBatchImport'
-import auditList from 'components/merchant/auditList'
-import mchntDetail from 'components/merchant/detail'
-import auditDetail from 'components/merchant/auditDetail'
-import createMerchant from 'components/merchant/createMerchant'
-import createStore from 'components/merchant/createStore'
-import apiList from 'components/merchant/apiList'
-import settleDetail from 'components/settlement/settleDetail'
-import settleMode from 'components/settlement/settleMode'
-import settleTotal from 'components/settlement/settleTotal'
-import settleSet from 'components/settlement/settleSet'
-import modCreate from 'components/settlement/modCreate'
-import modDetail from 'components/settlement/modDetail'
-import shopDetail from 'components/merchant/bussDetail'
-import salesList from 'components/salesman/salesList'
-import createSalesman from 'components/salesman/createSalesman'
-import salesDetail from 'components/salesman/salesDetail'
-import logList from 'components/system/logList'
-import tradeLimit from 'components/system/tradeLimit'
-import whiteList from 'components/system/whiteList'
-import text from 'components/text/text'
 
 Vue.use(Router)
 
@@ -45,210 +7,210 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: login
-    },
+      redirect: '/login',
+  },
     {
       path: '/login',
-      component: login
+      component: () => import('components/login/login'),
     },
     {
       path: '/forgetPassword',
       name: 'forgetPassword',
-        component: forgetPassword
+      component: () => import('components/forgetPassword'),
     },
     {
       path: '/main',
-      component: main,
+      component: () => import('components/main/main'),
       redirect: '/main/home',
       children: [
         {
           path: 'home',
           name: 'home',
-          component: home
+          component: () => import('components/home/home'),
         },
         {
           path: 'shop_manage_list',
           name: 'shop_manage_list',
-          component: bussinessList
+          component: () => import('components/merchant/bussinessList'),
         },
         {
           path: 'shop_manage_list/shop_detail',
           name: 'shopDetail',
-          component: shopDetail
+          component: () => import('components/merchant/bussDetail'),
         },
         {
           path: 'shop_manage_list/shop_create',
           name: 'createStore',
-          component: createStore
+          component: () => import('components/merchant/createStore'),
         },
         {
           path: 'mchnt_manage_list',
           name: 'mchnt_manage_list',
-          component: merchantList
+          component: () => import('components/merchant/merchantList'),
         },
         {
           path: 'mchnt_manage_list/mchnt_create',
           name: 'mchntCreate',
-          component: createMerchant
+          component: () => import('components/merchant/createMerchant'),
         },
         {
           path: 'mchnt_manage_list/batch_import',
           name: 'batchImport',
-          component: batchImport
+          component: () => import('components/merchant/batchImport'),
         },
         {
           path: 'shop_manage_list/shop_batch_import',
           name: 'shopBatchImport',
-          component: shopBatchImport
+          component: () => import('components/merchant/shopBatchImport'),
         },
         {
           path: 'mchnt_manage_list/mchnt_detail',
           name: 'mchntDetail',
-          component: mchntDetail
+          component: () => import('components/merchant/detail'),
         },
         {
           path: 'mchnt_audit_list',
           name: 'mchnt_audit_list',
-          component: auditList
+          component: () => import('components/merchant/auditList'),
         },
         {
           path: 'mchnt_audit_list/audit_detail',
           name: 'auditDetail',
-          component: auditDetail
+          component: () => import('components/merchant/auditDetail'),
         },
         {
           path: 'api_manage_list',
           name: 'apiList',
-          component: apiList
+          component: () => import('components/merchant/apiList'),
         },
 
         {
           path: 'agent_manage_list',
           name: 'agencyList',
-          component: agencyList
+          component: () => import('components/agency/list'),
         },
         {
           path: 'agent_manage_list/agent_detail/:id',
           name: 'agencyDetail',
-          component: agencyDetail
+          component: () => import('components/agency/detail'),
         },
         {
           path: 'agent_manage_list/agent_create',
           name: 'agencyCreate',
-          component: agencyModify
+          component: () => import('components/agency/modify'),
         },
         {
           path: 'agent_manage_list/agent_edit/:id',
           name: 'agencyEdit',
-          component: agencyModify
+          component: () => import('components/agency/modify'),
         },
         {
           path: 'trade_detail_list',
           name: 'tradeList',
-          component: tradeList
+          component: () => import('components/trade/list'),
         },
         {
           path: 'trade_summary_list',
           name: 'tradeTotal',
-          component: tradeTotal
+          component: () => import('components/trade/total'),
         },
 
         {
           path: 'refund_list',
           name: 'refundManage',
-          component: refundManage
+          component: () => import('components/trade/refund'),
         },
         {
           path: 'refund_audit_list',
           name: 'refundCheck',
-          component: refundCheck
+          component: () => import('components/trade/check'),
         },
 
         {
           path: 'perm_role_list',
           name: 'roleList',
-          component: roleList
+          component: () => import('components/authority/roleList'),
         },
         {
           path: 'perm_role_list/perm_role_create',
           name: 'roleCreate',
-          component: roleModify
+          component: () => import('components/authority/modify'),
         },
         {
           path: 'perm_role_list/perm_role_edit/:code',
           name: 'roleEdit',
-          component: roleModify
+          component: () => import('components/authority/modify'),
         },
         {
           path: 'perm_user_list',
           name: 'userList',
-          component: userList
+          component: () => import('components/authority/userList'),
         },
         {
           path: 'clearing_detail_list',
           name: 'settleDetail',
-          component: settleDetail
+          component: () => import('components/settlement/settleDetail'),
         },
         {
           path: 'clearing_template_list',
           name: 'settleMode',
-          component: settleMode
+          component: () => import('components/settlement/settleMode'),
         },
         {
           path: 'clearing_template_list/modCreate',
           name: 'modCreate',
-          component: modCreate
+          component: () => import('components/settlement/modCreate'),
         },
         {
           path: 'clearing_template_list/modDetail',
           name: 'modDetail',
-          component: modDetail
+          component: () => import('components/settlement/modDetail'),
         },
         {
           path: 'clearing_template_list/settleSet',
           name: 'settleSet',
-          component: settleSet
+          component: () => import('components/settlement/settleSet'),
         },
         {
           path: 'clearing_summary_list',
           name: 'settleTotal',
-          component: settleTotal
+          component: () => import('components/settlement/settleTotal'),
         },
         {
           path: 'salesman_manage_list',
           name: 'salesList',
-          component: salesList
+          component: () => import('components/salesman/salesList'),
         },
         {
           path: 'salesman_manage_list/sales_create',
           name: 'salesCreate',
-          component: createSalesman
+          component: () => import('components/salesman/createSalesman'),
         },
         {
           path: 'salesman_manage_list/sales_detail',
           name: 'salesDetail',
-          component: salesDetail
+          component: () => import('components/salesman/salesDetail'),
         },
         {
           path: 'operation_logs_list',
           name: 'logList',
-          component: logList
+          component: () => import('components/system/logList'),
         },
         {
           path: 'transaction_limit_list',
           name: 'tradeLimit',
-          component: tradeLimit
+          component: () => import('components/system/tradeLimit'),
         },
 
         {
           path: 'refund_white_list',
           name: 'whiteList',
-          component: whiteList
+          component: () => import('components/system/whiteList'),
         },
         {
           path: 'text',
           name: 'text',
-          component: text
+          component: () => import('components/text/text'),
         }
       ]
     }

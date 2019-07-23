@@ -90,9 +90,8 @@
       </el-form-item>
 
       <el-form-item prop="store_country" :label="$t('merchant.newMerchant.form.country')">
-        <el-select v-model="storeModel.store_country">
-          <el-option :label="$t('merchant.newMerchant.form.personal')" value="2"></el-option>
-          <el-option :label="$t('merchant.newMerchant.form.enterprise')" value="3"></el-option>
+        <el-select v-model="storeModel.store_country" disabled>
+          <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
         </el-select>
       </el-form-item>
 
@@ -166,7 +165,7 @@
           address: '', // 门店地址
           store_post: '',  //门店邮编
           store_city: '',   //门店城市
-          store_country: '', //门店国家
+          store_country: 'DE', //门店国家
           iban: '', // 银行账号
           bic: '', // SWIFT码
           store_telephone: '', // SWIFT码
@@ -187,15 +186,40 @@
           ],
 
           'expect_amt': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')}
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')},
+            {validator: (rule, val, cb) => {
+                if (!/^[0-9]*$/.test(val) && val != '') {
+                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
+                } else {
+                  cb();
+                }
+              }
+            }
           ],
 
           'expect_count': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule50')}
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule50')},
+            {validator: (rule, val, cb) => {
+                if (!/^[0-9]*$/.test(val) && val != '') {
+                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
+                } else {
+                  cb();
+                }
+              }
+            }
           ],
 
            'store_post': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule40')},
+            {
+              validator: (rule, val, cb) => {
+                if (!/^[0-9]*$/.test(val) && val != '') {
+                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
+                } else {
+                  cb();
+                }
+              }
+            }
           ],
             
           'store_city': [
@@ -211,7 +235,7 @@
             {
               validator: (rule, val, cb) => {
                 if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule1')));
+                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
                 } else {
                   cb();
                 }
@@ -254,7 +278,7 @@
       getStoreInfo() {
         axios.get(`${config.host}/org/mchnt/sub/info`, {
           params: {
-            userid: this.$route.query.userid || getParams('userid'),
+            big_uid: this.$route.query.big_uid || getParams('big_uid'),
             type: 'submerchant',
             format: 'cors'
           }})

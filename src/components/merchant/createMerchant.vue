@@ -235,7 +235,7 @@
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.vofing'" :label="$t('merchant.newMerchant.form.vofing_share')" :rules="listRules.vofing_share">
-        <el-input v-model.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
+        <el-input v-model.number.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.email'" :label="$t('merchant.newMerchant.form.postT')" :rules="listRules.contact_email">
@@ -588,12 +588,6 @@
         },
         isShowIndustyTree: false,
         baseRules: {
-         'primary_uid': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule32')}
-          ],
-          'secondary_uid': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule33')}
-          ],
           'sls_uid': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule1')}
           ],
@@ -687,7 +681,7 @@
 
           'expected_volume': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')},
-            {  validator: (rule, val, cb) => {
+            {validator: (rule, val, cb) => {
                 if (!/^[0-9]*$/.test(val) && val != '') {
                   cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
                 } else {
@@ -835,7 +829,9 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule47')},
             {   
               validator : (rule, val, cb) => {
-            if (!/^\d+([.]\d{1,2})?$/.test(val)) {
+             if(val > 100){
+              cb(this.$t('system.tradeLimit.overhundred'))
+             } else if (!/^\d+([.]\d{1,2})?$/.test(val)) {
              cb(this.$t('system.tradeLimit.decimal'))
            } else {
              cb()
@@ -882,6 +878,13 @@
       }
     },
 
+computed: {
+    isVofingAllow: function () {
+     let vofingSum = 0;
+     this.formData.beneficial_owners.forEach(i => vofingSum += i.vofing)
+     return vofingSum > 100 ? false : true;
+    }
+  },
     created() {
       if (this.$route.query) {
         this.isUpdate = this.$route.query.command === 'edit' || getParams('command') === 'edit'
@@ -1218,23 +1221,36 @@
         });
       },
 
-      next() {
-          if(this.list_Select.length === 0) {
-            this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
-          }else {
-            this.$refs['baseinfo'].validate((valid,object) => {
-              if (valid) {
-            this.isLoading = true
-            if (this.isUpdate) {
-                this.confirm()
-              } else {
-                // localStorage.setItem('new_baseinfo', JSON.stringify(this.form))     
-                this.create()
-              }
-              }
-            })
-          }
-      },
+      // next() {
+      //     if(this.list_Select.length === 0) {
+      //       this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
+      //     }else {
+      //       if(!this.isVofingAllow) {
+      //       this.$message.error(this.$t('merchant.newMerchant.rule44'))
+      //       }else {
+      //       this.$refs['baseinfo'].validate((valid,object) => {
+      //         if (valid) {
+      //       this.isLoading = true
+      //       if (this.isUpdate) {
+      //           this.confirm()
+      //         } else {
+      //           // localStorage.setItem('new_baseinfo', JSON.stringify(this.form))     
+      //           this.create()
+      //         }
+      //         }
+      //       })
+      //       }
+      //     }
+      // },
+
+next() {   
+  if(this.isVofingAllow){
+   this.create()
+  }
+  else{
+       this.$message.error(this.$t('merchant.newMerchant.rule44'))
+  }
+},
 
       cancelHandler() {
         this.$router.push({name: 'mchnt_manage_list'})
@@ -1289,7 +1305,7 @@
       changeShow(event) {  
         if(event.currentTarget.attributes.tag){
           if(this.formData.beneficial_owners.length<4){
-            let a =      {
+            let a = {
           first_name: '',
           last_name: '',
           birthday: '',
@@ -1316,7 +1332,7 @@
       changeShow2(event) {
         if(event.currentTarget.attributes.tag){
         if(this.formData.legal_representatives.length<4){
-        let a =  {
+        let a = {
           first_name: '',
           last_name: '',
           birthday: '',

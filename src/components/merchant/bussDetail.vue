@@ -50,11 +50,11 @@
       </el-row>
       <el-row>
         <el-col :span="10">
-          <span class="basic-label">{{$t('shop.detail.basic.la6')}}</span>
+         <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
           <span class="basic-content">{{form.base.address}}</span>
         </el-col>
         <el-col :span="14">
-          <span class="basic-label">{{$t('shop.detail.basic.la7')}}</span>
+          <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
           <span class="basic-content">{{form.ext.post}}</span>
         </el-col>
       </el-row>
@@ -244,6 +244,7 @@ export default {
 .shop-detail {
   background-color: #fff;
   padding: 0 $baseGap $baseGap $baseGap;
+  min-height: 600px;
   .noborder {
     border: none !important;
   }
