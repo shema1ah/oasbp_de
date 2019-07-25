@@ -57,6 +57,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column :label="$t('merchant.table.store')" min-width="80">
+        <template slot-scope="scope">
+          <el-button type="text" @click.stop="shopList(scope.row.userid)">{{ $t('common.look') }}</el-button>
+        </template>
+      </el-table-column>
+
       <el-table-column prop="detail" :label="$t('merchant.table.detail')" min-width="80">
         <template slot-scope="scope">
           <el-button type="text">{{ $t('common.look') }}</el-button>

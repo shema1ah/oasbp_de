@@ -41,8 +41,7 @@
       <el-table-column prop="mchnt_name"  :label="$t('shop.table.mchntname')" min-width="100"></el-table-column>
       <el-table-column width="170" prop="submchnt_name" :label="$t('shop.table.sunmchntname')" min-width="100"></el-table-column>
       <el-table-column prop="address" :label="$t('shop.table.address')" min-width="100"></el-table-column>
-      <el-table-column prop="telephone" :label="$t('shop.table.telephone')" min-width="100"></el-table-column>
-      <el-table-column prop="operating" :label="$t('shop.table.operating')" min-width="80"></el-table-column>
+      <!-- <el-table-column prop="operating" :label="$t('shop.table.operating')" min-width="80"></el-table-column> -->
       <el-table-column prop="username" :label="$t('shop.table.account')" min-width="100"></el-table-column>
 
       <el-table-column :label="$t('merchant.table.payment')" min-width="100">
@@ -110,7 +109,7 @@
 
       <div class="divider"></div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="text" @click="showConfirm = false">{{ $t('common.CLOSE') }}</el-button>
+        <el-button type="primary" @click="showConfirm = false">{{ $t('common.CLOSE') }}</el-button>
       </div>
 
     </el-dialog>

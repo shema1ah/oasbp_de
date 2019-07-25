@@ -15,7 +15,7 @@
 
       <el-row>
         <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.api.userId')+':'}}</span>
+          <span class="basic-label">{{$t('shop.table.submchntid')+':'}}</span>
           <span class="basic-content">{{form.base.userid}}</span>
         </el-col>
         <el-col :span="14">

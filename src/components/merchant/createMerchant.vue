@@ -71,26 +71,27 @@
 
        <el-form-item prop="first_name" :label="$t('merchant.newMerchant.form.first_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.first_name"></el-input>
+          v-model.trim="formData.first_name" @blur="checkPeople(formData,0,1)"></el-input>
       </el-form-item>
 
        <el-form-item prop="last_name" :label="$t('merchant.newMerchant.form.last_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.last_name"></el-input>
+          v-model.trim="formData.last_name" @blur="checkPeople(formData,0,1)"></el-input>
       </el-form-item>
 
-      <el-form-item prop="date_of_birth" :label="$t('merchant.newMerchant.form.date_of_birth')" v-if="!isBusiness">
+      <el-form-item prop="birthday" :label="$t('merchant.newMerchant.form.date_of_birth')" v-if="!isBusiness">
         <el-date-picker
-          v-model.trim="formData.date_of_birth"
+          v-model.trim="formData.birthday"
           type="date"
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
-          :placeholder="$t('common.chooseDate')">
+          :placeholder="$t('common.chooseDate')"
+          @blur="checkPeople(formData,0,1)">
         </el-date-picker>
       </el-form-item>
 
         <el-form-item prop="nationality" :label="$t('merchant.newMerchant.form.nationality')" v-if="!isBusiness">
-        <el-select v-model="formData.nationality">
+        <el-select v-model="formData.nationality" :disabled="peopleExist1">
         <el-option :label="value" :value="key" v-for="(value, key)  in selectList.country" :key="key"></el-option>
         </el-select>
       </el-form-item>
@@ -111,15 +112,15 @@
       </el-form-item>
 
       <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
-        <el-input v-model.trim="formData.address"></el-input>
+        <el-input v-model.trim="formData.address" :disabled="peopleExist1"></el-input>
       </el-form-item>
 
       <el-form-item prop="postal_code" :label="$t('merchant.newMerchant.form.postal_code')">
-        <el-input v-model.trim="formData.postal_code"></el-input>
+        <el-input v-model.trim="formData.postal_code" :disabled="peopleExist1"></el-input>
       </el-form-item>
 
      <el-form-item prop="city" :label="$t('merchant.newMerchant.form.city')">
-        <el-input v-model.trim="formData.city"></el-input>
+        <el-input v-model.trim="formData.city" :disabled="peopleExist1"></el-input>
       </el-form-item>
 
         <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
@@ -130,7 +131,7 @@
 
         <el-form-item prop="empeoy_status" :label="$t('merchant.newMerchant.form.empeoyment_sataus')" v-if="!isBusiness">
 
-        <el-select v-model="formData.empeoy_status">
+        <el-select v-model="formData.empeoy_status" :disabled="peopleExist1">
          <el-option :label="item" :value="item" v-for="item in selectList.people_empeoy_status" :key="item"></el-option>
         </el-select>
 
@@ -139,14 +140,14 @@
       <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
         <el-input
           v-model.trim="formData.contact_email"
-          :disabled="isUpdate"></el-input>
+          :disabled="peopleExist1"></el-input>
       </el-form-item>
 
        <el-form-item prop="telephone" :label="$t('merchant.newMerchant.form.concatNumber')" v-if="!isBusiness">
         <el-input
           v-model.trim="formData.telephone"
-          :disabled="isUpdate"
-          maxlength='11'></el-input>
+          :disabled="peopleExist1"
+        ></el-input>
       </el-form-item>
 
        <el-form-item prop="sector" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
@@ -186,12 +187,12 @@
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.first_name'" :label="$t('merchant.newMerchant.form.first_name')" :rules="listRules.first_name">
         <el-input
-          v-model.trim="n.first_name"></el-input>
+          v-model.trim="n.first_name" @blur="checkPeople(n,i,2)"></el-input>
       </el-form-item>
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.last_name'" :label="$t('merchant.newMerchant.form.last_name')" :rules="listRules.last_name">
         <el-input
-          v-model.trim="n.last_name"></el-input>
+          v-model.trim="n.last_name" @blur="checkPeople(n,i,2)"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.birthday'" :label="$t('merchant.newMerchant.form.date_of_birth')" :rules="listRules.date_of_birth">
@@ -200,26 +201,27 @@
           type="date"
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
-          :placeholder="$t('common.chooseDate')">
+          :placeholder="$t('common.chooseDate')"
+          @blur="checkPeople(n,i,2)">
         </el-date-picker>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.nation'" :label="$t('merchant.newMerchant.form.nationality')" :rules="listRules.nationality">
-        <el-select v-model="n.nation">
+        <el-select v-model="n.nation" :disabled="peopleExist2[i]">
  <el-option :label="value" :value="key" v-for="(value, key)  in selectList.country" :key="key"></el-option>
         </el-select>
       </el-form-item>
   
       <el-form-item :prop="'beneficial_owners.'+ i + '.address'" :label="$t('merchant.newMerchant.form.addressT')" :rules="listRules.address">
-        <el-input v-model.trim="n.address"></el-input>
+        <el-input v-model.trim="n.address" :disabled="peopleExist2[i]"></el-input>
       </el-form-item>
  
       <el-form-item :prop="'beneficial_owners.'+ i + '.post'" :label="$t('merchant.newMerchant.form.postal_code')" :rules="listRules.postal_code">
-        <el-input v-model.trim="n.post"></el-input>
+        <el-input v-model.trim="n.post" :disabled="peopleExist2[i]"></el-input>
       </el-form-item>
       
       <el-form-item :prop="'beneficial_owners.'+ i + '.city'" :label="$t('merchant.newMerchant.form.city')" :rules="listRules.city">
-        <el-input v-model.trim="n.city"></el-input>
+        <el-input v-model.trim="n.city" :disabled="peopleExist2[i]"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.country'" :label="$t('merchant.newMerchant.form.country')" :rules="listRules.country">
@@ -229,37 +231,37 @@
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.empeoy_status'" :label="$t('merchant.newMerchant.form.empeoyment_sataus')" :rules="listRules.empeoyment_sataus">
-        <el-select v-model="n.empeoy_status">
+        <el-select v-model="n.empeoy_status" :disabled="peopleExist2[i]">
          <el-option :label="item" :value="item" v-for="item in selectList.people_empeoy_status" :key="item"></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.vofing'" :label="$t('merchant.newMerchant.form.vofing_share')" :rules="listRules.vofing_share">
-        <el-input v-model.number.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
+        <el-input v-model.number.trim="n.vofing" :disabled="peopleExist2[i]" :placeholder="$t('settleMent.msg.t5')"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.email'" :label="$t('merchant.newMerchant.form.postT')" :rules="listRules.contact_email">
         <el-input
           v-model.trim="n.email"
-          :disabled="isUpdate"></el-input>
+          :disabled="peopleExist2[i]"></el-input>
       </el-form-item>
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')" :rules="listRules.telephone">
         <el-input
           v-model.trim="n.mobile"
-          :disabled="isUpdate"
-          maxlength='11'></el-input>
+          :disabled="peopleExist2[i]"
+        ></el-input>
       </el-form-item>
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.is_legal'" :label="$t('merchant.newMerchant.form.legal_rep')" :rules="listRules.legal_rep">
-        <el-select v-model="n.is_legal">
+        <el-select v-model="n.is_legal" :disabled="peopleExist2[i]">
           <el-option :label="$t('merchant.detail.signed.no')" value=0></el-option>
           <el-option :label="$t('merchant.detail.signed.yes')" value=1></el-option>
         </el-select>
       </el-form-item>
    
        <el-form-item :prop="'beneficial_owners.'+ i + '.represe'" :label="$t('merchant.newMerchant.form.represeutation')" :rules="listRules.represeutation" v-if="n.is_legal == 1">
-        <el-select v-model="n.represe">
+        <el-select v-model="n.represe" :disabled="peopleExist2[i]">
           <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
         </el-select>
       </el-form-item>
@@ -277,12 +279,12 @@
 
     <el-form-item :prop="'legal_representatives.'+ i + '.first_name'" :label="$t('merchant.newMerchant.form.first_name')" :rules="listRules.first_name">
         <el-input
-          v-model.trim="n.first_name"></el-input>
+          v-model.trim="n.first_name" @blur="checkPeople(n,i,3)"></el-input>
       </el-form-item>
 
        <el-form-item :prop="'legal_representatives.'+ i + '.last_name'" :label="$t('merchant.newMerchant.form.last_name')" :rules="listRules.last_name">
         <el-input
-          v-model.trim="n.last_name"></el-input>
+          v-model.trim="n.last_name" @blur="checkPeople(n,i,3)"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.birthday'" :label="$t('merchant.newMerchant.form.date_of_birth')" :rules="listRules.date_of_birth"> 
@@ -291,26 +293,27 @@
           type="date"
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
-          :placeholder="$t('common.chooseDate')">
+          :placeholder="$t('common.chooseDate')"
+          @blur="checkPeople(n,i,3)">
         </el-date-picker>
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.nation'" :label="$t('merchant.newMerchant.form.nationality')" :rules="listRules.nationality">
-        <el-select v-model="n.nation">
-         <el-option :label="value" :value="key" v-for="(value, key)  in selectList.country" :key="key"></el-option>
+        <el-select v-model="n.nation" :disabled="peopleExist3[i]">
+         <el-option :label="value" :value="key" v-for="(value, key) in selectList.country" :key="key"></el-option>
         </el-select>
       </el-form-item>
   
          <el-form-item :prop="'legal_representatives.'+ i + '.address'" :label="$t('merchant.newMerchant.form.addressT')" :rules="listRules.address">
-        <el-input v-model.trim="n.address"></el-input>
+        <el-input v-model.trim="n.address" :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
  
       <el-form-item :prop="'legal_representatives.'+ i + '.post'" :label="$t('merchant.newMerchant.form.postal_code')" :rules="listRules.postal_code">
-        <el-input v-model.trim="n.post"></el-input>
+        <el-input v-model.trim="n.post" :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
       
       <el-form-item :prop="'legal_representatives.'+ i + '.city'" :label="$t('merchant.newMerchant.form.city')" :rules="listRules.city">
-        <el-input v-model.trim="n.city"></el-input>
+        <el-input v-model.trim="n.city" :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.country'" :label="$t('merchant.newMerchant.form.country')" :rules="listRules.country">
@@ -320,13 +323,13 @@
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.empeoy_status'" :label="$t('merchant.newMerchant.form.empeoyment_sataus')" :rules="listRules.empeoyment_sataus">
-        <el-select v-model="n.empeoy_status">
+        <el-select v-model="n.empeoy_status" :disabled="peopleExist3[i]">
          <el-option :label="item" :value="item" v-for="item in selectList.people_empeoy_status" :key="item"></el-option>
         </el-select>
       </el-form-item>
 
        <el-form-item :prop="'legal_representatives.'+ i + '.represe'" :label="$t('merchant.newMerchant.form.represeutation')" :rules="listRules.represeutation">
-        <el-select v-model="n.represe">
+        <el-select v-model="n.represe" :disabled="peopleExist3[i]">
   <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
         </el-select>
       </el-form-item>
@@ -334,14 +337,14 @@
       <el-form-item :prop="'legal_representatives.'+ i + '.email'" :label="$t('merchant.newMerchant.form.postT')" :rules="listRules.contact_email">
         <el-input
           v-model.trim="n.email"
-          :disabled="isUpdate"></el-input>
+          :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')" :rules="listRules.telephone">
         <el-input
           v-model.trim="n.mobile"
-          :disabled="isUpdate"
-          maxlength='8'></el-input>
+          :disabled="peopleExist3[i]"
+        ></el-input>
       </el-form-item>
 
         </div>
@@ -485,6 +488,9 @@
         isShowTree: false,
         forFlag: false,
         isBusiness: true,
+        peopleExist1: false,
+        peopleExist2: [],
+        peopleExist3: [],
         formData: {
           user_type: 3,
           slsm_name: '', // 业务员姓名
@@ -497,7 +503,7 @@
           mchnt_type: '', // 商户类型 1:微小 2：个体商户 3:企业
           first_name: '',  //名
           last_name: '',   //姓
-          date_of_birth: '',  //出生日期
+          birthday: '',  //出生日期
           nationality: '',   //国籍
           foundation_date: '',  //成立日期
           business_purpose: '', //商业目的
@@ -596,18 +602,15 @@
           ],
           'businessName': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule3')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
           'first_name': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule34')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
           'last_name': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule35')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
-         'date_of_birth': [
+         'birthday': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule36')}
           ],
           'nationality': [
@@ -620,7 +623,6 @@
 
           'business_purpose': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule39')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
           'postal_code': [
@@ -718,8 +720,6 @@
           ],
           'store_name': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
-
           ],
           'store_address': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule21')},
@@ -735,7 +735,6 @@
                 }
               }
             },
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
           'mchnt_type': [
@@ -743,15 +742,6 @@
           ],
           'telephone': [
             {required: true, message: this.$t('salesman.newsale.rule8')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('salesman.newsale.rule10')));
-                } else {
-                  cb();
-                }
-              }
-            }
           ],
           'mcc': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
@@ -770,7 +760,6 @@
                 }
               }
             },
-            {max: 15, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule6'), trigger: 'blur'}
           ],
           'bankcode': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule24')}
@@ -780,12 +769,10 @@
       listRules: {
           'first_name': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule34')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
         'last_name': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule35')},
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
          'date_of_birth': [
@@ -859,20 +846,10 @@
                 }
               }
             },
-            {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
 
           'telephone': [
             {required: true, message: this.$t('salesman.newsale.rule8')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('salesman.newsale.rule10')));
-                } else {
-                  cb();
-                }
-              }
-            }
           ],
       }
       }
@@ -882,7 +859,7 @@ computed: {
     isVofingAllow: function () {
      let vofingSum = 0;
      this.formData.beneficial_owners.forEach(i => vofingSum += i.vofing)
-     return vofingSum > 100 ? false : true;
+     return vofingSum === 100 ? false : true;
     }
   },
     created() {
@@ -1126,6 +1103,55 @@ computed: {
       //     }
       //   }
       // },
+
+     checkPeople(n,i,role) {
+     if (n.first_name && n.last_name && n.birthday){
+      axios.get(`${config.host}/org/v1/mchnt/people`, {
+          params: {
+            first_name: n.first_name,
+            last_name: n.last_name,
+            birthday: n.birthday,
+            format: 'cors'
+          }
+        }).then((res) => {
+          let data = res.data;
+          switch (role) {
+          case 1:
+          if (JSON.stringify(data.data) === "{}") {
+            this.peopleExist1 = false
+            }else {                
+            ({ city: n.city,
+            mobile: n.telephone,
+            email: n.contact_email,
+            empeoy_status: n.empeoy_status,
+            nation: n.nationality,
+            address: n.address,
+            post: n.postal_code} = data.data);
+            this.$forceUpdate();
+            this.peopleExist1 = true
+            }
+            case 2:
+           if (JSON.stringify(data.data) === "{}") {
+            this.peopleExist2[i] = false
+            }else {                
+            this.formData.beneficial_owners[i] = data.data
+            this.$forceUpdate();
+            this.peopleExist2[i] = true
+            }
+            default:
+           if (JSON.stringify(data.data) === "{}") {
+            this.peopleExist3[i] = false
+            }else {                
+            this.formData.legal_representatives[i] = data.data
+            this.$forceUpdate();
+            this.peopleExist3[i] = true
+            }
+           }
+          }).catch(() => {
+          this.$message.error(this.$t('common.netError'));
+        });
+     }
+     },
       confirm() {
         this.$confirm(this.$t('common.sure'), this.$t('common.tip'), {
           confirmButtonText: this.$t('common.confirm'),
@@ -1156,7 +1182,7 @@ computed: {
             address: this.formData.address, // 公司地址
             iban: this.formData.bankaccount,
             bic: this.formData.bankcode,
-            birthday: this.formData.date_of_birth,
+            birthday: this.formData.birthday,
             unify_mcc: this.formData.unify_mcc,
             mchnt_ratios: this.list_Select,
             format: 'cors'
@@ -1174,7 +1200,7 @@ computed: {
           params.owners = this.formData.beneficial_owners
           params.legals = this.formData.legal_representatives
         } else {
-          params.birthday = this.formData.date_of_birth
+          params.birthday = this.formData.birthday
           params.email = this.formData.contact_email
           params.empeoy_status = this.formData.empeoy_status
           params.first_name = this.formData.first_name
@@ -1221,36 +1247,36 @@ computed: {
         });
       },
 
-      // next() {
-      //     if(this.list_Select.length === 0) {
-      //       this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
-      //     }else {
-      //       if(!this.isVofingAllow) {
-      //       this.$message.error(this.$t('merchant.newMerchant.rule44'))
-      //       }else {
-      //       this.$refs['baseinfo'].validate((valid,object) => {
-      //         if (valid) {
-      //       this.isLoading = true
-      //       if (this.isUpdate) {
-      //           this.confirm()
-      //         } else {
-      //           // localStorage.setItem('new_baseinfo', JSON.stringify(this.form))     
-      //           this.create()
-      //         }
-      //         }
-      //       })
-      //       }
-      //     }
-      // },
+      next() {
+          if(this.list_Select.length === 0) {
+            this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
+          }else {
+            if(!this.isVofingAllow) {
+            this.$message.error(this.$t('merchant.newMerchant.rule44'))
+            }else {
+            this.$refs['baseinfo'].validate((valid,object) => {
+              if (valid) {
+            this.isLoading = true
+            if (this.isUpdate) {
+                this.confirm()
+              } else {
+                // localStorage.setItem('new_baseinfo', JSON.stringify(this.form))     
+                this.create()
+              }
+              }
+            })
+            }
+          }
+      },
 
-next() {   
-  if(this.isVofingAllow){
-   this.create()
-  }
-  else{
-       this.$message.error(this.$t('merchant.newMerchant.rule44'))
-  }
-},
+// next() {   
+//   if(this.isVofingAllow){
+//    this.create()
+//   }
+//   else{
+//        this.$message.error(this.$t('merchant.newMerchant.rule44'))
+//   }
+// },
 
       cancelHandler() {
         this.$router.push({name: 'mchnt_manage_list'})

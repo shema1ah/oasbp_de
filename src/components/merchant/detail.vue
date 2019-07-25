@@ -9,7 +9,7 @@
     </header>
     <section class="basic">
       <div class="banner">
-        <div class="title">{{$t('merchant.newMerchant.basic.cap1')}}</div>
+        <div class="title">{{isBusiness ? $t('merchant.newMerchant.basic.cap1') : $t('merchant.newMerchant.basic.cap7')}}</div>
         <div class="divider"></div>
       </div>
       <el-row>
@@ -23,7 +23,7 @@
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.contact')+':'}}</span>
-          <span class="basic-content">{{form.base.sls_uid}}</span>
+          <span class="basic-content">{{form.base.sls_name}}</span>
         </el-col>
       </el-row>
 
@@ -76,15 +76,15 @@
       <el-row v-if="this.isBusiness">
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
-          <span class="basic-content">{{form.special.sector}}</span>
+          <span class="basic-content width-limit">{{form.special.sector}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry')+':'}}</span>
-          <span class="basic-content">{{form.special.industry}}</span>
+          <span class="basic-content width-limit">{{form.special.industry}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry_key')+':'}}</span>
-          <span class="basic-content">{{form.special.industry_key}}</span>
+          <span class="basic-content width-limit">{{form.special.industry_key}}</span>
         </el-col>
       </el-row>
 
@@ -150,7 +150,7 @@
         <el-row>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
-            <span class="basic-content">{{n.nation}}</span>
+            <span class="basic-content width-limit">{{n.nation}}</span>
           </el-col>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
@@ -216,7 +216,7 @@
         <el-row>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
-            <span class="basic-content">{{n.nation}}</span>
+            <span class="basic-content width-limit">{{n.nation}}</span>
           </el-col>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
@@ -311,6 +311,7 @@ export default {
           first_agent: "",
           second_agent: "",
           sls_uid: "", // 业务员id
+          sls_name: "",
           email: "",   // 邮箱
           mobile: "",  // 手机号码
           cate: ""
@@ -492,6 +493,14 @@ export default {
         font-weight: $baseW;
         color: #717283;
         line-height: $baseSize;
+      }
+      .width-limit {
+        display: inline-flex;
+        width: 70%;
+        overflow-x: scroll;
+        white-space: nowrap;
+        scrollbar-width:none;
+        &::-webkit-scrollbar { display:none }
       }
     }
   }

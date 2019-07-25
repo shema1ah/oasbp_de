@@ -651,7 +651,7 @@ const en = {
       rule41: 'Please input website',
       rule42: 'Please input a valid website',
       rule43: 'Please select salesperson',
-      rule44: 'The total number of vofing share cannot exceed 100',
+      rule44: 'The total number of vofing share must be equal to 100',
     },
     api: {
       title: 'API Management',

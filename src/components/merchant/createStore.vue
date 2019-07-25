@@ -107,7 +107,7 @@
         <el-input v-model.trim="storeModel.iban"></el-input>
       </el-form-item>
 
-      <el-form-item prop="bic" :label="$t('common.SWIFT')">
+      <el-form-item prop="bic" :label="$t('merchant.newMerchant.form.bic')">
         <el-input v-model.trim="storeModel.bic"></el-input>
       </el-form-item>
     </el-form>
@@ -174,7 +174,6 @@
         storeRules: {
           'store_shopname': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
-            {max: 60, min: 0, message: this.$t('merchant.newMerchant.rule10'), trigger: 'blur'}
           ],
 
           'address': [
@@ -241,7 +240,6 @@
                 }
               }
             },
-            {max: 15, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule6'), trigger: 'blur'}
           ],
 
           'bic': [
