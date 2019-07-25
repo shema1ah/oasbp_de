@@ -71,12 +71,12 @@
 
        <el-form-item prop="first_name" :label="$t('merchant.newMerchant.form.first_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.first_name" @blur="checkPeople(formData,0,1)"></el-input>
+          v-model.trim="formData.first_name" @blur="checkPeople(formData,1)"></el-input>
       </el-form-item>
 
        <el-form-item prop="last_name" :label="$t('merchant.newMerchant.form.last_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.last_name" @blur="checkPeople(formData,0,1)"></el-input>
+          v-model.trim="formData.last_name" @blur="checkPeople(formData,1)"></el-input>
       </el-form-item>
 
       <el-form-item prop="birthday" :label="$t('merchant.newMerchant.form.date_of_birth')" v-if="!isBusiness">
@@ -86,7 +86,7 @@
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('common.chooseDate')"
-          @blur="checkPeople(formData,0,1)">
+          @blur="checkPeople(formData,1)">
         </el-date-picker>
       </el-form-item>
 
@@ -187,12 +187,12 @@
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.first_name'" :label="$t('merchant.newMerchant.form.first_name')" :rules="listRules.first_name">
         <el-input
-          v-model.trim="n.first_name" @blur="checkPeople(n,i,2)"></el-input>
+          v-model.trim="n.first_name" @blur="checkPeople(n,2,i)"></el-input>
       </el-form-item>
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.last_name'" :label="$t('merchant.newMerchant.form.last_name')" :rules="listRules.last_name">
         <el-input
-          v-model.trim="n.last_name" @blur="checkPeople(n,i,2)"></el-input>
+          v-model.trim="n.last_name" @blur="checkPeople(n,2,i)"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.birthday'" :label="$t('merchant.newMerchant.form.date_of_birth')" :rules="listRules.date_of_birth">
@@ -202,7 +202,7 @@
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('common.chooseDate')"
-          @blur="checkPeople(n,i,2)">
+          @blur="checkPeople(n,2,i)">
         </el-date-picker>
       </el-form-item>
 
@@ -279,12 +279,12 @@
 
     <el-form-item :prop="'legal_representatives.'+ i + '.first_name'" :label="$t('merchant.newMerchant.form.first_name')" :rules="listRules.first_name">
         <el-input
-          v-model.trim="n.first_name" @blur="checkPeople(n,i,3)"></el-input>
+          v-model.trim="n.first_name" @blur="checkPeople(n,3,i)"></el-input>
       </el-form-item>
 
        <el-form-item :prop="'legal_representatives.'+ i + '.last_name'" :label="$t('merchant.newMerchant.form.last_name')" :rules="listRules.last_name">
         <el-input
-          v-model.trim="n.last_name" @blur="checkPeople(n,i,3)"></el-input>
+          v-model.trim="n.last_name" @blur="checkPeople(n,3,i)"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'legal_representatives.'+ i + '.birthday'" :label="$t('merchant.newMerchant.form.date_of_birth')" :rules="listRules.date_of_birth"> 
@@ -294,7 +294,7 @@
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('common.chooseDate')"
-          @blur="checkPeople(n,i,3)">
+          @blur="checkPeople(n,3,i)">
         </el-date-picker>
       </el-form-item>
 
@@ -859,7 +859,7 @@ computed: {
     isVofingAllow: function () {
      let vofingSum = 0;
      this.formData.beneficial_owners.forEach(i => vofingSum += i.vofing)
-     return vofingSum === 100 ? false : true;
+     return vofingSum === 100 ? true : false;
     }
   },
     created() {
@@ -1104,7 +1104,7 @@ computed: {
       //   }
       // },
 
-     checkPeople(n,i,role) {
+     checkPeople(n,role,i) {
      if (n.first_name && n.last_name && n.birthday){
       axios.get(`${config.host}/org/v1/mchnt/people`, {
           params: {
@@ -1115,9 +1115,10 @@ computed: {
           }
         }).then((res) => {
           let data = res.data;
+          let isEmpty = JSON.stringify(data.data) === "{}"
           switch (role) {
           case 1:
-          if (JSON.stringify(data.data) === "{}") {
+          if (isEmpty) {
             this.peopleExist1 = false
             }else {                
             ({ city: n.city,
@@ -1126,24 +1127,24 @@ computed: {
             empeoy_status: n.empeoy_status,
             nation: n.nationality,
             address: n.address,
-            post: n.postal_code} = data.data);
-            this.$forceUpdate();
+            post: n.postal_code} = data.data)
+            this.$forceUpdate()
             this.peopleExist1 = true
             }
             case 2:
-           if (JSON.stringify(data.data) === "{}") {
+           if (isEmpty) {
             this.peopleExist2[i] = false
             }else {                
             this.formData.beneficial_owners[i] = data.data
-            this.$forceUpdate();
+            this.$forceUpdate()
             this.peopleExist2[i] = true
             }
             default:
-           if (JSON.stringify(data.data) === "{}") {
+           if (isEmpty) {
             this.peopleExist3[i] = false
             }else {                
             this.formData.legal_representatives[i] = data.data
-            this.$forceUpdate();
+            this.$forceUpdate()
             this.peopleExist3[i] = true
             }
            }
@@ -1188,25 +1189,26 @@ computed: {
             format: 'cors'
         }
         if (this.formData.user_type === 3){
-          params.business_purpose = this.formData.business_purpose
-          params.cate = this.formData.cate
-          params.foundation_date = this.formData.foundation_date
-          params.sector = this.formData.sector
-          params.industry = this.formData.industry
-          params.industry_key = this.formData.industry_key
-          params.mchnt_shopname = this.formData.businessName
-          params.regi_number = this.formData.reg_number
-          params.regi_name = this.formData.reg_issuer
-          params.owners = this.formData.beneficial_owners
-          params.legals = this.formData.legal_representatives
+            ({ business_purpose: params.business_purpose,
+            cate: params.cate,
+            foundation_date: params.foundation_date,
+            sector: params.sector,
+            industry: params.industry,
+            industry_key: params.industry_key,
+            businessName: params.businessName,
+            reg_number: params.reg_number,
+            reg_issuer: params.reg_issuer,
+            beneficial_owners: params.beneficial_owners,
+            legal_representatives: params.legal_representatives} = this.formData)
+            console.log(this.formData)
         } else {
-          params.birthday = this.formData.birthday
-          params.email = this.formData.contact_email
-          params.empeoy_status = this.formData.empeoy_status
-          params.first_name = this.formData.first_name
-          params.last_name = this.formData.last_name
-          params.mchnt_telephone = this.formData.telephone
-          params.nation = this.formData.nationality
+            ({ birthday: params.birthday,
+            contact_email: params.contact_email,
+            empeoy_status: params.empeoy_status,
+            first_name: params.first_name,
+            last_name: params.last_name,
+            telephone: params.telephone,
+            nationality: params.nationality} = this.formData)
         }
         let url = this.isUpdate ? `${config.host}/org/mchnt/edit` : `${config.host}/org/v1/mchnt/signup`
         // if (this.isUpdate) {
@@ -1251,7 +1253,7 @@ computed: {
           if(this.list_Select.length === 0) {
             this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
           }else {
-            if(!this.isVofingAllow) {
+            if(this.isBusiness && !this.isVofingAllow) {
             this.$message.error(this.$t('merchant.newMerchant.rule44'))
             }else {
             this.$refs['baseinfo'].validate((valid,object) => {
@@ -1270,11 +1272,11 @@ computed: {
       },
 
 // next() {   
-//   if(this.isVofingAllow){
-//    this.create()
+//   if(this.isBusiness && !this.isVofingAllow ){
+//      this.$message.error(this.$t('merchant.newMerchant.rule44'))
 //   }
 //   else{
-//        this.$message.error(this.$t('merchant.newMerchant.rule44'))
+//       this.create()
 //   }
 // },
 

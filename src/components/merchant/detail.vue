@@ -408,7 +408,11 @@ export default {
             this.form.special.foundation_date = formatDate(
               this.form.special.foundation_date,
               "dd/MM/yyyy"
-            );
+            )
+            this.form.special.birthday = formatDate(
+              this.form.special.birthday,
+              "dd/MM/yyyy"
+            )
             this.form.special.owners.forEach(function(i){
             i.birthday = formatDate(
               i.birthday,
