@@ -95,12 +95,6 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item prop="store_telephone" :label="$t('merchant.newMerchant.form.concatNumber')" >
-        <el-input
-          v-model.trim="storeModel.store_telephone"
-          maxlength='11'></el-input>
-      </el-form-item>
-
       <h3>{{$t('merchant.detail.rates.setitle')}}</h3>
 
       <el-form-item prop="iban" :label="$t('merchant.newMerchant.form.accountH')">
@@ -168,7 +162,6 @@
           store_country: 'DE', //门店国家
           iban: '', // 银行账号
           bic: '', // SWIFT码
-          store_telephone: '', // SWIFT码
           format :'cors'
         },
         storeRules: {
@@ -243,20 +236,7 @@
           ],
 
           'bic': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule24')}
-          ],
-
-         'store_telephone': [
-            {required: true, message: this.$t('salesman.newsale.rule8')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('salesman.newsale.rule10')));
-                } else {
-                  cb();
-                }
-              }
-            }
+            {required: true, message: this.$t('merchant.newMerchant.rule19')}
           ],
 
         }
@@ -289,7 +269,6 @@
                 short_name: da.userinfo.short_name,
                 shopname: da.userinfo.shopname,
                 address: da.userinfo.address,
-                telephone: da.userinfo.telephone,
                 operating: da.userinfo.operating,
                 headbankname: da.bankinfo.headbankname, // 开户行名称
                 bankuser: da.bankinfo.bankuser, // 开户行

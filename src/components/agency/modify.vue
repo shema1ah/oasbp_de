@@ -244,7 +244,7 @@
             {max: 50, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule8'), trigger: 'blur'}
           ],
           'bankcode': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule24')}
+            {required: true, message: this.$t('merchant.newMerchant.rule19')}
           ],
           'remit_amt': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule19')},

@@ -741,7 +741,7 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule26')}
           ],
           'telephone': [
-            {required: true, message: this.$t('salesman.newsale.rule8')},
+            {required: true, message: this.$t('merchant.newMerchant.rule35')},
           ],
           'mcc': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
@@ -762,7 +762,7 @@
             },
           ],
           'bankcode': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule24')}
+            {required: true, message: this.$t('merchant.newMerchant.rule19')}
           ],
         },
       // 列表规则
@@ -849,7 +849,7 @@
           ],
 
           'telephone': [
-            {required: true, message: this.$t('salesman.newsale.rule8')},
+            {required: true, message: this.$t('merchant.newMerchant.rule35')},
           ],
       }
       }
@@ -1168,7 +1168,6 @@ computed: {
             sls_uid: this.formData.sls_uid, // 业务员id
             user_type: this.formData.user_type, // 商户类型 1:微小 2:个体工商户 3:企业
             mchnt_type: this.formData.mchnt_type,
-            foundation_date: this.formData.foundation_date,
             address: this.formData.address, // 公司地址
             post: this.formData.postal_code,
             city: this.formData.city,
@@ -1183,7 +1182,6 @@ computed: {
             address: this.formData.address, // 公司地址
             iban: this.formData.bankaccount,
             bic: this.formData.bankcode,
-            birthday: this.formData.birthday,
             unify_mcc: this.formData.unify_mcc,
             mchnt_ratios: this.list_Select,
             format: 'cors'
@@ -1195,20 +1193,19 @@ computed: {
             sector: params.sector,
             industry: params.industry,
             industry_key: params.industry_key,
-            businessName: params.businessName,
-            reg_number: params.reg_number,
-            reg_issuer: params.reg_issuer,
-            beneficial_owners: params.beneficial_owners,
-            legal_representatives: params.legal_representatives} = this.formData)
-            console.log(this.formData)
+            businessName: params.mchnt_shopname,
+            reg_number: params.regi_number,
+            reg_issuer: params.regi_name,
+            beneficial_owners: params.owners,
+            legal_representatives: params.legals} = this.formData)
         } else {
             ({ birthday: params.birthday,
-            contact_email: params.contact_email,
+            contact_email: params.email,
             empeoy_status: params.empeoy_status,
             first_name: params.first_name,
             last_name: params.last_name,
-            telephone: params.telephone,
-            nationality: params.nationality} = this.formData)
+            telephone: params.mchnt_telephone,
+            nationality: params.nation} = this.formData)
         }
         let url = this.isUpdate ? `${config.host}/org/mchnt/edit` : `${config.host}/org/v1/mchnt/signup`
         // if (this.isUpdate) {

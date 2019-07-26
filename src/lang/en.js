@@ -392,7 +392,7 @@ const en = {
         cap2: 'Beneficial Owners',
         cap3: 'Legal Representatives',
         cap4: 'Payment Channels Info',
-        cap5: 'Create Customer',
+        cap5: 'Store Info',
         cap6: 'Billing information',
         cap7: 'Person'
       },
@@ -466,7 +466,7 @@ const en = {
         concatNumber: 'Mobile Number',
         documentType: 'Certificate Type',
         doucumentNum: 'Certificate Number',
-        QFMCC: 'QFMCC',
+        QFMCC: 'Industry',
         sector: 'Sector',
         industry: 'Industry',
         industry_key: 'Industry Key',
@@ -477,7 +477,7 @@ const en = {
         accountName: 'Account Name',
         accountType: 'Bank Name',
         accountH: 'Bank Account',
-        bic: 'bic',
+        bic: 'SWIFT CODE',
         accountAddress: 'Bank Address',
         moneySettment: 'Starting Point Of Settlement Fund',
         storephone: 'Store Contact Number',
@@ -507,7 +507,7 @@ const en = {
         empeoyment_sataus: 'Empeoyment Sataus',
         vofing_share: 'Vofing Share',
         expected_volume_transactions: 'Expected Volume Transactions',
-        expected_couut_transactions: 'Expected Couut Transactions',
+        expected_couut_transactions: 'Expected Count Transactions',
         represeutation: 'Type Of Represeutation',
         legal_rep: 'Whether it is Legal Representatives',
         reg_number: 'Register Number',
@@ -542,10 +542,9 @@ const en = {
         rule18: 'Please input bank address',
         rule19: 'Please input starting point of settlement fund',
         rule20: 'Please input store name',
-        rule21: 'Please input store address',
+        rule21: 'Please input address',
         rule22: 'Please input store contact number',
         rule23: 'Please input business hours',
-        rule24: 'Please enter the SWIFT CODE',
         rule25: 'Please select payment channel',
         rule26: 'Please select merchant category',
         rule27: 'Please input contact name',
@@ -571,7 +570,7 @@ const en = {
         rule47: 'Please input vofing share',
         rule48: 'Please select whether it is Legal Representatives',
         rule49: 'Please input expected volume transactions',
-        rule50: 'Please input expected couut transactions',
+        rule50: 'Please input expected count transactions',
         rule51: 'Please select type of represeutation',
         rule52: 'Please input registration number',
         rule53: 'Please input registration issuer'
@@ -631,7 +630,6 @@ const en = {
       rule21: 'Please input store name', // 请输入店铺名称
       rule22: 'Please input store contact number', // 请输入店铺联系电话
       rule23: 'Please select area', // 请选择店铺所属地区
-      rule24: 'Please input store address', // 请输入店铺地址
       rule25: 'Please input Contact Email', // 请输入店铺邮编
       rule26: 'Please input store services', // 请输入店铺附加服务
       rule27: 'Please input business hours', // 请输入店铺营业时间
@@ -642,7 +640,7 @@ const en = {
       rule32: 'Please input bank account number',
       rule33: 'Uploaded file must be ZIP package',
       rule34: 'Please input description',
-      rule35: 'Please input contact number',
+      rule35: 'Please input mobile number',
       rule36: 'Please input postal code',
       rule37: 'Please input branch bank name',
       rule38: 'Please select industry',

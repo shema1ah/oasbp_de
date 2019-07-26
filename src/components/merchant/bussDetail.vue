@@ -9,7 +9,7 @@
     </header>
     <section class="basic">
       <div class="banner">
-        <div class="title">{{$t('batch.input_shop.cap1')}}</div>
+        <div class="title">{{$t('merchant.newMerchant.basic.cap5')}}</div>
         <div class="divider"></div>
       </div>
 
