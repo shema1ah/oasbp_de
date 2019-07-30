@@ -63,9 +63,15 @@
           v-model.trim="formData.businessName"></el-input>
       </el-form-item>
 
-        <el-form-item prop="mchnt_type" :label="$t('merchant.newMerchant.form.mertype')">
+        <el-form-item prop="mchnt_type" :label="$t('merchant.newMerchant.form.mertype')" v-if="isBusiness">
         <el-select v-model="formData.mchnt_type">
           <el-option :label="item" :value="item" v-for="item in selectList.mchnt_type" :key="item"></el-option>
+        </el-select>
+      </el-form-item>
+
+       <el-form-item prop="mchnt_type_person" :label="$t('merchant.newMerchant.form.mertype')" v-if="!isBusiness" :rules="baseRules.mchnt_type">
+        <el-select v-model="formData.mchnt_type_person">
+          <el-option :label="item" :value="item" v-for="item in mchnt_type_person" :key="item"></el-option>
         </el-select>
       </el-form-item>
 
@@ -337,7 +343,7 @@
           :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
 
-      <el-form-item :prop="'legal_representatives.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')">
+      <el-form-item :prop="'legal_representatives.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')" :rules="listRules.telephone">
         <el-input
           v-model.trim="n.mobile"
           :disabled="peopleExist3[i]"
@@ -497,6 +503,7 @@
           cate: '', // 注册商户的类型
           businessName: '', // 商户名称
           mchnt_type: '', // 商户类型 1:微小 2：个体商户 3:企业
+          mchnt_type_person: '',
           first_name: '',  //名
           last_name: '',   //姓
           birthday: '',  //出生日期
@@ -570,6 +577,7 @@
           country: {},
           mchnt_type: []
         },
+        mchnt_type_person: ['Selbststandig','Eingetragener Kaufmann'],
         channels1: [],
         channels2: [],
         salesperson: [],
@@ -736,9 +744,9 @@
           'mchnt_type': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule26')}
           ],
-          // 'telephone': [
-          //   {required: true, message: this.$t('merchant.newMerchant.rule35')},
-          // ],
+          'telephone': [
+            {required: true, message: this.$t('merchant.newMerchant.rule35')},
+          ],
           'mcc': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
           ],
@@ -844,9 +852,9 @@
             },
           ],
 
-          // 'telephone': [
-          //   {required: true, message: this.$t('merchant.newMerchant.rule35')},
-          // ],
+          'telephone': [
+            {required: true, message: this.$t('merchant.newMerchant.rule35')},
+          ],
       }
       }
     },
@@ -1165,8 +1173,8 @@ computed: {
       create() { // 创建商户的提交
         let params = {
             sls_uid: this.formData.sls_uid, // 业务员id
-            user_type: this.formData.user_type, // 商户类型 1:微小 2:个体工商户 3:企业
-            mchnt_type: this.formData.mchnt_type,
+            user_type: this.formData.user_type, 
+            mchnt_type: this.isBusiness ? this.formData.mchnt_type : this.formData.mchnt_type_person,
             address: this.formData.address, // 公司地址
             post: this.formData.postal_code,
             city: this.formData.city,
@@ -1344,7 +1352,7 @@ computed: {
           email: '',
           mobile: '',
           is_legal: '0',
-          represe: '',
+          represe: 'ALONE',
             };
          this.formData.beneficial_owners.push(a);
         }
@@ -1367,7 +1375,7 @@ computed: {
           city: '',
           country: 'DE',
           empeoy_status: '',
-          represe: '',
+          represe: 'ALONE',
           email: '',
           mobile: '',
             };

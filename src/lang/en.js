@@ -545,7 +545,7 @@ const en = {
         rule22: 'Please input store contact number',
         rule23: 'Please input business hours',
         rule25: 'Please select payment channel',
-        rule26: 'Please select merchant category',
+        rule26: 'Please select company legal form',
         rule27: 'Please input contact name',
         rule28: 'Please input Legal Person Name',
         rule29: 'Please input register address',

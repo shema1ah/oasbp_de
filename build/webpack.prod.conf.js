@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const packagejson = require("../package.json");
 
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -21,6 +22,9 @@ const webpackConfig = merge(baseWebpackConfig, {
     })
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
+  entry: {
+    vendor: Object.keys(packagejson.dependencies)
+  },
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -80,27 +84,39 @@ const webpackConfig = merge(baseWebpackConfig, {
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks (module) {
-        // any required modules inside node_modules are extracted to vendor
-        return (
-          module.resource &&
-          /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
-        )
-      }
+      // filename: '[name].js'
+      // minChunks (module) {
+      //   // any required modules inside node_modules are extracted to vendor
+      //   return (
+      //     module.resource &&
+      //     /\.js$/.test(module.resource) &&
+      //     module.resource.indexOf(
+      //       path.join(__dirname, '../node_modules')
+      //     ) === 0
+      //   )
+      // }
     }),
-        //新增打包文件
+
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor_1', //新打包文件名
       chunks: ['vendor'], //拆分模块名
       minChunks: function (module) {
-            // 以下是拆分规则，返回true 则拆分，以下规则是将 libs 下的文件单独打包
           return (
             module.resource &&
             /\.js$/.test(module.resource) &&
-            module.resource.indexOf('lib') >= 0
+            module.resource.indexOf('qfpay-element-ui') >= 0
+                  )
+          }
+        }),
+        //新增打包文件
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor_2', //新打包文件名
+      chunks: ['vendor'], //拆分模块名
+      minChunks: function (module) {
+          return (
+            module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf('vue') >= 0
                   )
           }
         }),
