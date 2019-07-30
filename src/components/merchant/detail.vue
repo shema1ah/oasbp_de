@@ -73,11 +73,7 @@
         </el-col>
       </el-row>
 
-      <el-row v-if="this.isBusiness">
-        <el-col :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
-          <span class="basic-content width-limit">{{form.special.sector}}</span>
-        </el-col>
+      <!-- <el-row v-if="this.isBusiness">
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry')+':'}}</span>
           <span class="basic-content width-limit">{{form.special.industry}}</span>
@@ -86,7 +82,7 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry_key')+':'}}</span>
           <span class="basic-content width-limit">{{form.special.industry_key}}</span>
         </el-col>
-      </el-row>
+      </el-row> -->
 
       <el-row>
         <el-col :span="8">
@@ -104,6 +100,10 @@
       </el-row>
 
       <el-row>
+         <el-col :span="8" v-if="this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
+          <span class="basic-content width-limit">{{form.special.sector}}</span>
+        </el-col>
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.reg_number')+':'}}</span>
           <span class="basic-content">{{form.special.regi_number}}</span>
@@ -346,7 +346,7 @@ export default {
             }
           ],
           foundation_date: "",
-          industry: "",
+          // industry: "",
           mchnt_type: "",
           business_purpose: "",
           legals: [
@@ -367,7 +367,7 @@ export default {
               email: ""
             }
           ],
-          industry_key: ""
+          // industry_key: ""
         }
       }
     };

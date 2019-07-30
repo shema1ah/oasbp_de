@@ -71,12 +71,12 @@
 
        <el-form-item prop="first_name" :label="$t('merchant.newMerchant.form.first_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.first_name" @blur="checkPeople(formData,1)"></el-input>
+          v-model.trim="formData.first_name"></el-input>
       </el-form-item>
 
        <el-form-item prop="last_name" :label="$t('merchant.newMerchant.form.last_name')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.last_name" @blur="checkPeople(formData,1)"></el-input>
+          v-model.trim="formData.last_name"></el-input>
       </el-form-item>
 
       <el-form-item prop="birthday" :label="$t('merchant.newMerchant.form.date_of_birth')" v-if="!isBusiness">
@@ -85,13 +85,12 @@
           type="date"
           format='dd-MM-yyyy'
           value-format="yyyy-MM-dd HH:mm:ss"
-          :placeholder="$t('common.chooseDate')"
-          @blur="checkPeople(formData,1)">
+          :placeholder="$t('common.chooseDate')">
         </el-date-picker>
       </el-form-item>
 
         <el-form-item prop="nationality" :label="$t('merchant.newMerchant.form.nationality')" v-if="!isBusiness">
-        <el-select v-model="formData.nationality" :disabled="peopleExist1">
+        <el-select v-model="formData.nationality">
         <el-option :label="value" :value="key" v-for="(value, key)  in selectList.country" :key="key"></el-option>
         </el-select>
       </el-form-item>
@@ -112,15 +111,15 @@
       </el-form-item>
 
       <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
-        <el-input v-model.trim="formData.address" :disabled="peopleExist1"></el-input>
+        <el-input v-model.trim="formData.address"></el-input>
       </el-form-item>
 
       <el-form-item prop="postal_code" :label="$t('merchant.newMerchant.form.postal_code')">
-        <el-input v-model.trim="formData.postal_code" :disabled="peopleExist1"></el-input>
+        <el-input v-model.trim="formData.postal_code"></el-input>
       </el-form-item>
 
      <el-form-item prop="city" :label="$t('merchant.newMerchant.form.city')">
-        <el-input v-model.trim="formData.city" :disabled="peopleExist1"></el-input>
+        <el-input v-model.trim="formData.city"></el-input>
       </el-form-item>
 
         <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
@@ -131,7 +130,7 @@
 
         <el-form-item prop="empeoy_status" :label="$t('merchant.newMerchant.form.empeoyment_sataus')" v-if="!isBusiness">
 
-        <el-select v-model="formData.empeoy_status" :disabled="peopleExist1">
+        <el-select v-model="formData.empeoy_status">
          <el-option :label="item" :value="item" v-for="item in selectList.people_empeoy_status" :key="item"></el-option>
         </el-select>
 
@@ -139,14 +138,12 @@
 
       <el-form-item prop="contact_email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
         <el-input
-          v-model.trim="formData.contact_email"
-          :disabled="peopleExist1"></el-input>
+          v-model.trim="formData.contact_email"></el-input>
       </el-form-item>
 
        <el-form-item prop="telephone" :label="$t('merchant.newMerchant.form.concatNumber')" v-if="!isBusiness">
         <el-input
           v-model.trim="formData.telephone"
-          :disabled="peopleExist1"
         ></el-input>
       </el-form-item>
 
@@ -155,7 +152,7 @@
          <el-option :label="item" :value="item" v-for="item in selectList.sector" :key="item"></el-option>
         </el-select>
       </el-form-item>
-
+<!-- 
       <el-form-item prop="industry" :label="$t('merchant.newMerchant.form.industry')" v-if="isBusiness">
         <el-select v-model="formData.industry">
          <el-option :label="item" :value="item" v-for="item in selectList.industry" :key="item"></el-option>
@@ -166,7 +163,7 @@
         <el-select v-model="formData.industry_key">
          <el-option :label="item" :value="item" v-for="item in selectList.industry_key" :key="item"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item prop="reg_number" :label="$t('merchant.newMerchant.form.reg_number')" v-if="isBusiness">
         <el-input v-model.trim="formData.reg_number"></el-input>
@@ -237,7 +234,7 @@
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.vofing'" :label="$t('merchant.newMerchant.form.vofing_share')" :rules="listRules.vofing_share">
-        <el-input v-model.number.trim="n.vofing" :disabled="peopleExist2[i]" :placeholder="$t('settleMent.msg.t5')"></el-input>
+        <el-input v-model.number.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
       </el-form-item>
 
       <el-form-item :prop="'beneficial_owners.'+ i + '.email'" :label="$t('merchant.newMerchant.form.postT')" :rules="listRules.contact_email">
@@ -246,7 +243,7 @@
           :disabled="peopleExist2[i]"></el-input>
       </el-form-item>
 
-       <el-form-item :prop="'beneficial_owners.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')" :rules="listRules.telephone">
+       <el-form-item :prop="'beneficial_owners.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')">
         <el-input
           v-model.trim="n.mobile"
           :disabled="peopleExist2[i]"
@@ -254,14 +251,14 @@
       </el-form-item>
 
        <el-form-item :prop="'beneficial_owners.'+ i + '.is_legal'" :label="$t('merchant.newMerchant.form.legal_rep')" :rules="listRules.legal_rep">
-        <el-select v-model="n.is_legal" :disabled="peopleExist2[i]">
+        <el-select v-model="n.is_legal">
           <el-option :label="$t('merchant.detail.signed.no')" value=0></el-option>
           <el-option :label="$t('merchant.detail.signed.yes')" value=1></el-option>
         </el-select>
       </el-form-item>
    
        <el-form-item :prop="'beneficial_owners.'+ i + '.represe'" :label="$t('merchant.newMerchant.form.represeutation')" :rules="listRules.represeutation" v-if="n.is_legal == 1">
-        <el-select v-model="n.represe" :disabled="peopleExist2[i]">
+        <el-select v-model="n.represe" disabled>
           <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
         </el-select>
       </el-form-item>
@@ -329,7 +326,7 @@
       </el-form-item>
 
        <el-form-item :prop="'legal_representatives.'+ i + '.represe'" :label="$t('merchant.newMerchant.form.represeutation')" :rules="listRules.represeutation">
-        <el-select v-model="n.represe" :disabled="peopleExist3[i]">
+        <el-select v-model="n.represe" disabled>
   <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
         </el-select>
       </el-form-item>
@@ -340,7 +337,7 @@
           :disabled="peopleExist3[i]"></el-input>
       </el-form-item>
 
-      <el-form-item :prop="'legal_representatives.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')" :rules="listRules.telephone">
+      <el-form-item :prop="'legal_representatives.'+ i + '.mobile'" :label="$t('merchant.newMerchant.form.concatNumber')">
         <el-input
           v-model.trim="n.mobile"
           :disabled="peopleExist3[i]"
@@ -354,8 +351,8 @@
 
       <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
 
-      <el-form-item v-if="!isUpdate">
-        <el-select v-model="pid_select" :placeholder="$t('merchant.newMerchant.requiredRule.rule25')">
+      <el-form-item prop="pid_select" v-if="!isUpdate">
+        <el-select v-model="formData.pid_select" :placeholder="$t('merchant.newMerchant.requiredRule.rule25')">
           <el-option
             v-for="item in list"
             :key="item.pid_name"
@@ -479,7 +476,6 @@
     data() {
       return {
         select: this.$i18n.locale,
-        pid_select: '',
         list: [],
         list_Select: [],
         isLoading: false,
@@ -488,11 +484,11 @@
         isShowTree: false,
         forFlag: false,
         isBusiness: true,
-        peopleExist1: false,
         peopleExist2: [],
         peopleExist3: [],
         formData: {
           user_type: 3,
+          pid_select: '',
           slsm_name: '', // 业务员姓名
           unify_mcc: '',
           primary_uid: '', // 一级代理商id
@@ -544,7 +540,7 @@
           email: '',
           mobile: '',
           is_legal: '0',
-          represe: '',
+          represe: 'ALONE',
             }
           ],
          legal_representatives: [
@@ -558,7 +554,7 @@
           city: '',
           country: 'DE',
           empeoy_status: '',
-          represe: '',
+          represe: 'ALONE',
           email: '',
           mobile: '',
             }
@@ -567,8 +563,8 @@
         shopTypes: [], // 门店行业列表
         selectList: {
           sector: [],
-          industry: [],
-          industry_key: [],
+          // industry: [],
+          // industry_key: [],
           represe: [],
           people_empeoy_status: [], //职业类别
           country: {},
@@ -674,12 +670,12 @@
           'sector': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule44')}
           ],
-          'industry': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule45')}
-          ],
-          'industry_key': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule46')}
-          ],
+          // 'industry': [
+          //   {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule45')}
+          // ],
+          // 'industry_key': [
+          //   {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule46')}
+          // ],
 
           'expected_volume': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')},
@@ -722,7 +718,7 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
           ],
           'store_address': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule21')},
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule10')},
           ],
           'contact_email': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule4')},
@@ -740,9 +736,9 @@
           'mchnt_type': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule26')}
           ],
-          'telephone': [
-            {required: true, message: this.$t('merchant.newMerchant.rule35')},
-          ],
+          // 'telephone': [
+          //   {required: true, message: this.$t('merchant.newMerchant.rule35')},
+          // ],
           'mcc': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
           ],
@@ -848,9 +844,9 @@
             },
           ],
 
-          'telephone': [
-            {required: true, message: this.$t('merchant.newMerchant.rule35')},
-          ],
+          // 'telephone': [
+          //   {required: true, message: this.$t('merchant.newMerchant.rule35')},
+          // ],
       }
       }
     },
@@ -858,7 +854,7 @@
 computed: {
     isVofingAllow: function () {
      let vofingSum = 0;
-     this.formData.beneficial_owners.forEach(i => vofingSum += i.vofing)
+     this.formData.beneficial_owners.forEach(i => vofingSum += Number(i.vofing))
      return vofingSum === 100 ? true : false;
     }
   },
@@ -1117,33 +1113,36 @@ computed: {
           let data = res.data;
           let isEmpty = JSON.stringify(data.data) === "{}"
           switch (role) {
-          case 1:
-          if (isEmpty) {
-            this.peopleExist1 = false
-            }else {                
-            ({ city: n.city,
-            mobile: n.telephone,
-            email: n.contact_email,
-            empeoy_status: n.empeoy_status,
-            nation: n.nationality,
-            address: n.address,
-            post: n.postal_code} = data.data)
-            this.$forceUpdate()
-            this.peopleExist1 = true
-            }
             case 2:
            if (isEmpty) {
             this.peopleExist2[i] = false
             }else {                
-            this.formData.beneficial_owners[i] = data.data
+            let beneficial_owner = this.formData.beneficial_owners[i];
+            ({ nation: beneficial_owner.nation,
+            city: beneficial_owner.city,
+            mobile: beneficial_owner.mobile,
+            country: beneficial_owner.country,
+            empeoy_status: beneficial_owner.empeoy_status,
+            address: beneficial_owner.address,
+            post: beneficial_owner.post,
+            email: beneficial_owner.email} = data.data);
             this.$forceUpdate()
             this.peopleExist2[i] = true
             }
+            break
             default:
            if (isEmpty) {
             this.peopleExist3[i] = false
             }else {                
-            this.formData.legal_representatives[i] = data.data
+            let legal_representative = this.formData.legal_representatives[i];
+            ({ nation: legal_representative.nation,
+            city: legal_representative.city,
+            mobile: legal_representative.mobile,
+            country: legal_representative.country,
+            empeoy_status: legal_representative.empeoy_status,
+            address: legal_representative.address,
+            post: legal_representative.post,
+            email: legal_representative.email} = data.data);
             this.$forceUpdate()
             this.peopleExist3[i] = true
             }
@@ -1191,8 +1190,8 @@ computed: {
             cate: params.cate,
             foundation_date: params.foundation_date,
             sector: params.sector,
-            industry: params.industry,
-            industry_key: params.industry_key,
+            // industry: params.industry,
+            // industry_key: params.industry_key,
             businessName: params.mchnt_shopname,
             reg_number: params.regi_number,
             reg_issuer: params.regi_name,
@@ -1308,7 +1307,7 @@ computed: {
         });
       },
       addList() {
-        let pid_select = this.pid_select
+        let pid_select = this.formData.pid_select
         let pid_select_array = []
         this.list_Select.forEach(element => {
           pid_select_array.push(element.pid_name)
@@ -1316,7 +1315,8 @@ computed: {
         this.list.forEach(element => {
           if(pid_select_array.indexOf(pid_select) > -1){
             this.$message.error(this.$t('common.payTip'));
-          }else if(element.pid_name === pid_select){
+          }
+          else if(element.pid_name === pid_select){
             this.list_Select.push(element)
           }
         })

@@ -458,7 +458,7 @@ const en = {
         saleMan: 'Salesman',
         channel: 'Subordinate first-level agents',
         channel2: 'Subordinate secondary agents',
-        mertype: 'Merchant Category',
+        mertype: 'Company legal form',
         meiname: 'Merchant Name',
         contact: 'Salesman',
         postT: 'Contact Email',
@@ -466,18 +466,18 @@ const en = {
         concatNumber: 'Mobile Number',
         documentType: 'Certificate Type',
         doucumentNum: 'Certificate Number',
-        QFMCC: 'Industry',
+        QFMCC: 'QFMCC',
         sector: 'Sector',
         industry: 'Industry',
         industry_key: 'Industry Key',
         postal_code: 'Postal Code',
         city: 'City',
         country: 'Country',
-        addressT: 'Address',
+        addressT: 'Street and house number',
         accountName: 'Account Name',
         accountType: 'Bank Name',
-        accountH: 'Bank Account',
-        bic: 'SWIFT CODE',
+        accountH: 'iban',
+        bic: 'bic',
         accountAddress: 'Bank Address',
         moneySettment: 'Starting Point Of Settlement Fund',
         storephone: 'Store Contact Number',
@@ -530,19 +530,18 @@ const en = {
         rule6: 'Please input telephone',
         rule7: 'Please select certificate type',
         rule8: 'Please input certificate number',
-        rule9: 'Please select industry',
-        rule10: 'Please input address',
+        rule9: 'Please select QFMCC',
+        rule10: 'Please input street and house number',
         rule11: 'Please input br number',
         rule12: 'Please input br validity',
         rule13: 'Please input ci number',
         rule14: 'Please input ci validity',
         rule15: 'Please input account name',
         rule16: 'Please input bank name',
-        rule17: 'Please input bank account',
+        rule17: 'Please input iban',
         rule18: 'Please input bank address',
         rule19: 'Please input starting point of settlement fund',
         rule20: 'Please input store name',
-        rule21: 'Please input address',
         rule22: 'Please input store contact number',
         rule23: 'Please input business hours',
         rule25: 'Please select payment channel',
@@ -625,7 +624,7 @@ const en = {
       rule16: 'Please input company address', // 请输入公司地址
       rule17: 'Please input company contact name', // 请输入公司联系人
       rule18: 'Please input bank name', // 请输入总行名称
-      rule19: 'Please input SWIFT CODE', // 请输入SWIFT代码
+      rule19: 'Please input bic', // 请输入SWIFT代码
       rule20: 'Please input bank account name', // 请输入银行帐户名称
       rule21: 'Please input store name', // 请输入店铺名称
       rule22: 'Please input store contact number', // 请输入店铺联系电话

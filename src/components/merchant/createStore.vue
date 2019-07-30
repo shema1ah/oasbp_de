@@ -170,7 +170,7 @@
           ],
 
           'address': [
-            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule21')},
+            {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule10')},
           ],
 
           'mcc': [

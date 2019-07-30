@@ -61,7 +61,7 @@
       <el-row>
         <el-col :span="10">
           <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
-          <span class="basic-content">{{form.special.city}}</span>
+          <span class="basic-content">{{form.base.city}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
@@ -103,7 +103,7 @@
 
       <el-row>
         <el-col :span="10">
-          <span class="basic-label">{{$t('merchant.detail.basic.la19')}}</span>
+          <span class="basic-label">{{$t('merchant.newMerchant.form.accountH')}}:</span>
           <span class="basic-content">{{form.special.iban}}</span>
         </el-col>
         <el-col :span="14">
@@ -142,7 +142,6 @@ export default {
       isLoading: false,
       isEditable: false,
       isReEditable: false,
-
       form: {
         ext: {
           country: "",
@@ -155,11 +154,11 @@ export default {
           user_type: "",
           mchid: "",
           address: "",
-          qfmcc: ""
+          qfmcc: "",
+          city: ""
         },
         special: {
           sector: "",
-          city: "",
           expect_amt: "",
           foundation_date: "",
           industry: "",
