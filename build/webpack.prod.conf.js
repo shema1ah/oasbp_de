@@ -104,20 +104,20 @@ const webpackConfig = merge(baseWebpackConfig, {
           return (
             module.resource &&
             /\.js$/.test(module.resource) &&
-            module.resource.indexOf('qfpay-element-ui') >= 0
-                  )
+            module.resource.indexOf('qfpay-element-ui') < 0 
+                  ) 
           }
         }),
         //新增打包文件
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor_2', //新打包文件名
-      chunks: ['vendor'], //拆分模块名
+      chunks: ['vendor_1'], //拆分模块名
       minChunks: function (module) {
           return (
             module.resource &&
             /\.js$/.test(module.resource) &&
             module.resource.indexOf('vue') >= 0
-                  )
+                 )
           }
         }),
     // extract webpack runtime and module manifest to its own file in order to
