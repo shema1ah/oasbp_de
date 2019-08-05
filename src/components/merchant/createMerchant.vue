@@ -53,8 +53,8 @@
 
       <el-form-item :label="$t('merchant.newMerchant.form.bigMerchant')" prop="cate" v-if="isBusiness">
         <el-select v-model="formData.cate" ref="cate" :disabled="isUpdate">
-          <el-option :label="$t('merchant.newMerchant.form.sub')" value="merchant"></el-option>
-          <el-option :label="$t('merchant.newMerchant.form.big')" value="bigmerchant"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.sub')" value="mchnt"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.big')" value="bigmchnt"></el-option>
         </el-select>
       </el-form-item>
 
@@ -177,6 +177,14 @@
 
       <el-form-item prop="reg_issuer" :label="$t('merchant.newMerchant.form.reg_issuer')" v-if="isBusiness">
         <el-input v-model.trim="formData.reg_issuer"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="idnumber" :label="$t('merchant.newMerchant.form.idnumber')" v-if="!isBusiness">
+        <el-input v-model.trim="formData.idnumber"></el-input>
+      </el-form-item>
+
+      <el-form-item prop="passport" :label="$t('merchant.newMerchant.form.passport')" v-if="!isBusiness">
+        <el-input v-model.trim="formData.passport"></el-input>
       </el-form-item>
 
       <!-- 股东信息 -->
@@ -531,7 +539,9 @@
           store_city: '',   //门店城市
           store_country: 'DE', //门店国家
           bankaccount: '', // 银行账号
-          bankcode: '', // SWIFT码
+          bankcode: '', 
+          idnumber: '', 
+          passport: '', 
           beneficial_owners: [
             {
           first_name: '',
@@ -1180,8 +1190,8 @@ computed: {
             city: this.formData.city,
             country: this.formData.country,
             store_shopname: this.formData.store_name,
-            expect_amt: this.formData.expected_volume,
-            expect_count: this.formData.expected_couut,
+            store_expect_amt: this.formData.expected_volume,
+            store_expect_count: this.formData.expected_couut,
             store_post: this.formData.store_postal_code,
             store_city: this.formData.store_city,
             store_address: this.formData.store_address,
@@ -1189,20 +1199,20 @@ computed: {
             address: this.formData.address, // 公司地址
             iban: this.formData.bankaccount,
             bic: this.formData.bankcode,
-            unify_mcc: this.formData.unify_mcc,
+            store_unify_mcc: this.formData.unify_mcc,
             mchnt_ratios: this.list_Select,
             format: 'cors'
         }
         if (this.formData.user_type === 3){
             ({ business_purpose: params.business_purpose,
-            cate: params.cate,
+            cate: params.mode,
             foundation_date: params.foundation_date,
             sector: params.sector,
             // industry: params.industry,
             // industry_key: params.industry_key,
-            businessName: params.mchnt_shopname,
-            reg_number: params.regi_number,
-            reg_issuer: params.regi_name,
+            businessName: params.name,
+            reg_number: params.licensenumber,
+            reg_issuer: params.license_name,
             beneficial_owners: params.owners,
             legal_representatives: params.legals} = this.formData)
         } else {
@@ -1211,7 +1221,9 @@ computed: {
             empeoy_status: params.empeoy_status,
             first_name: params.first_name,
             last_name: params.last_name,
-            telephone: params.mchnt_telephone,
+            telephone: params.mobile,
+            idnumber: params.idnumber,
+            passport: params.passport,
             nationality: params.nation} = this.formData)
         }
         let url = this.isUpdate ? `${config.host}/org/mchnt/edit` : `${config.host}/org/v1/mchnt/signup`
@@ -1242,7 +1254,7 @@ computed: {
               this.$message.success(this.isUpdate ? this.$t('common.updateSuccess') : this.$t('common.createSuccess'))
               this.$router.push({
                 name: 'mchntDetail',
-                query: {userid: data.data.mchnt_userid, from: (this.isUpdate ? 'edit' : 'new')}
+                query: {userid: data.data.mchnt, from: (this.isUpdate ? 'edit' : 'new')}
               })
             } else {
               this.$message.error(data.respmsg);

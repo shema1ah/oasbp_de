@@ -275,9 +275,11 @@ const en = {
       wechatM: 'WeChat Official Account ID',
       wechatpay: 'WeChat Pay',
       bank: 'SolerisBank',
-      reg_success: 'registration success',
-      under_review: 'under review',
-      review_pass: 'examination passed',
+      creating: 'creating',
+      creatFiled: 'create failed',
+      inReg: 'underway',
+      regSucc: '进件成功',
+      regFail: '进件失败',
     },
     payment: {
       title: 'Payment Channel',
@@ -451,8 +453,8 @@ const en = {
         warmfront: '* The photo has to be from inside of the store.', // 必须使用所售商品/经营场所内景照片
         warmback: '* The photo has to be from outside of the store.', // 必须使用经营场所/经营场所外景照片
         status: 'Status',
-        sub: 'Merchant',
-        big: 'Big Merchant',
+        sub: 'Regular merchant',
+        big: 'Restaurants, supermarkets, chain stores',
         personal: 'Personal',
         enterprise: 'Enterprise',
         saleMan: 'Salesman',
@@ -499,7 +501,7 @@ const en = {
         registeredAddress: 'Register Address',
         companyWebsite: 'Company Website',
         legalName: 'Legal Person Name',
-        bigMerchant: 'Merchant／Big Merchant',
+        bigMerchant: 'Merchant Type',
         first_name: 'First Name',
         last_name: 'Last Name',
         date_of_birth: 'Date Of Birth',
@@ -511,7 +513,9 @@ const en = {
         represeutation: 'Type Of Represeutation',
         legal_rep: 'Whether it is Legal Representatives',
         reg_number: 'Register Number',
-        reg_issuer: 'Register Issuer'
+        reg_issuer: 'Register Issuer',
+        idnumber: 'ID Number',
+        passport: 'passport ID'
       },
       applicationTypes: {
         direct: 'direct',
@@ -523,7 +527,7 @@ const en = {
       },
       requiredRule: {
         rule1: 'Please select agent name',
-        rule2: 'Please select',
+        rule2: 'Please select Merchant Type',
         rule3: 'Please input merchant name',
         rule4: 'Please input contact email',
         rule5: 'Please input contact name',

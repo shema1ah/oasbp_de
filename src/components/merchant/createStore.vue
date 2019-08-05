@@ -69,16 +69,16 @@
         ></el-tree>
       </el-form-item>
 
-      <el-form-item prop="expect_amt" :label="$t('merchant.newMerchant.form.expected_volume_transactions')">
-        <el-input v-model.trim="storeModel.expect_amt"></el-input>
+      <el-form-item prop="store_expect_amt" :label="$t('merchant.newMerchant.form.expected_volume_transactions')">
+        <el-input v-model.trim="storeModel.store_expect_amt"></el-input>
       </el-form-item>
 
-      <el-form-item prop="expect_count" :label="$t('merchant.newMerchant.form.expected_couut_transactions')">
-        <el-input v-model.trim="storeModel.expect_count"></el-input>
+      <el-form-item prop="store_expect_count" :label="$t('merchant.newMerchant.form.expected_couut_transactions')">
+        <el-input v-model.trim="storeModel.store_expect_count"></el-input>
       </el-form-item>
 
-      <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
-        <el-input v-model.trim="storeModel.address"></el-input>
+      <el-form-item prop="store_address" :label="$t('merchant.newMerchant.form.addressT')">
+        <el-input v-model.trim="storeModel.store_address"></el-input>
       </el-form-item>
 
       <el-form-item prop="store_post" :label="$t('merchant.newMerchant.form.postal_code')">
@@ -153,10 +153,10 @@
         storeModel: {
           store_shopname: '', // 店铺名称
           mcc: '', // 店铺行业
-          unify_mcc: '',
-          expect_amt: '', //预计交易额
-          expect_count: '',  //预计交易量
-          address: '', // 门店地址
+          store_unify_mcc: '',
+          store_expect_amt: '', //预计交易额
+          store_expect_count: '',  //预计交易量
+          store_address: '', // 门店地址
           store_post: '',  //门店邮编
           store_city: '',   //门店城市
           store_country: 'DE', //门店国家
@@ -169,7 +169,7 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
           ],
 
-          'address': [
+          'store_address': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule10')},
           ],
 
@@ -177,7 +177,7 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
           ],
 
-          'expect_amt': [
+          'store_expect_amt': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule49')},
             {validator: (rule, val, cb) => {
                 if (!/^[0-9]*$/.test(val) && val != '') {
@@ -189,7 +189,7 @@
             }
           ],
 
-          'expect_count': [
+          'store_expect_count': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule50')},
             {validator: (rule, val, cb) => {
                 if (!/^[0-9]*$/.test(val) && val != '') {
@@ -268,7 +268,7 @@
               Object.assign(this.storeModel, {
                 short_name: da.userinfo.short_name,
                 shopname: da.userinfo.shopname,
-                address: da.userinfo.address,
+                store_address: da.userinfo.store_address,
                 operating: da.userinfo.operating,
                 headbankname: da.bankinfo.headbankname, // 开户行名称
                 bankuser: da.bankinfo.bankuser, // 开户行
@@ -292,7 +292,7 @@
 
       IndustyhandleNodeClick(data, node) {
         if(data.level ===3) {
-            this.storeModel.unify_mcc = data.id;
+            this.storeModel.store_unify_mcc = data.id;
             this.isShowIndustyTree = false;
             this.select === 'en-us'?this.storeModel.mcc = data.name_en:this.storeModel.mcc = data.name;
         }

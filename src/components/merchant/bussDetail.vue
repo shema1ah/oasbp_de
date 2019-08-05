@@ -39,13 +39,13 @@
           <span
             class="basic-label"
           >{{$t('merchant.newMerchant.form.expected_volume_transactions')+':'}}</span>
-          <span class="basic-content">{{form.special.expect_amt}}</span>
+          <span class="basic-content">{{form.base.expect_amt}}</span>
         </el-col>
         <el-col :span="14">
           <span
             class="basic-label"
           >{{$t('merchant.newMerchant.form.expected_couut_transactions')+':'}}</span>
-          <span class="basic-content">{{form.special.expect_count}}</span>
+          <span class="basic-content">{{form.base.expect_count}}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -55,7 +55,7 @@
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
-          <span class="basic-content">{{form.ext.post}}</span>
+          <span class="basic-content">{{form.base.post}}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -104,11 +104,11 @@
       <el-row>
         <el-col :span="10">
           <span class="basic-label">{{$t('merchant.newMerchant.form.accountH')}}:</span>
-          <span class="basic-content">{{form.special.iban}}</span>
+          <span class="basic-content">{{form.base.iban}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.bic')}}:</span>
-          <span class="basic-content">{{form.special.bic}}</span>
+          <span class="basic-content">{{form.base.bic}}</span>
         </el-col>
       </el-row>
     </section>
@@ -145,27 +145,18 @@ export default {
       form: {
         ext: {
           country: "",
-          post: "",
           unify_mcc: ""
         },
         base: {
           shopname: "",
           userid: this.$route.query.userid || getParams("userid"),
-          user_type: "",
-          mchid: "",
           address: "",
-          qfmcc: "",
-          city: ""
-        },
-        special: {
-          sector: "",
+          city: "",
           expect_amt: "",
           foundation_date: "",
-          industry: "",
           bic: "",
-          business_purpose: "",
           iban: "",
-          industry_key: "",
+          post: "",
           expect_count: ""
         },
         chnl: {

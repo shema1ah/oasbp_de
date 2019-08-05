@@ -67,7 +67,7 @@
           </el-col>
           <el-col :span="3"><div style="height:90px;"></div></el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="4">
             <div style="height:90px;"></div>
           </el-col>
@@ -100,7 +100,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="3"><div style="height:90px;"></div></el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <footer>
         <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('batch.commit')}}</el-button>
@@ -121,8 +121,8 @@
         errorVisible: false,
         excelLoading: false,
         zipLoading: false,
-        uploadExcelInterface: `${config.host}/org/mchnt/upload_create_file`, // 上传excel接口
-        uploadZipInterface: `${config.host}/org/mchnt/upload_batch_package`, // 上传zip接口
+        uploadExcelInterface: `${config.host}/org/v1/mchnt/signup/excel`, // 上传excel接口
+        // uploadZipInterface: `${config.host}/org/mchnt/upload_batch_package`, // 上传zip接口
         form: {
           excel_name: '',
           zip_name: '',

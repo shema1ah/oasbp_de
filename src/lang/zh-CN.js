@@ -291,9 +291,11 @@ const zh = {
       wechatM: '微信商户号',
       wechatpay: '微信支付',
       bank: '银行',
-      reg_success: '注册成功',
-      under_review: '审核中',
-      review_pass: '审核通过',
+      creating: '创建中',
+      creatFailed: '创建失败',
+      inReg: '进件中',
+      regSucc: '进件成功',
+      regFail: '进件失败',
     },
     detail: {
       up: '启用',
@@ -468,7 +470,9 @@ const zh = {
         represeutation: '代表权',
         legal_rep: '是否为Legal Representatives',
         reg_number: '注册号码',
-        reg_issuer: '注册机构名'
+        reg_issuer: '注册机构名',
+        idnumber: '证件号码',
+        passport: '护照ID'
       },
       applicationTypes: {
         direct: '直连',

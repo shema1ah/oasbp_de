@@ -38,34 +38,34 @@
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.mertype')+':'}}</span>
-          <span class="basic-content">{{form.special.mchnt_type}}</span>
+          <span class="basic-content">{{form.base.mchnt_type}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
-          <span class="basic-content">{{form.special.first_name}}</span>
+          <span class="basic-content">{{form.base.first_name}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.last_name')+':'}}</span>
-          <span class="basic-content">{{form.special.last_name}}</span>
+          <span class="basic-content">{{form.base.last_name}}</span>
         </el-col>
       </el-row>
 
       <el-row>
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.foundation_date')+':'}}</span>
-          <span class="basic-content">{{form.special.foundation_date}}</span>
+          <span class="basic-content">{{form.base.foundation_date}}</span>
         </el-col>
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
-          <span class="basic-content">{{form.special.business_purpose}}</span>
+          <span class="basic-content">{{form.base.business_purpose}}</span>
         </el-col>
          <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
-          <span class="basic-content">{{form.special.birthday}}</span>
+          <span class="basic-content">{{form.base.birthday}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
-          <span class="basic-content">{{form.special.nation}}</span>
+          <span class="basic-content">{{form.base.nation}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
@@ -76,11 +76,11 @@
       <!-- <el-row v-if="this.isBusiness">
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry')+':'}}</span>
-          <span class="basic-content width-limit">{{form.special.industry}}</span>
+          <span class="basic-content width-limit">{{form.base.industry}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry_key')+':'}}</span>
-          <span class="basic-content width-limit">{{form.special.industry_key}}</span>
+          <span class="basic-content width-limit">{{form.base.industry_key}}</span>
         </el-col>
       </el-row> -->
 
@@ -91,30 +91,30 @@
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
-          <span class="basic-content">{{form.ext.post}}</span>
+          <span class="basic-content">{{form.base.post}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
-          <span class="basic-content">{{form.special.city}}</span>
+          <span class="basic-content">{{form.base.city}}</span>
         </el-col>
       </el-row>
 
       <el-row>
          <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
-          <span class="basic-content width-limit">{{form.special.sector}}</span>
+          <span class="basic-content width-limit">{{form.base.sector}}</span>
         </el-col>
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.reg_number')+':'}}</span>
-          <span class="basic-content">{{form.special.regi_number}}</span>
+          <span class="basic-content">{{form.base.licensenumber}}</span>
         </el-col>
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.reg_issuer')+':'}}</span>
-          <span class="basic-content">{{form.special.regi_name}}</span>
+          <span class="basic-content">{{form.base.license_name}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
-          <span class="basic-content">{{form.special.empeoy_status}}</span>
+          <span class="basic-content">{{form.base.empeoy_status}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
@@ -125,14 +125,26 @@
           <span class="basic-content">{{form.base.mobile}}</span>
         </el-col>
       </el-row>
+
+     <el-row>
+        <el-col :span="8" v-if="!this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
+          <span class="basic-content">{{form.base.idnumber}}</span>
+        </el-col>
+        <el-col :span="8" v-if="!this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.passport')+':'}}</span>
+          <span class="basic-content">{{form.base.passport}}</span>
+        </el-col>
+      </el-row>
     </section>
+    
     <!-- 股东信息 -->
     <section class="basic" v-if="this.isBusiness">
       <div class="banner">
         <div class="title">{{$t('merchant.newMerchant.basic.cap2')}}</div>
         <div class="divider"></div>
       </div>
-      <div class="list-gap" v-for="(n,i) in form.special.owners" :key="i">
+      <div class="list-gap" v-for="(n,i) in form.base.owners" :key="i">
         <el-row>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
@@ -198,7 +210,7 @@
         <div class="divider"></div>
       </div>
 
-      <div class="list-gap" v-for="(n,i) in form.special.legals" :key="i">
+      <div class="list-gap" v-for="(n,i) in form.base.legals" :key="i">
         <el-row>
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
@@ -301,10 +313,16 @@ export default {
       form: {
         ext: {
           country: "",
-          post: "",
           unify_mcc: ""
         },
         base: {
+          sector: "",
+          first_name: "",
+          last_name: "",     
+          mchnt_type: "", 
+          city: "",
+          post: "", 
+          foundation_date: "", 
           shopname: "",
           user_type: "",
           address: "",
@@ -314,18 +332,19 @@ export default {
           sls_name: "",
           email: "",   // 邮箱
           mobile: "",  // 手机号码
-          cate: ""
-        },
-        special: {
-          sector: "",
-          city: "",
-          regi_number: "",
-          regi_name: "",
-          first_name: "",     
-          last_name: "", 
+          cate: "",
+          licensenumber: "",
+          license_name: "",
           birthday: "",  // 生日
           nation: "",  // 国籍  
           empeoy_status: "", //就业状态
+          business_purpose: "",
+          license_name: "",
+          licensenumber: "",
+          idnumber: "",
+          passport: "",
+        // industry: "",
+        // industry_key: ""
           owners: [
             {
               city: "",
@@ -345,10 +364,6 @@ export default {
               email: ""
             }
           ],
-          foundation_date: "",
-          // industry: "",
-          mchnt_type: "",
-          business_purpose: "",
           legals: [
             {
               city: "",
@@ -367,8 +382,7 @@ export default {
               email: ""
             }
           ],
-          // industry_key: ""
-        }
+        },
       }
     };
   },
@@ -405,21 +419,21 @@ export default {
           this.isLoading = false;
           if (data.respcd === config.code.OK) {
             this.form = data.data;
-            this.form.special.foundation_date = formatDate(
-              this.form.special.foundation_date,
+            this.form.base.foundation_date = formatDate(
+              this.form.base.foundation_date,
               "dd/MM/yyyy"
             )
-            this.form.special.birthday = formatDate(
-              this.form.special.birthday,
+            this.form.base.birthday = formatDate(
+              this.form.base.birthday,
               "dd/MM/yyyy"
             )
-            this.form.special.owners.forEach(function(i){
+            this.form.base.owners.forEach(function(i){
             i.birthday = formatDate(
               i.birthday,
               "dd/MM/yyyy"
             );
             })
-            this.form.special.legals.forEach(function(i){
+            this.form.base.legals.forEach(function(i){
             i.birthday = formatDate(
               i.birthday,
               "dd/MM/yyyy"

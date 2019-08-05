@@ -83,20 +83,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      // filename: '[name].js'
-      // minChunks (module) {
-      //   // any required modules inside node_modules are extracted to vendor
-      //   return (
-      //     module.resource &&
-      //     /\.js$/.test(module.resource) &&
-      //     module.resource.indexOf(
-      //       path.join(__dirname, '../node_modules')
-      //     ) === 0
-      //   )
-      // }
+      name: 'vendor'
     }),
-
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor_1', //新打包文件名
       chunks: ['vendor'], //拆分模块名

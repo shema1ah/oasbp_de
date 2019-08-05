@@ -3,8 +3,19 @@
     <header class="page-header">
       <h2 class="page-title">{{$t('merchant.title')}}</h2>
       <div>
-        <el-button size="large" type="primary" @click="createMerchant" v-if="authData.includes('mchnt_manage_create')">{{$t('merchant.create')}}</el-button>
-        <el-button style="margin-left:6px;" size="large" type="primary" @click="patchImport" v-if="authData.includes('mchnt_manage_batch_create')">{{$t('merchant.patchImport')}}</el-button>
+        <el-button
+          size="large"
+          type="primary"
+          @click="createMerchant"
+          v-if="authData.includes('mchnt_manage_create')"
+        >{{$t('merchant.create')}}</el-button>
+        <el-button
+          style="margin-left:6px;"
+          size="large"
+          type="primary"
+          @click="patchImport"
+          v-if="authData.includes('mchnt_manage_batch_create')"
+        >{{$t('merchant.patchImport')}}</el-button>
       </div>
     </header>
     <el-form class="search-form" :model="formData" ref="mchnt_list_form">
@@ -17,19 +28,34 @@
 
       <el-form-item :label="$t('merchant.form.agent1')" prop="qd_uid">
         <el-select v-model="formData.qd_uid" @change="selectChannelHandler">
-          <el-option :label="item.name" :value="item.qd_uid" v-for="item in channels" :key="item.qd_uid"></el-option>
+          <el-option
+            :label="item.name"
+            :value="item.qd_uid"
+            v-for="item in channels"
+            :key="item.qd_uid"
+          ></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item :label="$t('merchant.form.agent2')" prop="qd_uid2">
         <el-select v-model="formData.qd_uid2" :placeholder="$t('merchant.form.ph')">
-          <el-option :label="item.name" :value="item.qd_uid" v-for="item in channels2" :key="item.qd_uid"></el-option>
+          <el-option
+            :label="item.name"
+            :value="item.qd_uid"
+            v-for="item in channels2"
+            :key="item.qd_uid"
+          ></el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item :label="$t('merchant.form.audit_state')" prop="status">
         <el-select v-model="formData.status">
-          <el-option :label="item.name" :value="item.val" v-for="item in statusList" :key="item.val"></el-option>
+          <el-option
+            :label="item.name"
+            :value="item.val"
+            v-for="item in statusList"
+            :key="item.val"
+          ></el-option>
         </el-select>
       </el-form-item>
 
@@ -39,7 +65,13 @@
       </div>
     </el-form>
 
-    <el-table :data="merchents" stripe v-loading="isLoading" class="table-hover" @cell-click="selectCurrentRowHandler">
+    <el-table
+      :data="merchents"
+      stripe
+      v-loading="isLoading"
+      class="table-hover"
+      @cell-click="selectCurrentRowHandler"
+    >
       <el-table-column prop="userid" :label="$t('merchant.table.mchtid')" min-width="120"></el-table-column>
       <el-table-column prop="shopname" :label="$t('merchant.table.mchtname')" min-width="100"></el-table-column>
       <el-table-column prop="mcc_str" :label="$t('merchant.table.industry')" min-width="140"></el-table-column>
@@ -47,14 +79,10 @@
       <el-table-column prop="qd_name" :label="$t('merchant.table.agent1')" min-width="100"></el-table-column>
       <el-table-column prop="username" :label="$t('merchant.table.account')" min-width="100"></el-table-column>
       <el-table-column prop="user_type" :label="$t('audit.table.cate')" min-width="100">
-      <template slot-scope="scope">
-          {{ merchantTypeList[scope.row.user_type] }}
-        </template>
+        <template slot-scope="scope">{{ merchantTypeList[scope.row.user_type] }}</template>
       </el-table-column>
       <el-table-column :label="$t('merchant.table.type')" min-width="130">
-        <template slot-scope="scope">
-          {{ cate[scope.row.cate] }}
-        </template>
+        <template slot-scope="scope">{{ cate[scope.row.cate] }}</template>
       </el-table-column>
 
       <el-table-column :label="$t('merchant.table.store')" min-width="80">
@@ -69,28 +97,43 @@
         </template>
       </el-table-column>
 
-       <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
-        <template slot-scope="scope">
-          {{ isSigned[scope.row.status] }}
-        </template>
+      <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
+        <template slot-scope="scope">{{ isSigned[scope.row.status] }}</template>
       </el-table-column>
-
     </el-table>
 
-<el-dialog
-  :title="$t('merchant.table.merstatus')"
-  :visible.sync="statusDialogVisible"
-  width="30%"
-  center>
-  <div>
-    <ul class="merchant-status">
-      <li :class="{'el-icon-caret-bottom' : n , 'complete-status' : n < 5}" v-for="(i,n) in merStatusList" :key="n">{{i}}</li>
-    </ul>
-  </div>
-  <span slot="footer" class="dialog-footer">
-    <el-button type="primary" @click="statusDialogVisible = false">{{ $t('common.close') }}</el-button>
-  </span>
-</el-dialog>
+    <el-dialog
+      :title="$t('merchant.table.merstatus')"
+      :visible.sync="statusDialogVisible"
+      width="30%"
+      center
+    >
+      <ul class="merchant-status">
+        <li
+          :class="{'el-icon-caret-bottom' : n , 'complete-status' : n < signup_status}"
+          v-for="(i,n) in merStatusList"
+          :key="n"
+        >{{i}}</li>
+      </ul>
+
+      <ul class="merchant-status" v-for="(i, n) in chnlStatusList" :key="n">
+        <li
+          :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']"
+          :style="chnlStatusList.length!==1? 'cursor:pointer': ''"
+          @click="toggleStatusShow(n)"
+        >{{i.name}}</li>
+        <div :class="{'status-toggle' : i.isStatusShow}">
+          <li :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']">进件中</li>
+          <li
+            :class="[{ 'complete-status': i.status >= 1 }, 'el-icon-caret-bottom']"
+          >{{i.status === 2 ? '进件失败':'进件成功'}}</li>
+        </div>
+      </ul>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="statusDialogVisible = false">{{ $t('common.close') }}</el-button>
+      </span>
+    </el-dialog>
 
     <el-pagination
       v-show="merchents.length > 0"
@@ -99,246 +142,318 @@
       @size-change="handleSizeChange"
       :total="total"
       @current-change="handleCurrentChange"
-      :current-page="currentPage">
-    </el-pagination>
+      :current-page="currentPage"
+    ></el-pagination>
   </div>
 </template>
 <script>
-  import config from 'config'
-  import axios from 'axios';
-  import qs from 'qs';
-  export default {
-    data() {
-      return {
-        isLoading: false,
-        statusDialogVisible: false,
-        formData: {
-          shopname: '',
-          userid: '',
-          qd_uid: '',
-          qd_uid2: '',
-          qd_name: '',
-          qd_name2: '',
-          status: ''
-        },
-        merchents: [],
-        channels: [],
-        channels2: [],
-        statusList: [
-          {name: this.$t('common.enable'), val: 3},
-          {name: this.$t('common.disable'), val: 4},
-        ],
-        isSigned: {
-          "3": this.$t('common.enable'),
-          "4": this.$t('common.disable'),
-          "-1": this.$t('common.audit'),
-          "0": this.$t('common.refuse'),
-          "5": this.$t('common.toSubmit'),
-        },
-        cate: {
-          "merchant": this.$t('merchant.detail.cate.merchant'),
-          "bigmerchant": this.$t('merchant.detail.cate.big'),
-          "submerchant": this.$t('merchant.detail.cate.sub')
-        },
-        merchantTypeList: {
-          2: this.$t('merchant.newMerchant.form.personal'),
-          3: this.$t('merchant.newMerchant.form.enterprise')
-        },
-        merStatusList:[
-        this.$t('merchant.table.bank'),
-        this.$t('merchant.table.reg_success'),
-        this.$t('merchant.table.under_review'),
-        'Alipay_Global',
-        this.$t('merchant.table.reg_success'),
-        this.$t('merchant.table.under_review'),
-        this.$t('merchant.table.review_pass')],
-        total: 0,
-        pageSize: 10,
-        currentPage: 0,
-      }
+import config from "config";
+import axios from "axios";
+import qs from "qs";
+export default {
+  data() {
+    return {
+      isLoading: false,
+      statusDialogVisible: false,
+      isStatusShow: true,
+      signup_status: 0,
+      activeName: "1",
+      formData: {
+        shopname: "",
+        userid: "",
+        qd_uid: "",
+        qd_uid2: "",
+        qd_name: "",
+        qd_name2: "",
+        status: ""
+      },
+      merchents: [],
+      channels: [],
+      channels2: [],
+      statusList: [
+        { name: this.$t("common.enable"), val: 3 },
+        { name: this.$t("common.disable"), val: 4 }
+      ],
+      isSigned: {
+        "3": this.$t("common.enable"),
+        "4": this.$t("common.disable"),
+        "-1": this.$t("common.audit"),
+        "0": this.$t("common.refuse"),
+        "5": this.$t("common.toSubmit")
+      },
+      cate: {
+        merchant: this.$t("merchant.detail.cate.merchant"),
+        bigmerchant: this.$t("merchant.detail.cate.big"),
+        submerchant: this.$t("merchant.detail.cate.sub")
+      },
+      merchantTypeList: {
+        2: this.$t("merchant.newMerchant.form.personal"),
+        3: this.$t("merchant.newMerchant.form.enterprise")
+      },
+      merStatusList: [
+        this.$t("merchant.table.bank"),
+        this.$t("merchant.table.creating"),
+        this.$t("common.createSuccess"),
+      ],
+      chnlStatusList: [
+        // { name: "微信香港", status: 0, isStatusShow: 1 }, // 只有 0-1-2
+        // {name: 'Alipay_Global', status: 2, isStatusShow: 0},
+      ],
+      total: 0,
+      pageSize: 10,
+      currentPage: 0
+    };
+  },
+  computed: {
+    authData() {
+      return this.$store.state.permissionData;
+    }
+  },
+  created() {
+    this.fetchData();
+    this.getChannelList();
+  },
+  methods: {
+    shopList(mchntId) {
+      this.$router.push({
+        path: "shop_manage_list/",
+        query: { userid: mchntId, from: "old" }
+      });
     },
-    computed: {
-      authData() {
-        return this.$store.state.permissionData;
-      }
-    },
-    created() {
-      this.fetchData();
-      this.getChannelList();
-    },
-    methods: {
-      shopList(mchntId) {
-        this.$router.push({
-          path: 'shop_manage_list/',
-          query: {userid: mchntId, from: 'old'}
+
+    // 获取1级渠道列表
+    getChannelList() {
+      axios
+        .get(`${config.host}/org/tools/qudao/list`, {
+          params: {
+            groupid: "",
+            status: 3,
+            format: "cors"
+          }
         })
-      },
-
-      // 获取1级渠道列表
-      getChannelList() {
-        axios.get(`${config.host}/org/tools/qudao/list`, {
-          params: {
-            groupid: '',
-            status: 3,
-            format: 'cors'
-          }})
-          .then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
+        .then(res => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
             this.channels = data.data.list;
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          }).catch(() => {
-          this.$message.error(this.$t('common.netError'));
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        })
+        .catch(() => {
+          this.$message.error(this.$t("common.netError"));
         });
-      },
+    },
 
-      // 获取渠道列表数据
-      selectChannelHandler(groupid) {
-        this.formData.qd_uid2 = ''
-        groupid && axios.get(`${config.host}/org/tools/qudao/list`, {
-          params: {
-            groupid: groupid,
-            status: 3,
-            format: 'cors'
-          }})
-          .then((res) => {
+    // 获取渠道列表数据
+    selectChannelHandler(groupid) {
+      this.formData.qd_uid2 = "";
+      groupid &&
+        axios
+          .get(`${config.host}/org/tools/qudao/list`, {
+            params: {
+              groupid: groupid,
+              status: 3,
+              format: "cors"
+            }
+          })
+          .then(res => {
             let data = res.data;
             if (data.respcd === config.code.OK) {
               this.channels2 = data.data.list;
             } else {
               this.$message.error(data.respmsg);
             }
-          }).catch(() => {
-          this.$message.error(this.$t('common.netError'));
-        });
-      },
+          })
+          .catch(() => {
+            this.$message.error(this.$t("common.netError"));
+          });
+    },
 
-      // 获取商户列表数据
-      fetchData(query) {
-        if(query) {
-          this.currentPage = 0
-        }
-        let p = {
-          shopname: this.formData.shopname,
-          userid: this.formData.userid,
-          qd_uid: this.formData.qd_uid,
-          status: this.formData.status,
-          qd_name: '',
-          page: this.currentPage > 0 ? (this.currentPage - 1) : this.currentPage,
-          page_size: this.pageSize,
-          format: 'cors'
-        }
-        if(this.formData.qd_uid2) {
-          p.qd_uid = this.formData.qd_uid2
-        }
-        this.isLoading = true;
-        axios.get(`${config.host}/org/mchnt/list`, {
-          params: p})
-          .then((res) => {
-            let data = res.data;
-            this.isLoading = false;
-            if (data.respcd === config.code.OK) {
-               this.merchents = data.data.mchnt_infos
-               this.total = data.data.mchnt_cnt
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          }).catch(() => {
-          this.isLoading = false;
-          this.$message.error(this.$t('common.netError'));
-        });
-      },
-
-      // 表单重置
-      reset() {
-        this.$refs['mchnt_list_form'].resetFields();
-        this.channels2 = [];
-      },
-
-      // 商户进件/新建商户
-      createMerchant() {
-        this.$router.push({path: 'mchnt_manage_list/mchnt_create'})
-      },
-
-      // 批量进件
-      patchImport() {
-        this.$router.push({path: 'mchnt_manage_list/batch_import'})
-      },
-
-      // 选择列表项，进入详情页
-      selectCurrentRowHandler(row, column) {
-        if(column.property === "detail") {
-          this.$router.push({
-          name: 'mchntDetail',
-          query: {userid: row.userid, from: 'old'}
-        })
-        }
-        // else if(column.property === "status"){
-        //  if(row.status === -1 ){
-        // this.statusDialogVisible = true
-        //  } 
-        // }
-      },
-
-      handleSizeChange(size = 10) {
-        this.pageSize = size
-        this.handleCurrentChange()
-      },
-
-      handleCurrentChange(current) {
-        if (current) {
-          this.currentPage = current
-        } else {
-          this.currentPage = 0
-        }
-        this.fetchData()
+    // 获取商户列表数据
+    fetchData(query) {
+      if (query) {
+        this.currentPage = 0;
       }
+      let p = {
+        shopname: this.formData.shopname,
+        userid: this.formData.userid,
+        qd_uid: this.formData.qd_uid,
+        status: this.formData.status,
+        qd_name: "",
+        page: this.currentPage > 0 ? this.currentPage - 1 : this.currentPage,
+        page_size: this.pageSize,
+        format: "cors"
+      };
+      if (this.formData.qd_uid2) {
+        p.qd_uid = this.formData.qd_uid2;
+      }
+      this.isLoading = true;
+      axios
+        .get(`${config.host}/org/mchnt/list`, {
+          params: p
+        })
+        .then(res => {
+          let data = res.data;
+          this.isLoading = false;
+          if (data.respcd === config.code.OK) {
+            this.merchents = data.data.mchnt_infos;
+            this.total = data.data.mchnt_cnt;
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        })
+        .catch(() => {
+          this.isLoading = false;
+          this.$message.error(this.$t("common.netError"));
+        });
+    },
+
+    // 表单重置
+    reset() {
+      this.$refs["mchnt_list_form"].resetFields();
+      this.channels2 = [];
+    },
+
+    // 商户进件/新建商户
+    createMerchant() {
+      this.$router.push({ path: "mchnt_manage_list/mchnt_create" });
+    },
+
+    // 批量进件
+    patchImport() {
+      this.$router.push({ path: "mchnt_manage_list/batch_import" });
+    },
+
+    // 选择列表项，进入详情页
+    selectCurrentRowHandler(row, column) {
+      if (column.property === "detail") {
+        this.$router.push({
+          name: "mchntDetail",
+          query: { userid: row.userid, from: "old" }
+        });
+      } else if (column.property === "status") {
+        if (row.status === -1) {
+          axios
+            .get(`${config.host}/org/v1/mchnt/audit`, {
+              params: {
+                userid: row.userid,
+                // userid: 2802023,
+                format: "cors"
+              }
+            })
+            .then(res => {
+              let data = res.data;
+              if (data.respcd === config.code.OK) {
+                 this.chnlStatusList = data.data.chnl_status
+                 this.chnlStatusList.forEach((i, n) => {
+                   if (n === 0) {
+                    i.isStatusShow = 1
+                  }else{
+                    i.isStatusShow = 0
+                  }
+                 });
+                switch (data.data.signup_status) {
+                  case 5:
+                    this.merStatusList[2] = this.$t("merchant.table.creatFailed");
+                    this.signup_status = 3;
+                    break;
+                  case 4:
+                    this.signup_status = 3;
+                    break;
+                  case 3:
+                    this.signup_status = 2;
+                    break;
+                }
+              } else {
+                this.$message.error(data.respmsg);
+              }
+            })
+            .catch(() => {
+              this.$message.error(this.$t("common.netError"));
+            });
+          this.statusDialogVisible = true;
+        }
+      }
+    },
+
+    toggleStatusShow(n) {
+      if (this.chnlStatusList.length === 1) {
+        return;
+      } else if (this.chnlStatusList[n].isStatusShow) {
+        this.chnlStatusList[n].isStatusShow = 0;
+      } else if (!this.chnlStatusList[n].isStatusShow) {
+        this.chnlStatusList.forEach(i => {
+          i.isStatusShow = 0;
+          this.chnlStatusList[n].isStatusShow = 1;
+        }, this);
+      }
+    },
+
+    handleSizeChange(size = 10) {
+      this.pageSize = size;
+      this.handleCurrentChange();
+    },
+
+    handleCurrentChange(current) {
+      if (current) {
+        this.currentPage = current;
+      } else {
+        this.currentPage = 0;
+      }
+      this.fetchData();
     }
   }
+};
 </script>
 <style lang="scss">
-  .merchant {
-    .table-hover .el-table__row {
-      cursor: pointer;
-    }
+.merchant {
+  .table-hover .el-table__row {
+    cursor: pointer;
   }
-  .merchant-status {
-    // width: 300px;
-    margin: 0 auto;
-    padding: 0;
-    li {
+}
+.merchant-status {
+  // width: 300px;
+  margin: 0 auto;
+  padding: 0;
+  li {
     list-style: none;
     text-align: center;
     display: block;
     position: relative;
-    margin: 40px auto;
+    margin: 40px auto 0;
     font-size: 18px;
     color: $submenu-font-color;
-    }
-    .el-icon-caret-bottom{
+  }
+  div {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.2s linear;
+  }
+  .status-toggle {
+    height: 120px;
+    transition: height 0.2s linear;
+  }
+  .el-icon-caret-bottom {
     &::before {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    margin-left: -8px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      margin-left: -8px;
     }
     &::after {
-    content: '';
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    height: 20px;
-    border: 1px dashed;
-    }
-    }
-    .complete-status{
-    color: $baseColor;
-     &::after {
-    border: 1px solid;
-    }
+      content: "";
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      height: 20px;
+      border: 1px dashed;
     }
   }
-
+  .complete-status {
+    color: $baseColor;
+    &::after {
+      border: 1px solid;
+    }
+  }
+}
 </style>
