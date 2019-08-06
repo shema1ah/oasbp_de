@@ -15,8 +15,8 @@
           width="40%"
           >
           <div class="tip-para">{{$t('batch.manual1')}}</div>
-          <div class="tip-para">{{$t('batch.manual2')}}</div>
-          <div class="tip-para">{{$t('batch.manual3')}}</div>
+          <!-- <div class="tip-para">{{$t('batch.manual2')}}</div>
+          <div class="tip-para">{{$t('batch.manual3')}}</div> -->
           <span slot="footer">
             <el-button @click="dialogVisible = false">{{$t('batch.tip.close')}}</el-button>
           </span>
@@ -27,7 +27,7 @@
           :visible.sync="errorVisible"
           width="30%"
           >
-          <div class="tip-para" v-for="item in error_info">{{item}}</div>
+          <div class="tip-para" v-for="(i, n) in error_info" :key="n">{{`${$t('batch.tip.line')}${i.line}: ${i.first_error}`}}</div>
           <span slot="footer">
             <el-button @click="errorVisible = false">{{$t('common.confirm')}}</el-button>
           </span>
@@ -103,7 +103,7 @@
         </el-row> -->
       </el-form>
       <footer>
-        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('batch.commit')}}</el-button>
+        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('common.done')}}</el-button>
       </footer>
     </section>
   </div>
@@ -121,7 +121,7 @@
         errorVisible: false,
         excelLoading: false,
         zipLoading: false,
-        uploadExcelInterface: `${config.host}/org/v1/mchnt/signup/excel`, // 上传excel接口
+        uploadExcelInterface: `${config.host}/org/v1/mchnt/batch_signup`, // 上传excel接口
         // uploadZipInterface: `${config.host}/org/mchnt/upload_batch_package`, // 上传zip接口
         form: {
           excel_name: '',
@@ -139,38 +139,44 @@
     },
     methods: {
       // 提交
+//       commitHandler() {
+//         // if(!this.form.fileid) {
+//         //   this.$message.error(this.$t('batch.rule1'))
+//         //   return;
+//         // }
+// //         if(!this.form.file_name_new) {
+// //           this.$message.error(this.$t('batch.rule2'))
+// //           return;
+// //         }
+//         this.isLoading = true;
+//         let param = {
+//           // fileid: this.form.fileid,
+//           // dir_name: this.form.dir_name,
+//           // file_name_new: this.form.file_name_new,
+//           format: 'cors'
+//         };
+//         console.log('commit param:', param);
+//         axios.post(`${config.host}/org/mchnt/mchnt_batch_create`,qs.stringify(param), {
+//         }).then((res) => {
+//           let data = res.data;
+//           if (data.respcd === config.code.OK) {
+//             this.$message.success(this.$t('common.createSuccess'))
+//             this.$router.push({
+//               name: 'mchnt_manage_list',
+//             })
+//           }else {
+//             this.$message.error(data.respmsg)
+//           }
+//           this.isLoading = false;
+//         }).catch(() => {
+//           this.isLoading = false;
+//         })
+//       },
+
       commitHandler() {
-        if(!this.form.fileid) {
-          this.$message.error(this.$t('batch.rule1'))
-          return;
-        }
-//         if(!this.form.file_name_new) {
-//           this.$message.error(this.$t('batch.rule2'))
-//           return;
-//         }
-        this.isLoading = true;
-        let param = {
-          fileid: this.form.fileid,
-          dir_name: this.form.dir_name,
-          file_name_new: this.form.file_name_new,
-          format: 'cors'
-        };
-        console.log('commit param:', param);
-        axios.post(`${config.host}/org/mchnt/mchnt_batch_create`,qs.stringify(param), {
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.$message.success(this.$t('common.createSuccess'))
-            this.$router.push({
-              name: 'mchnt_manage_list',
-            })
-          }else {
-            this.$message.error(data.respmsg)
-          }
-          this.isLoading = false;
-        }).catch(() => {
-          this.isLoading = false;
-        })
+      this.$router.push({
+        name: 'mchnt_manage_list',
+       })
       },
 
       clearExcelName() {
@@ -183,7 +189,7 @@
          cate: 'merchant',
          lang: this.lang,
         };
-        window.location.href = `${config.host}/org/mchnt/signup/download_batch_template?${qs.stringify(params)}`
+        window.location.href = `${config.host}/org/v1/mchnt/signup/excel?${qs.stringify(params)}`
       },
 
       clearZipPackage() {
@@ -200,7 +206,6 @@
         let tag = data.data.tag;
         let reqUrl = tag === 'zip' ? this.uploadZipInterface : this.uploadExcelInterface;
         this[tag + 'Loading'] = true;
-
         let blob = new Blob([data.file]);
         formData.append("content", blob);
         formData.append("file_name", data.file.name.substring(0,data.file.name.indexOf('.')));
@@ -218,23 +223,38 @@
           let data = res.data;
           this[tag + 'Loading'] = false;
           if (data.respcd === config.code.OK) {
-          if(data.data.error_info.length > 0){
-           this.error_info = data.data.error_info;
+            this.$message.success(this.$t('common.createSuccess'))
+          //  if(tag === 'excel') {
+          //     this.form.fileid = data.data.fileid;
+          //     this.form.total_cnt = data.data.total_cnt;
+          //   }else {
+          //     this.form.dir_name = data.data.dir_name;
+          //     this.form.file_name_new = data.data.file_name_new;
+          //   }
+          }else if(data.respcd === config.code.USERERR){
+           this.error_info = data.data;
            this.errorVisible = true;
-          console.log("error",data.data.error_info);      
-          }else {
-           if(tag === 'excel') {
-              this.form.fileid = data.data.fileid;
-              this.form.total_cnt = data.data.total_cnt;
-            }else {
-              this.form.dir_name = data.data.dir_name;
-              this.form.file_name_new = data.data.file_name_new;
-            }
-          console.log('upload done:', this.form)
-          }
           }else {
             this.$message.error(data.respmsg)
           }
+          // if (data.respcd === config.code.OK) {
+          // if(data.data.error_info.length > 0){
+          //  this.error_info = data.data.error_info;
+          //  this.errorVisible = true;
+          // console.log("error",data.data.error_info);      
+          // }else {
+          //  if(tag === 'excel') {
+          //     this.form.fileid = data.data.fileid;
+          //     this.form.total_cnt = data.data.total_cnt;
+          //   }else {
+          //     this.form.dir_name = data.data.dir_name;
+          //     this.form.file_name_new = data.data.file_name_new;
+          //   }
+          // console.log('upload done:', this.form)
+          // }
+          // }else {
+          //   this.$message.error(data.respmsg)
+          // }
         }).catch(() => {
           this[tag + 'Loading'] = false;
         })

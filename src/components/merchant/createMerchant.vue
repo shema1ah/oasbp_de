@@ -65,13 +65,13 @@
 
         <el-form-item prop="mchnt_type" :label="$t('merchant.newMerchant.form.mertype')" v-if="isBusiness">
         <el-select v-model="formData.mchnt_type">
-          <el-option :label="item" :value="item" v-for="item in selectList.mchnt_type" :key="item"></el-option>
+          <el-option :label="item" :value="item" v-for="item in selectList.busi_mchnt_type" :key="item"></el-option>
         </el-select>
       </el-form-item>
 
        <el-form-item prop="mchnt_type_person" :label="$t('merchant.newMerchant.form.mertype')" v-if="!isBusiness" :rules="baseRules.mchnt_type">
         <el-select v-model="formData.mchnt_type_person">
-          <el-option :label="item" :value="item" v-for="item in mchnt_type_person" :key="item"></el-option>
+          <el-option :label="item" :value="item" v-for="item in selectList.person_mchnt_type" :key="item"></el-option>
         </el-select>
       </el-form-item>
 
@@ -583,11 +583,12 @@
           // industry: [],
           // industry_key: [],
           represe: [],
+          busi_mchnt_type: [],
+          person_mchnt_type: [],
           people_empeoy_status: [], //职业类别
           country: {},
           mchnt_type: []
         },
-        mchnt_type_person: ['Selbststandig','Eingetragener Kaufmann'],
         channels1: [],
         channels2: [],
         salesperson: [],
@@ -1254,7 +1255,7 @@ computed: {
               this.$message.success(this.isUpdate ? this.$t('common.updateSuccess') : this.$t('common.createSuccess'))
               this.$router.push({
                 name: 'mchntDetail',
-                query: {userid: data.data.mchnt, from: (this.isUpdate ? 'edit' : 'new')}
+                query: {userid: data.data.bigmchnt || data.data.mchnt, from: (this.isUpdate ? 'edit' : 'new')}
               })
             } else {
               this.$message.error(data.respmsg);

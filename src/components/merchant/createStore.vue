@@ -370,7 +370,7 @@
               this.$message.success(this.isUpdate ? this.$t('common.updateSuccess') : this.$t('common.createSuccess'))
               this.$router.push({
                 name: 'shopDetail',
-                query: {userid: data.data.submchnt_userid, from: (this.isUpdate ? 'edit' : 'new')}
+                query: {userid: data.data.submchnt, from: (this.isUpdate ? 'edit' : 'new')}
               })
             } else {
               this.$message.error(data.respmsg);

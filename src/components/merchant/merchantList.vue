@@ -97,8 +97,14 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
+      <!-- <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
         <template slot-scope="scope">{{ isSigned[scope.row.status] }}</template>
+      </el-table-column> -->
+
+      <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="80">
+        <template slot-scope="scope">
+          <el-button type="text">{{ $t('common.look') }}</el-button>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -123,10 +129,10 @@
           @click="toggleStatusShow(n)"
         >{{i.name}}</li>
         <div :class="{'status-toggle' : i.isStatusShow}">
-          <li :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']">进件中</li>
+          <li :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']">{{$t("merchant.table.inReg")}}</li>
           <li
             :class="[{ 'complete-status': i.status >= 1 }, 'el-icon-caret-bottom']"
-          >{{i.status === 2 ? '进件失败':'进件成功'}}</li>
+          >{{i.status === 2 ? $t('merchant.table.fail'):$t('merchant.table.succ')}}</li>
         </div>
       </ul>
 
@@ -193,7 +199,7 @@ export default {
       merStatusList: [
         this.$t("merchant.table.bank"),
         this.$t("merchant.table.creating"),
-        this.$t("common.createSuccess"),
+        this.$t("merchant.table.creatsucc"),
       ],
       chnlStatusList: [
         // { name: "微信香港", status: 0, isStatusShow: 1 }, // 只有 0-1-2
@@ -332,7 +338,7 @@ export default {
           query: { userid: row.userid, from: "old" }
         });
       } else if (column.property === "status") {
-        if (row.status === -1) {
+        // if (row.status === -1) {
           axios
             .get(`${config.host}/org/v1/mchnt/audit`, {
               params: {
@@ -372,7 +378,7 @@ export default {
               this.$message.error(this.$t("common.netError"));
             });
           this.statusDialogVisible = true;
-        }
+        // }
       }
     },
 

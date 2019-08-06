@@ -15,8 +15,8 @@
           width="40%"
           >
           <div class="tip-para">{{$t('batch.manual1_shop')}}</div>
-          <div class="tip-para">{{$t('batch.manual2_shop')}}</div>
-          <div class="tip-para">{{$t('batch.manual3')}}</div>
+          <!-- <div class="tip-para">{{$t('batch.manual2_shop')}}</div>
+          <div class="tip-para">{{$t('batch.manual3')}}</div> -->
           <span slot="footer">
             <el-button @click="dialogVisible = false">{{$t('batch.tip.close')}}</el-button>
           </span>
@@ -27,7 +27,7 @@
           :visible.sync="errorVisible"
           width="30%"
           >
-          <div class="tip-para" v-for="item in error_info">{{item}}</div>
+          <div class="tip-para" v-for="(i, n) in error_info" :key="n">{{i}}</div>
           <span slot="footer">
             <el-button @click="errorVisible = false">{{$t('common.confirm')}}</el-button>
           </span>
