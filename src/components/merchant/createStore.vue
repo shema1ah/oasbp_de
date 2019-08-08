@@ -224,15 +224,6 @@
 
           'iban': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
-                } else {
-                  cb();
-                }
-              }
-            },
           ],
 
           'bic': [

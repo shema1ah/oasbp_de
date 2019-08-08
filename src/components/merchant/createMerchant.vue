@@ -720,15 +720,6 @@
           ],
           'reg_number': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule52')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
-                } else {
-                  cb();
-                }
-              }
-            }
           ],
           'reg_issuer': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule53')}
@@ -766,15 +757,6 @@
           ],
           'bankaccount': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
-                } else {
-                  cb();
-                }
-              }
-            },
           ],
           'bankcode': [
             {required: true, message: this.$t('merchant.newMerchant.rule19')}

@@ -133,7 +133,7 @@
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.passport')+':'}}</span>
-          <span class="basic-content">{{form.base.passport}}</span>
+          <span class="basic-content">{{form.ext.passport}}</span>
         </el-col>
       </el-row>
     </section>
@@ -313,6 +313,7 @@ export default {
       form: {
         ext: {
           country: "",
+          passport: "",
           unify_mcc: ""
         },
         base: {
@@ -342,7 +343,6 @@ export default {
           license_name: "",
           licensenumber: "",
           idnumber: "",
-          passport: "",
         // industry: "",
         // industry_key: ""
           owners: [
