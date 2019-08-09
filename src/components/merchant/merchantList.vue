@@ -120,7 +120,7 @@
           v-for="(i,n) in merStatusList"
           :key="n"
         >{{i}}</li>
-         <p v-if="signup_error_msg">{{`(${signup_error_msg})`}}</p>
+         <p v-if="signup_error_msg" @click="err_msg_toggle = !err_msg_toggle" :class="{'err-msg-toggle' : err_msg_toggle}">{{`(${signup_error_msg})`}}</p>
       </ul>  
 
       <ul class="merchant-status" v-for="(i, n) in chnlStatusList" :key="n">
@@ -207,6 +207,7 @@ export default {
         // {name: 'Alipay_Global', status: 2, isStatusShow: 0},
       ],
       signup_succ: false,
+      err_msg_toggle: true,
       signup_error_msg: '',
       total: 0,
       pageSize: 10,
@@ -435,9 +436,16 @@ export default {
   }
   p {
     text-align: center;
-    margin-top: 0;
+    margin-top: 5px;
     font-size: 12px;
     color:#2974FF;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+  }
+  .err-msg-toggle {
+    height: 14px;
+    white-space: nowrap;
   }
   div {
     height: 0;

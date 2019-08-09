@@ -103,7 +103,7 @@
         </el-row> -->
       </el-form>
       <footer>
-        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('common.done')}}</el-button>
+        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('batch.commit')}}</el-button>
       </footer>
     </section>
   </div>
