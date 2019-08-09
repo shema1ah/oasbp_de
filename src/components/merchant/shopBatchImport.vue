@@ -27,7 +27,7 @@
           :visible.sync="errorVisible"
           width="30%"
           >
-          <div class="tip-para" v-for="(i, n) in error_info" :key="n">{{i}}</div>
+          <div class="tip-para" v-for="(i, n) in error_info" :key="n">{{`${$t('batch.tip.line')}${i.line}: ${i.first_error}`}}</div>
           <span slot="footer">
             <el-button @click="errorVisible = false">{{$t('common.confirm')}}</el-button>
           </span>
@@ -67,7 +67,7 @@
           </el-col>
           <el-col :span="3"><div style="height:90px;"></div></el-col>
         </el-row>
-        <el-row>
+        <!-- <el-row>
           <el-col :span="4">
             <div style="height:90px;"></div>
           </el-col>
@@ -100,10 +100,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="3"><div style="height:90px;"></div></el-col>
-        </el-row>
+        </el-row> -->
       </el-form>
       <footer>
-        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('batch.commit')}}</el-button>
+        <el-button @click="commitHandler" :disabled="excelLoading || zipLoading">{{$t('common.done')}}</el-button>
       </footer>
     </section>
   </div>
@@ -121,7 +121,8 @@
         errorVisible: false,
         excelLoading: false,
         zipLoading: false,
-        uploadExcelInterface: `${config.host}/org/store/upload_create_file`, // 上传excel接口
+        isUpload: false,
+        uploadExcelInterface: `${config.host}/org/v1/store/batch_signup`, // 上传excel接口
         uploadZipInterface: `${config.host}/org/store/upload_batch_package`, // 上传zip接口
         form: {
           excel_name: '',
@@ -139,39 +140,49 @@
     },
     methods: {
       // 提交
-      commitHandler() {
-        if(!this.form.fileid) {
-          this.$message.error(this.$t('batch.rule1_shop'))
-          return;
-        }
-//         if(!this.form.file_name_new) {
-//           this.$message.error(this.$t('batch.rule2'))
+//       commitHandler() {
+//         if(!this.form.fileid) {
+//           this.$message.error(this.$t('batch.rule1_shop'))
 //           return;
 //         }
-        this.isLoading = true;
-        let param = {
-          fileid: this.form.fileid,
-          dir_name: this.form.dir_name,
-          file_name_new: this.form.file_name_new,
-          store: 1,
-          format: 'cors'
-        };
-        console.log('commit param:', param);
-        axios.post(`${config.host}/org/store/mchnt_batch_create`,qs.stringify(param), {
-        }).then((res) => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.$message.success(this.$t('common.createSuccess'))
-            this.$router.push({
-              name: 'shop_manage_list',
-            })
-          }else {
-            this.$message.error(data.respmsg)
-          }
-          this.isLoading = false;
-        }).catch(() => {
-          this.isLoading = false;
-        })
+// //         if(!this.form.file_name_new) {
+// //           this.$message.error(this.$t('batch.rule2'))
+// //           return;
+// //         }
+//         this.isLoading = true;
+//         let param = {
+//           fileid: this.form.fileid,
+//           dir_name: this.form.dir_name,
+//           file_name_new: this.form.file_name_new,
+//           store: 1,
+//           format: 'cors'
+//         };
+//         console.log('commit param:', param);
+//         axios.post(`${config.host}/org/store/mchnt_batch_create`,qs.stringify(param), {
+//         }).then((res) => {
+//           let data = res.data;
+//           if (data.respcd === config.code.OK) {
+//             this.$message.success(this.$t('common.createSuccess'))
+//             this.$router.push({
+//               name: 'shop_manage_list',
+//             })
+//           }else {
+//             this.$message.error(data.respmsg)
+//           }
+//           this.isLoading = false;
+//         }).catch(() => {
+//           this.isLoading = false;
+//         })
+//       },
+
+      commitHandler() {
+        if (this.isUpload) {
+        this.$router.push({
+        name: 'shop_manage_list',
+       })
+        }else {
+        this.$message.error(this.$t('batch.rule1_shop'))
+        }
       },
 
       clearExcelName() {
@@ -184,7 +195,7 @@
          cate: 'submerchant',
          lang: this.lang,
         };
-        window.location.href = `${config.host}/org/store/signup/download_batch_template?${qs.stringify(params)}`
+        window.location.href = `${config.host}/org/v1/mchnt/signup/excel?${qs.stringify(params)}`
       },
 
       clearZipPackage() {
@@ -219,22 +230,19 @@
         }).then((res) => {
           let data = res.data;
           this[tag + 'Loading'] = false;
-
-            if (data.respcd === config.code.OK) {
-            if(data.data.error_info.length > 0){
-           this.error_info = data.data.error_info;
+          if (data.respcd === config.code.OK) {
+            this.$message.success(this.$t('common.createSuccess'))
+            this.isUpload = true
+          //  if(tag === 'excel') {
+          //     this.form.fileid = data.data.fileid;
+          //     this.form.total_cnt = data.data.total_cnt;
+          //   }else {
+          //     this.form.dir_name = data.data.dir_name;
+          //     this.form.file_name_new = data.data.file_name_new;
+          //   }
+          }else if(data.respcd === config.code.USERERR){
+           this.error_info = data.data;
            this.errorVisible = true;
-          console.log("error",data.data.error_info);      
-            }else {
-           if(tag === 'excel') {
-              this.form.fileid = data.data.fileid;
-              this.form.total_cnt = data.data.total_cnt;
-            }else {
-              this.form.dir_name = data.data.dir_name;
-              this.form.file_name_new = data.data.file_name_new;
-            }
-          console.log('upload done:', this.form)
-          }
           }else {
             this.$message.error(data.respmsg)
           }

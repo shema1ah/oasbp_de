@@ -277,7 +277,7 @@ const en = {
       bank: 'SolerisBank',
       creating: 'creating',
       creatsucc: 'create success',
-      creatFiled: 'create failed',
+      creatFailed: 'create failed',
       inReg: 'underway',
       succ: 'success',
       fail: 'failure'

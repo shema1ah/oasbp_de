@@ -111,7 +111,7 @@
     <el-dialog
       :title="$t('merchant.table.merstatus')"
       :visible.sync="statusDialogVisible"
-      width="30%"
+      width="40%"
       center
     >
       <ul class="merchant-status">
@@ -120,18 +120,19 @@
           v-for="(i,n) in merStatusList"
           :key="n"
         >{{i}}</li>
-      </ul>
+         <p v-if="signup_error_msg">{{`(${signup_error_msg})`}}</p>
+      </ul>  
 
       <ul class="merchant-status" v-for="(i, n) in chnlStatusList" :key="n">
         <li
-          :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']"
+          :class="[{'complete-status': signup_succ}, 'el-icon-caret-bottom']"
           :style="chnlStatusList.length!==1? 'cursor:pointer': ''"
           @click="toggleStatusShow(n)"
         >{{i.name}}</li>
         <div :class="{'status-toggle' : i.isStatusShow}">
-          <li :class="[{ 'complete-status': i.status >= 0 }, 'el-icon-caret-bottom']">{{$t("merchant.table.inReg")}}</li>
+          <li :class="[{'complete-status': signup_succ && i.status >= 0}, 'el-icon-caret-bottom']">{{$t("merchant.table.inReg")}}</li>
           <li
-            :class="[{ 'complete-status': i.status >= 1 }, 'el-icon-caret-bottom']"
+            :class="[{'complete-status': signup_succ && i.status >= 1}, 'el-icon-caret-bottom']"
           >{{i.status === 2 ? $t('merchant.table.fail'):$t('merchant.table.succ')}}</li>
         </div>
       </ul>
@@ -205,6 +206,8 @@ export default {
         // { name: "微信香港", status: 0, isStatusShow: 1 }, // 只有 0-1-2
         // {name: 'Alipay_Global', status: 2, isStatusShow: 0},
       ],
+      signup_succ: false,
+      signup_error_msg: '',
       total: 0,
       pageSize: 10,
       currentPage: 0
@@ -351,6 +354,7 @@ export default {
               let data = res.data;
               if (data.respcd === config.code.OK) {
                  this.chnlStatusList = data.data.chnl_status
+                 this.signup_error_msg = data.data.error_msg
                  this.chnlStatusList.forEach((i, n) => {
                    if (n === 0) {
                     i.isStatusShow = 1
@@ -359,16 +363,16 @@ export default {
                   }
                  });
                 switch (data.data.signup_status) {
-                  case 5:
-                    this.merStatusList[2] = this.$t("merchant.table.creatFailed");
-                    this.signup_status = 3;
-                    break;
                   case 4:
                     this.signup_status = 3;
+                    this.signup_succ = true;
                     break;
                   case 3:
                     this.signup_status = 2;
                     break;
+                  default:
+                    this.merStatusList[2] = this.$t("merchant.table.creatFailed");
+                    this.signup_status = 3;
                 }
               } else {
                 this.$message.error(data.respmsg);
@@ -418,7 +422,6 @@ export default {
   }
 }
 .merchant-status {
-  // width: 300px;
   margin: 0 auto;
   padding: 0;
   li {
@@ -429,6 +432,12 @@ export default {
     margin: 40px auto 0;
     font-size: 18px;
     color: $submenu-font-color;
+  }
+  p {
+    text-align: center;
+    margin-top: 0;
+    font-size: 12px;
+    color:#2974FF;
   }
   div {
     height: 0;

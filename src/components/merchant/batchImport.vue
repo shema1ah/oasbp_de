@@ -121,6 +121,7 @@
         errorVisible: false,
         excelLoading: false,
         zipLoading: false,
+        isUpload: false,
         uploadExcelInterface: `${config.host}/org/v1/mchnt/batch_signup`, // 上传excel接口
         // uploadZipInterface: `${config.host}/org/mchnt/upload_batch_package`, // 上传zip接口
         form: {
@@ -173,10 +174,14 @@
 //         })
 //       },
 
-      commitHandler() {
-      this.$router.push({
+     commitHandler() {
+        if (this.isUpload) {
+        this.$router.push({
         name: 'mchnt_manage_list',
        })
+        }else {
+        this.$message.error(this.$t('batch.rule1'))
+        }
       },
 
       clearExcelName() {
@@ -224,6 +229,7 @@
           this[tag + 'Loading'] = false;
           if (data.respcd === config.code.OK) {
             this.$message.success(this.$t('common.createSuccess'))
+            this.isUpload = true
           //  if(tag === 'excel') {
           //     this.form.fileid = data.data.fileid;
           //     this.form.total_cnt = data.data.total_cnt;
