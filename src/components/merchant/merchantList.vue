@@ -203,8 +203,8 @@ export default {
         this.$t("merchant.table.creatsucc"),
       ],
       chnlStatusList: [
-        // { name: "微信香港", status: 0, isStatusShow: 1 }, // 只有 0-1-2
-        // {name: 'Alipay_Global', status: 2, isStatusShow: 0},
+        // {name: "微信香港", status: 0}, // 只有 0-1-2
+        // {name: 'Alipay_Global', status: 2},
       ],
       signup_succ: false,
       err_msg_toggle: true,
@@ -398,6 +398,7 @@ export default {
           this.chnlStatusList[n].isStatusShow = 1;
         }, this);
       }
+        this.$forceUpdate()
     },
 
     handleSizeChange(size = 10) {

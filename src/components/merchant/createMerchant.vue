@@ -1385,8 +1385,11 @@ computed: {
     changeBoard(event) {
     if(!this.isUpdate){
       if(event.currentTarget.tag === false){
-      this.isBusiness = !this.isBusiness;
+      this.isBusiness = !this.isBusiness;  
       this.$refs['baseinfo'].resetFields();
+      setTimeout(() => {
+      this.list_Select = []
+      }, 0);
       this.formData.user_type = this.isBusiness ? 3 : 2;
     }
     }
