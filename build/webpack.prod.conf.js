@@ -12,7 +12,6 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const packagejson = require("../package.json");
 
-
 const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
@@ -22,9 +21,6 @@ const webpackConfig = merge(baseWebpackConfig, {
     })
   },
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
-  entry: {
-    vendor: Object.keys(packagejson.dependencies)
-  },
   output: {
     path: config.build.assetsRoot,
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
@@ -81,33 +77,29 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.HashedModuleIdsPlugin(),
     // enable scope hoisting
     new webpack.optimize.ModuleConcatenationPlugin(),
-    // split vendor js into its own file
+    // 将element-ui文件单独打包
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
+      name: 'element-ui',
+      minChunks: function (module) {
+        for (const key in packagejson.dependencies) {
+          if (module.context && module.context.includes(key)) {
+            return true
+          }
+        }
+      }
     }),
+    // 将其余第三方文件单独打包
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor_1', //新打包文件名
+      name: 'vendor', //新打包文件名
+      chunks: ['element-ui'], //拆分模块名
+      minChunks: module => !module.context.includes("qfpay-element-ui")
+    }),
+    // 将vue相关文件单独打包
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vue', //新打包文件名
       chunks: ['vendor'], //拆分模块名
-      minChunks: function (module) {
-          return (
-            module.resource &&
-            /\.js$/.test(module.resource) &&
-            module.resource.indexOf('qfpay-element-ui') < 0 
-                  ) 
-          }
-        }),
-        //新增打包文件
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor_2', //新打包文件名
-      chunks: ['vendor_1'], //拆分模块名
-      minChunks: function (module) {
-          return (
-            module.resource &&
-            /\.js$/.test(module.resource) &&
-            module.resource.indexOf('vue') >= 0
-                 )
-          }
-        }),
+      minChunks: module => module.context.includes("vue")
+    }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
