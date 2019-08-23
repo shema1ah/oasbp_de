@@ -515,8 +515,12 @@ const en = {
         legal_rep: 'Whether it is Legal Representatives',
         reg_number: 'Register Number',
         reg_issuer: 'Register Issuer',
-        idnumber: 'ID Number',
-        passport: 'passport ID'
+        idnumber: 'National ID Number',
+        passport: 'passport ID',
+        id_type: 'Identification document',
+        id_card: 'National ID Card',
+        pass_card: 'Passport',
+        idnumber: 'Identification Document Number',
       },
       applicationTypes: {
         direct: 'direct',
@@ -577,7 +581,9 @@ const en = {
         rule50: 'Please input expected count transactions',
         rule51: 'Please select type of represeutation',
         rule52: 'Please input registration number',
-        rule53: 'Please input registration issuer'
+        rule53: 'Please input registration issuer',
+        rule54: 'Please select Identification document',
+        rule55: 'Please input Identification Document Number',
       },
       lengthRule: {
         rule1: 'The maxlength is 4',

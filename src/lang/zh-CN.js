@@ -472,8 +472,12 @@ const zh = {
         legal_rep: '是否为Legal Representatives',
         reg_number: '注册号码',
         reg_issuer: '注册机构名',
-        idnumber: '证件号码',
-        passport: '护照ID'
+        idnumber: '国家身份证号码',
+        passport: '护照ID',
+        id_type: '身份证文件',
+        id_card: '国家身份证',
+        pass_card: '护照',
+        idnumber: '身份证文件号码',
       },
       applicationTypes: {
         direct: '直连',
@@ -535,7 +539,10 @@ const zh = {
         rule50: '请输入预计交易量',
         rule51: '请选择代表权',
         rule52: '请输入注册号码',
-        rule53: '请输入注册机构名'
+        rule53: '请输入注册机构名',
+        rule54: '请选择身份证明文件',
+        rule55: '请输入身份证明文件号码',
+
       },
       lengthRule: {
         rule1: '最多输入4个字符',

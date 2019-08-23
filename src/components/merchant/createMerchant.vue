@@ -464,6 +464,25 @@
           </el-form-item>
 
           <el-form-item
+            :prop="'beneficial_owners.'+ i + '.id_type'"
+            :label="$t('merchant.newMerchant.form.id_type')"
+            :rules="listRules.id_type"
+          >
+            <el-select v-model="n.id_type" :disabled="peopleExist2[i]">
+              <el-option :label="$t('merchant.newMerchant.form.id_card')" value="national"></el-option>
+              <el-option :label="$t('merchant.newMerchant.form.pass_card')" value="passport"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'beneficial_owners.'+ i + '.idnumber'"
+            :label="$t('merchant.newMerchant.form.idnumber')"
+            :rules="listRules.idnumber"
+          >
+            <el-input v-model.trim="n.idnumber" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
             :prop="'beneficial_owners.'+ i + '.is_legal'"
             :label="$t('merchant.newMerchant.form.legal_rep')"
             :rules="listRules.legal_rep"
@@ -871,8 +890,11 @@ export default {
             vofing: "",
             email: "",
             mobile: "",
+            id_type: "",
+            idnumber: "",
             is_legal: "0",
             represe: "ALONE"
+
           }
         ],
         legal_representatives: [
@@ -1309,7 +1331,19 @@ export default {
 
         telephone: [
           { required: true, message: this.$t("merchant.newMerchant.rule35") }
-        ]
+        ],
+
+        id_type: [
+          { required: true, message: this.$t("merchant.newMerchant.requiredRule.rule54") }
+        ],
+
+
+        idnumber: [
+          { required: true, message: this.$t("merchant.newMerchant.requiredRule.rule55") }
+        ],
+        
+        
+
       }
     };
   },
@@ -1600,6 +1634,8 @@ export default {
           .then(res => {
             let data = res.data;
             let isEmpty = JSON.stringify(data.data) === "{}";
+            console.log("isEmpty",isEmpty);
+            
             switch (role) {
               case 2:
                 if (isEmpty) {
@@ -1614,9 +1650,10 @@ export default {
                     empeoy_status: beneficial_owner.empeoy_status,
                     address: beneficial_owner.address,
                     post: beneficial_owner.post,
-                    email: beneficial_owner.email
+                    email: beneficial_owner.email,
+                    id_type: beneficial_owner.id_type,
+                    idnumber: beneficial_owner.idnumber,
                   } = data.data);
-                  this.$forceUpdate();
                   this.peopleExist2[i] = true;
                 }
                 break;
@@ -1636,10 +1673,10 @@ export default {
                     post: legal_representative.post,
                     email: legal_representative.email
                   } = data.data);
-                  this.$forceUpdate();
                   this.peopleExist3[i] = true;
                 }
             }
+             this.$forceUpdate();
           })
           .catch(() => {
             this.$message.error(this.$t("common.netError"));
@@ -1786,12 +1823,12 @@ export default {
     },
 
     // next() {
-    //   if(this.isBusiness && !this.isVofingAllow ){
-    //      this.$message.error(this.$t('merchant.newMerchant.rule44'))
-    //   }
-    //   else{
+    //   // if(this.isBusiness && !this.isVofingAllow ){
+    //   //    this.$message.error(this.$t('merchant.newMerchant.rule44'))
+    //   // }
+    //   // else{
     //       this.create()
-    //   }
+    //   // }
     // },
 
     cancelHandler() {
@@ -1854,23 +1891,8 @@ export default {
     changeShow(event) {
       if (event.currentTarget.attributes.tag) {
         if (this.formData.beneficial_owners.length < 4) {
-          let a = {
-            first_name: "",
-            last_name: "",
-            birthday: "",
-            nation: "",
-            address: "",
-            post: "",
-            city: "",
-            country: "DE",
-            empeoy_status: "",
-            vofing: "",
-            email: "",
-            mobile: "",
-            is_legal: "0",
-            represe: "ALONE"
-          };
-          this.formData.beneficial_owners.push(a);
+          let ownerItem = JSON.parse(JSON.stringify(this.formData.beneficial_owners[0]))
+          this.formData.beneficial_owners.push(ownerItem);
         }
       } else {
         if (this.formData.beneficial_owners.length > 1) {
@@ -1881,21 +1903,8 @@ export default {
     changeShow2(event) {
       if (event.currentTarget.attributes.tag) {
         if (this.formData.legal_representatives.length < 4) {
-          let a = {
-            first_name: "",
-            last_name: "",
-            birthday: "",
-            nation: "",
-            address: "",
-            post: "",
-            city: "",
-            country: "DE",
-            empeoy_status: "",
-            represe: "ALONE",
-            email: "",
-            mobile: ""
-          };
-          this.formData.legal_representatives.push(a);
+          let legalItem = JSON.parse(JSON.stringify(this.formData.legal_representatives[0]))
+          this.formData.legal_representatives.push(legalItem);
         }
       } else {
         if (this.formData.legal_representatives.length > 1) {
