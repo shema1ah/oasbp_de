@@ -97,10 +97,6 @@
         </template>
       </el-table-column>
 
-      <!-- <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="100">
-        <template slot-scope="scope">{{ isSigned[scope.row.status] }}</template>
-      </el-table-column> -->
-
       <el-table-column prop="status" :label="$t('merchant.table.merstatus')" min-width="80">
         <template slot-scope="scope">
           <el-button type="text">{{ $t('common.look') }}</el-button>
@@ -120,21 +116,11 @@
           v-for="(i,n) in merStatusList"
           :key="n"
         >{{i}}</li>
-         <p v-if="signup_error_msg" @click="err_msg_toggle = !err_msg_toggle" :class="{'err-msg-toggle' : err_msg_toggle}">{{`(${signup_error_msg})`}}</p>
-      </ul>  
-
-      <ul class="merchant-status" v-for="(i, n) in chnlStatusList" :key="n">
-        <li
-          :class="[{'complete-status': signup_succ}, 'el-icon-caret-bottom']"
-          :style="chnlStatusList.length!==1? 'cursor:pointer': ''"
-          @click="toggleStatusShow(n)"
-        >{{i.name}}</li>
-        <div :class="{'status-toggle' : i.isStatusShow}">
-          <li :class="[{'complete-status': signup_succ && i.status >= 0}, 'el-icon-caret-bottom']">{{$t("merchant.table.inReg")}}</li>
-          <li
-            :class="[{'complete-status': signup_succ && i.status >= 1}, 'el-icon-caret-bottom']"
-          >{{i.status === 2 ? $t('merchant.table.fail'):$t('merchant.table.succ')}}</li>
-        </div>
+        <p
+          v-if="signup_error_msg"
+          @click="err_msg_toggle = !err_msg_toggle"
+          :class="{'err-msg-toggle' : err_msg_toggle}"
+        >{{`(${signup_error_msg})`}}</p>
       </ul>
 
       <span slot="footer" class="dialog-footer">
@@ -162,9 +148,7 @@ export default {
     return {
       isLoading: false,
       statusDialogVisible: false,
-      isStatusShow: true,
       signup_status: 0,
-      activeName: "1",
       formData: {
         shopname: "",
         userid: "",
@@ -200,15 +184,11 @@ export default {
       merStatusList: [
         this.$t("merchant.table.bank"),
         this.$t("merchant.table.creating"),
-        this.$t("merchant.table.creatsucc"),
-      ],
-      chnlStatusList: [
-        // {name: "微信香港", status: 0}, // 只有 0-1-2
-        // {name: 'Alipay_Global', status: 2},
+        this.$t("merchant.table.creatsucc")
       ],
       signup_succ: false,
       err_msg_toggle: true,
-      signup_error_msg: '',
+      signup_error_msg: "",
       total: 0,
       pageSize: 10,
       currentPage: 0
@@ -342,63 +322,38 @@ export default {
           query: { userid: row.userid, from: "old" }
         });
       } else if (column.property === "status") {
-        // if (row.status === -1) {
-          axios
-            .get(`${config.host}/org/v1/mchnt/audit`, {
-              params: {
-                userid: row.userid,
-                // userid: 2802023,
-                format: "cors"
+        axios
+          .get(`${config.host}/org/v1/mchnt/audit_status`, {
+            params: {
+              userid: row.userid,
+              format: "cors"
+            }
+          })
+          .then(res => {
+            let data = res.data;
+            if (data.respcd === config.code.OK) {
+              this.signup_error_msg = data.data.error_msg;
+              switch (data.data.signup_status) {
+                case 4:
+                  this.signup_status = 3;
+                  this.signup_succ = true;
+                  break;
+                case 3:
+                  this.signup_status = 2;
+                  break;
+                default:
+                  this.merStatusList[2] = this.$t("merchant.table.creatFailed");
+                  this.signup_status = 3;
               }
-            })
-            .then(res => {
-              let data = res.data;
-              if (data.respcd === config.code.OK) {
-                 this.chnlStatusList = data.data.chnl_status
-                 this.signup_error_msg = data.data.error_msg
-                 this.chnlStatusList.forEach((i, n) => {
-                   if (n === 0) {
-                    i.isStatusShow = 1
-                  }else{
-                    i.isStatusShow = 0
-                  }
-                 });
-                switch (data.data.signup_status) {
-                  case 4:
-                    this.signup_status = 3;
-                    this.signup_succ = true;
-                    break;
-                  case 3:
-                    this.signup_status = 2;
-                    break;
-                  default:
-                    this.merStatusList[2] = this.$t("merchant.table.creatFailed");
-                    this.signup_status = 3;
-                }
-              } else {
-                this.$message.error(data.respmsg);
-              }
-            })
-            .catch(() => {
-              this.$message.error(this.$t("common.netError"));
-            });
-          this.statusDialogVisible = true;
-        // }
+            } else {
+              this.$message.error(data.respmsg);
+            }
+          })
+          .catch(() => {
+            this.$message.error(this.$t("common.netError"));
+          });
+        this.statusDialogVisible = true;
       }
-    },
-
-    toggleStatusShow(n) {
-      if (this.chnlStatusList.length === 1) {
-        return;
-      } else if (this.chnlStatusList[n].isStatusShow) {
-        this.chnlStatusList[n].isStatusShow = 0;
-      } else if (!this.chnlStatusList[n].isStatusShow) {
-        this.chnlStatusList.forEach(i => {
-          i.isStatusShow = 0;
-          this.chnlStatusList[n].isStatusShow = 1;
-        }, this);
-      }
-        this.$forceUpdate()
     },
 
     handleSizeChange(size = 10) {
@@ -439,7 +394,7 @@ export default {
     text-align: center;
     margin-top: 5px;
     font-size: 12px;
-    color:#2974FF;
+    color: #2974ff;
     overflow: hidden;
     text-overflow: ellipsis;
     cursor: pointer;
@@ -447,15 +402,6 @@ export default {
   .err-msg-toggle {
     height: 14px;
     white-space: nowrap;
-  }
-  div {
-    height: 0;
-    overflow: hidden;
-    transition: height 0.2s linear;
-  }
-  .status-toggle {
-    height: 120px;
-    transition: height 0.2s linear;
   }
   .el-icon-caret-bottom {
     &::before {

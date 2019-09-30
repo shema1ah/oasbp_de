@@ -53,8 +53,8 @@
           v-model.trim="storeModel.store_shopname"></el-input>
       </el-form-item>
 
-      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
-        <el-input id="op_type" v-model="storeModel.mcc"
+      <el-form-item prop="unify_mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
+        <el-input id="op_type" v-model="storeModel.unify_mcc"
                 :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
                 readonly
                 class="sub-account-item-info"><template slot="append"><i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i></template>
@@ -90,19 +90,20 @@
       </el-form-item>
 
       <el-form-item prop="store_country" :label="$t('merchant.newMerchant.form.country')">
-        <el-select v-model="storeModel.store_country" disabled>
+        <el-select v-model="storeModel.store_country">
           <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+          <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
         </el-select>
       </el-form-item>
 
       <h3>{{$t('merchant.detail.rates.setitle')}}</h3>
 
-      <el-form-item prop="iban" :label="$t('merchant.newMerchant.form.accountH')">
-        <el-input v-model.trim="storeModel.iban"></el-input>
+      <el-form-item prop="store_iban" :label="$t('merchant.newMerchant.form.accountH')">
+        <el-input v-model.trim="storeModel.store_iban"></el-input>
       </el-form-item>
 
-      <el-form-item prop="bic" :label="$t('merchant.newMerchant.form.bic')">
-        <el-input v-model.trim="storeModel.bic"></el-input>
+      <el-form-item prop="store_bic" :label="$t('merchant.newMerchant.form.bic')">
+        <el-input v-model.trim="storeModel.store_bic"></el-input>
       </el-form-item>
     </el-form>
     <footer>
@@ -128,6 +129,25 @@
   }
   export default {
     data() {
+      const checkName = (rule, value, callback) => {
+      axios
+        .get(`${config.host}/org/v1/store/check`, {
+          params: {
+            nickname: value,
+            format: "cors"
+          }
+        })
+        .then(res => {
+          if (res.data.respcd !== config.code.OK) {
+             callback(new Error(this.$t("merchant.newMerchant.rule45")));
+          } else {
+             callback();
+          }
+        })
+        .catch(() => {
+          this.$message.error(this.$t("common.netError"));
+        });     
+      };
       return {
         select: this.$i18n.locale,
         pid_select: [],
@@ -136,7 +156,6 @@
         shopTypes: [], // 门店行业列表
         isUpdate: false,
         isLoading: false,
-        // IsRemit: false,
         isAllow: false,
         shopTypeProps_en: {
           children: 'shoptypes',
@@ -152,28 +171,29 @@
          // 上传接口
         storeModel: {
           store_shopname: '', // 店铺名称
-          mcc: '', // 店铺行业
+          unify_mcc: '', // 店铺行业
           store_unify_mcc: '',
           store_expect_amt: '', //预计交易额
           store_expect_count: '',  //预计交易量
           store_address: '', // 门店地址
           store_post: '',  //门店邮编
           store_city: '',   //门店城市
-          store_country: 'DE', //门店国家
-          iban: '', // 银行账号
-          bic: '', // SWIFT码
+          store_country: '', //门店国家
+          store_iban: '', // 银行账号
+          store_bic: '', // SWIFT码
           format :'cors'
         },
         storeRules: {
           'store_shopname': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
+            { validator: checkName, trigger: 'blur' }
           ],
 
           'store_address': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule10')},
           ],
 
-          'mcc': [
+          'unify_mcc': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule9')}
           ],
 
@@ -222,11 +242,11 @@
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule42')}
           ],
 
-          'iban': [
+          'store_iban': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
           ],
 
-          'bic': [
+          'store_bic': [
             {required: true, message: this.$t('merchant.newMerchant.rule19')}
           ],
 
@@ -236,46 +256,45 @@
     created() {
       if (this.$route.query) {
         this.isUpdate = this.$route.query.command === 'edit' || getParams('command') === 'edit';
-        this.storeModel.big_uid = this.$route.query.big_uid;
+        // this.storeModel.big_uid = this.$route.query.big_uid;
         this.getPid();
-        this.isUpdate && this.getStoreInfo();
-       !this.isUpdate && this.getShopTypes()
-
+        // this.isUpdate && this.getStoreInfo();
+        this.getShopTypes()
       }
     },
     methods: {
-      getStoreInfo() {
-        axios.get(`${config.host}/org/mchnt/sub/info`, {
-          params: {
-            big_uid: this.$route.query.big_uid || getParams('big_uid'),
-            type: 'submerchant',
-            format: 'cors'
-          }})
-          .then((res) => {
-            let data = res.data;
-            if (data.respcd === config.code.OK) {
-              // this.IsRemit = true;
-              let da =  data.data;
-              Object.assign(this.storeModel, {
-                short_name: da.userinfo.short_name,
-                shopname: da.userinfo.shopname,
-                store_address: da.userinfo.store_address,
-                operating: da.userinfo.operating,
-                headbankname: da.bankinfo.headbankname, // 开户行名称
-                bankuser: da.bankinfo.bankuser, // 开户行
-                iban: da.bankinfo.iban, // 银行账号
-                bankProvince: da.bankinfo.bankProvince, // 银行地址
-                bic: da.bankinfo.bic, // SWIFT码
-                remit_amt: da.userinfo.remit_amt, // 结算资金起点
-              });
-              this.list_Select = da.fee_ratios;
-            } else {
-              this.$message.error(data.respmsg);
-            }
-          }).catch(() => {
-          this.$message.error(this.$t('common.netError'));
-        });
-      },
+      // getStoreInfo() {
+      //   axios.get(`${config.host}/org/v1/store/info`, {
+      //     params: {
+      //       userid: this.$route.query.userid || getParams('userid'),
+      //       // type: 'submerchant',
+      //       format: 'cors'
+      //     }})
+      //     .then((res) => {
+      //       let data = res.data;
+      //       if (data.respcd === config.code.OK) {
+      //         let da =  data.data;
+      //         // Object.assign(this.storeModel, {
+      //         //   short_name: da.userinfo.short_name,
+      //         //   store_shopname: da.userinfo.store_shopname,
+      //         //   store_address: da.userinfo.store_address,
+      //         //   operating: da.userinfo.operating,
+      //         //   headbankname: da.bankinfo.headbankname, // 开户行名称
+      //         //   bankuser: da.bankinfo.bankuser, // 开户行
+      //         //   store_iban: da.bankinfo.store_iban, // 银行账号
+      //         //   bankProvince: da.bankinfo.bankProvince, // 银行地址
+      //         //   store_bic: da.bankinfo.store_bic, // SWIFT码
+      //         //   remit_amt: da.userinfo.remit_amt, // 结算资金起点
+      //         // });
+      //         this.storeModel = {...da.base,...da.ext}
+      //         this.list_Select = da.chnl.pid_info;
+      //       } else {
+      //         this.$message.error(data.respmsg);
+      //       }
+      //     }).catch(() => {
+      //     this.$message.error(this.$t('common.netError'));
+      //   });
+      // },
 
       cancelHandler() {
         this.$router.push({name: 'shop_manage_list'})
@@ -285,7 +304,7 @@
         if(data.level ===3) {
             this.storeModel.store_unify_mcc = data.id;
             this.isShowIndustyTree = false;
-            this.select === 'en-us'?this.storeModel.mcc = data.name_en:this.storeModel.mcc = data.name;
+            this.select === 'en-us'?this.storeModel.unify_mcc = data.name_en:this.storeModel.unify_mcc = data.name;
         }
       },
 
@@ -317,7 +336,7 @@
         if(this.list_Select.length === 0) {
             this.$message.error(this.$t('merchant.newMerchant.requiredRule.rule25'))
         }else {
-          this.$refs['store-form'].validate((valid) => { // && this.checkPhotosIsUpdated()
+          this.$refs['store-form'].validate((valid) => {
             if (valid) {
               if (this.isUpdate) {
                 this.confirm()
@@ -349,7 +368,6 @@
           params.type = 'submerchant';
         }
         this.isLoading = true;
-        console.log(params);
         axios.post(url, JSON.stringify(params), {
           headers: {
             'Content-Type': 'application/json'

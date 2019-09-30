@@ -35,12 +35,8 @@
     >
       <h3>{{isBusiness? $t('merchant.newMerchant.basic.cap1') : $t('merchant.newMerchant.basic.cap7')}}</h3>
 
-      <el-form-item
-        :label="$t('merchant.newMerchant.form.channel')"
-        prop="primary_uid"
-        v-if="!isUpdate"
-      >
-        <el-select v-model="formData.primary_uid" @change="selectChannelHandler">
+      <el-form-item :label="$t('merchant.newMerchant.form.channel')" prop="first_agent_uid">
+        <el-select v-model="formData.first_agent_uid" @change="selectChannelHandler">
           <el-option
             :label="item.name"
             :value="item.qd_uid"
@@ -50,13 +46,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        :label="$t('merchant.newMerchant.form.channel2')"
-        prop="secondary_uid"
-        v-if="!isUpdate"
-      >
+      <el-form-item :label="$t('merchant.newMerchant.form.channel2')" prop="second_agent_uid">
         <el-select
-          v-model="formData.secondary_uid"
+          v-model="formData.second_agent_uid"
           :placeholder="$t('merchant.form.ph')"
           @change="selectChannel2Handler"
         >
@@ -69,11 +61,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        :label="$t('merchant.newMerchant.form.saleMan')"
-        prop="sls_uid"
-        v-if="!isUpdate"
-      >
+      <el-form-item :label="$t('merchant.newMerchant.form.saleMan')" prop="sls_uid">
         <el-select v-model="formData.sls_uid">
           <el-option
             :label="item.name"
@@ -99,50 +87,33 @@
 
       <el-form-item
         :label="$t('merchant.newMerchant.form.bigMerchant')"
-        prop="cate"
+        prop="mode"
         v-if="isBusiness"
       >
-        <el-select v-model="formData.cate" ref="cate" :disabled="isUpdate">
+        <el-select v-model="formData.mode" ref="mode">
           <el-option :label="$t('merchant.newMerchant.form.sub')" value="mchnt"></el-option>
           <el-option :label="$t('merchant.newMerchant.form.big')" value="bigmchnt"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        prop="businessName"
-        :label="$t('merchant.newMerchant.form.meiname')"
-        v-if="isBusiness"
-      >
-        <el-input v-model.trim="formData.businessName"></el-input>
+      <el-form-item prop="name" :label="$t('merchant.newMerchant.form.meiname')" v-if="isBusiness">
+        <el-input v-model.trim="formData.name"></el-input>
       </el-form-item>
 
-      <el-form-item
-        prop="mchnt_type"
-        :label="$t('merchant.newMerchant.form.mertype')"
-        v-if="isBusiness"
-      >
-        <el-select v-model="formData.mchnt_type">
-          <el-option
-            :label="item"
-            :value="item"
-            v-for="item in selectList.busi_mchnt_type"
-            :key="item"
-          ></el-option>
+      <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
+        <el-select v-model="formData.country">
+          <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+          <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        prop="mchnt_type_person"
-        :label="$t('merchant.newMerchant.form.mertype')"
-        v-if="!isBusiness"
-        :rules="baseRules.mchnt_type"
-      >
-        <el-select v-model="formData.mchnt_type_person">
+      <el-form-item prop="mchnt_type" :label="$t('merchant.newMerchant.form.mertype')">
+        <el-select v-model="formData.mchnt_type" :placeholder="$t('merchant.form.ph_legal')">
           <el-option
             :label="item"
             :value="item"
-            v-for="item in selectList.person_mchnt_type"
-            :key="item"
+            v-for="(item,index) in isBusiness ? selectList.busi_mchnt_type[formData.country] : selectList.person_mchnt_type[formData.country]"
+            :key="index"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -151,22 +122,25 @@
         prop="first_name"
         :label="$t('merchant.newMerchant.form.first_name')"
         v-if="!isBusiness"
+        :error="peopleExist1 ? $t('merchant.newMerchant.rule46') : ''"
       >
-        <el-input v-model.trim="formData.first_name"></el-input>
+        <el-input v-model.trim="formData.first_name" @blur="checkPeople(formData,2)"></el-input>
       </el-form-item>
 
       <el-form-item
         prop="last_name"
         :label="$t('merchant.newMerchant.form.last_name')"
         v-if="!isBusiness"
+        :error="peopleExist1 ? $t('merchant.newMerchant.rule46') : ''"
       >
-        <el-input v-model.trim="formData.last_name"></el-input>
+        <el-input v-model.trim="formData.last_name" @blur="checkPeople(formData,2)"></el-input>
       </el-form-item>
 
       <el-form-item
         prop="birthday"
         :label="$t('merchant.newMerchant.form.date_of_birth')"
         v-if="!isBusiness"
+        :error="peopleExist1 ? $t('merchant.newMerchant.rule46') : ''"
       >
         <el-date-picker
           v-model.trim="formData.birthday"
@@ -174,20 +148,38 @@
           format="dd-MM-yyyy"
           value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('common.chooseDate')"
+          @blur="checkPeople(formData,2)"
         ></el-date-picker>
       </el-form-item>
 
       <el-form-item
-        prop="nationality"
+        prop="salutation"
+        :label="$t('merchant.newMerchant.form.salutation')"
+        v-if="!isBusiness"
+        :rules="listRules.salutation"
+      >
+        <el-select v-model="formData.salutation">
+          <el-option :label="item" :value="item" v-for="item in selectList.salutation" :key="item"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item prop="title" :label="$t('merchant.newMerchant.form.title')" v-if="!isBusiness">
+        <el-select v-model="formData.title">
+          <el-option :label="item" :value="item" v-for="item in selectList.title" :key="item"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
+        prop="nation"
         :label="$t('merchant.newMerchant.form.nationality')"
         v-if="!isBusiness"
       >
-        <el-select v-model="formData.nationality">
+        <el-select v-model="formData.nation">
           <el-option
             :label="value"
-            :value="key"
-            v-for="(value, key)  in selectList.country"
-            :key="key"
+            :value="findKey(selectList.country,value)"
+            v-for="value in countryList"
+            :key="value"
           ></el-option>
         </el-select>
       </el-form-item>
@@ -218,23 +210,12 @@
         <el-input v-model.trim="formData.address"></el-input>
       </el-form-item>
 
-      <el-form-item prop="postal_code" :label="$t('merchant.newMerchant.form.postal_code')">
-        <el-input v-model.trim="formData.postal_code"></el-input>
+      <el-form-item prop="post" :label="$t('merchant.newMerchant.form.postal_code')">
+        <el-input v-model.trim="formData.post"></el-input>
       </el-form-item>
 
       <el-form-item prop="city" :label="$t('merchant.newMerchant.form.city')">
         <el-input v-model.trim="formData.city"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
-        <el-select v-model="formData.country" disabled>
-          <el-option
-            :label="value"
-            :value="key"
-            v-for="(value, key)  in selectList.country"
-            :key="key"
-          ></el-option>
-        </el-select>
       </el-form-item>
 
       <el-form-item
@@ -252,20 +233,16 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        prop="contact_email"
-        :label="$t('merchant.newMerchant.form.postT')"
-        v-if="!isBusiness"
-      >
-        <el-input v-model.trim="formData.contact_email"></el-input>
+      <el-form-item prop="email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
+        <el-input v-model.trim="formData.email"></el-input>
       </el-form-item>
 
       <el-form-item
-        prop="telephone"
+        prop="mobile"
         :label="$t('merchant.newMerchant.form.concatNumber')"
         v-if="!isBusiness"
       >
-        <el-input v-model.trim="formData.telephone"></el-input>
+        <el-input v-model.trim="formData.mobile"></el-input>
       </el-form-item>
 
       <el-form-item prop="sector" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
@@ -287,19 +264,27 @@
       </el-form-item>-->
 
       <el-form-item
-        prop="reg_number"
+        prop="licensenumber"
         :label="$t('merchant.newMerchant.form.reg_number')"
         v-if="isBusiness"
       >
-        <el-input v-model.trim="formData.reg_number"></el-input>
+        <el-input v-model.trim="formData.licensenumber"></el-input>
       </el-form-item>
 
       <el-form-item
-        prop="reg_issuer"
+        prop="license_name"
         :label="$t('merchant.newMerchant.form.reg_issuer')"
         v-if="isBusiness"
       >
-        <el-input v-model.trim="formData.reg_issuer"></el-input>
+        <el-input v-model.trim="formData.license_name"></el-input>
+      </el-form-item>
+
+      <el-form-item
+        prop="website"
+        :label="$t('merchant.newMerchant.form.website')"
+        v-if="isBusiness"
+      >
+        <el-input v-model.trim="formData.website"></el-input>
       </el-form-item>
 
       <el-form-item
@@ -320,7 +305,7 @@
 
       <!-- 股东信息 -->
       <transition-group name="fade" tag="div" v-if="isBusiness">
-        <div v-for="(n, i) in formData.beneficial_owners" :key="i">
+        <div v-for="(n, i) in formData.owners" :key="i">
           <div class="title-gap">
             <h3 v-if="i === 0">{{$t('merchant.newMerchant.basic.cap2')}}</h3>
             <el-button
@@ -332,7 +317,7 @@
               @click.prevent="changeShow"
             ></el-button>
             <el-button
-              v-else-if="i === formData.beneficial_owners.length-1"
+              v-else-if="i === formData.owners.length-1"
               class="puls"
               type="text"
               icon="el-icon-minus"
@@ -341,195 +326,7 @@
           </div>
 
           <el-form-item
-            :prop="'beneficial_owners.'+ i + '.first_name'"
-            :label="$t('merchant.newMerchant.form.first_name')"
-            :rules="listRules.first_name"
-          >
-            <el-input v-model.trim="n.first_name" @blur="checkPeople(n,2,i)"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.last_name'"
-            :label="$t('merchant.newMerchant.form.last_name')"
-            :rules="listRules.last_name"
-          >
-            <el-input v-model.trim="n.last_name" @blur="checkPeople(n,2,i)"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.birthday'"
-            :label="$t('merchant.newMerchant.form.date_of_birth')"
-            :rules="listRules.date_of_birth"
-          >
-            <el-date-picker
-              v-model.trim="n.birthday"
-              type="date"
-              format="dd-MM-yyyy"
-              value-format="yyyy-MM-dd HH:mm:ss"
-              :placeholder="$t('common.chooseDate')"
-              @blur="checkPeople(n,2,i)"
-            ></el-date-picker>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.nation'"
-            :label="$t('merchant.newMerchant.form.nationality')"
-            :rules="listRules.nationality"
-          >
-            <el-select v-model="n.nation" :disabled="peopleExist2[i]">
-              <el-option
-                :label="value"
-                :value="key"
-                v-for="(value, key)  in selectList.country"
-                :key="key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.address'"
-            :label="$t('merchant.newMerchant.form.addressT')"
-            :rules="listRules.address"
-          >
-            <el-input v-model.trim="n.address" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.post'"
-            :label="$t('merchant.newMerchant.form.postal_code')"
-            :rules="listRules.postal_code"
-          >
-            <el-input v-model.trim="n.post" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.city'"
-            :label="$t('merchant.newMerchant.form.city')"
-            :rules="listRules.city"
-          >
-            <el-input v-model.trim="n.city" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.country'"
-            :label="$t('merchant.newMerchant.form.country')"
-            :rules="listRules.country"
-          >
-            <el-select v-model="n.country" disabled>
-              <el-option
-                :label="value"
-                :value="key"
-                v-for="(value, key)  in selectList.country"
-                :key="key"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.empeoy_status'"
-            :label="$t('merchant.newMerchant.form.empeoyment_sataus')"
-            :rules="listRules.empeoyment_sataus"
-          >
-            <el-select v-model="n.empeoy_status" :disabled="peopleExist2[i]">
-              <el-option
-                :label="item"
-                :value="item"
-                v-for="item in selectList.people_empeoy_status"
-                :key="item"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.vofing'"
-            :label="$t('merchant.newMerchant.form.vofing_share')"
-            :rules="listRules.vofing_share"
-          >
-            <el-input v-model.number.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.email'"
-            :label="$t('merchant.newMerchant.form.postT')"
-            :rules="listRules.contact_email"
-          >
-            <el-input v-model.trim="n.email" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.mobile'"
-            :label="$t('merchant.newMerchant.form.concatNumber')"
-          >
-            <el-input v-model.trim="n.mobile" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.id_type'"
-            :label="$t('merchant.newMerchant.form.id_type')"
-            :rules="listRules.id_type"
-          >
-            <el-select v-model="n.id_type" :disabled="peopleExist2[i]">
-              <el-option :label="$t('merchant.newMerchant.form.id_card')" value="national"></el-option>
-              <el-option :label="$t('merchant.newMerchant.form.pass_card')" value="passport"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.idnumber'"
-            :label="$t('merchant.newMerchant.form.idnumber')"
-            :rules="listRules.idnumber"
-          >
-            <el-input v-model.trim="n.idnumber" :disabled="peopleExist2[i]"></el-input>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.is_legal'"
-            :label="$t('merchant.newMerchant.form.legal_rep')"
-            :rules="listRules.legal_rep"
-          >
-            <el-select v-model="n.is_legal">
-              <el-option :label="$t('merchant.detail.signed.no')" value="0"></el-option>
-              <el-option :label="$t('merchant.detail.signed.yes')" value="1"></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item
-            :prop="'beneficial_owners.'+ i + '.represe'"
-            :label="$t('merchant.newMerchant.form.represeutation')"
-            :rules="listRules.represeutation"
-            v-if="n.is_legal == 1"
-          >
-            <el-select v-model="n.represe" disabled>
-              <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
-            </el-select>
-          </el-form-item>
-        </div>
-      </transition-group>
-
-      <!-- 法定代表人 -->
-      <transition-group name="fade" tag="div" v-if="isBusiness">
-        <div v-for="(n, i) in formData.legal_representatives" :key="i">
-          <div class="title-gap">
-            <h3 v-if="i === 0">{{$t('merchant.newMerchant.basic.cap3')}}</h3>
-            <el-button
-              v-if="i === 0"
-              class="puls"
-              type="text"
-              tag="plus"
-              icon="el-icon-plus"
-              @click="changeShow2"
-            ></el-button>
-            <el-button
-              v-else-if="i === formData.legal_representatives.length-1"
-              class="puls"
-              type="text"
-              icon="el-icon-minus"
-              @click="changeShow2"
-            ></el-button>
-          </div>
-
-          <el-form-item
-            :prop="'legal_representatives.'+ i + '.first_name'"
+            :prop="'owners.'+ i + '.first_name'"
             :label="$t('merchant.newMerchant.form.first_name')"
             :rules="listRules.first_name"
           >
@@ -537,7 +334,7 @@
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.last_name'"
+            :prop="'owners.'+ i + '.last_name'"
             :label="$t('merchant.newMerchant.form.last_name')"
             :rules="listRules.last_name"
           >
@@ -545,7 +342,7 @@
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.birthday'"
+            :prop="'owners.'+ i + '.birthday'"
             :label="$t('merchant.newMerchant.form.date_of_birth')"
             :rules="listRules.date_of_birth"
           >
@@ -560,63 +357,291 @@
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.nation'"
-            :label="$t('merchant.newMerchant.form.nationality')"
-            :rules="listRules.nationality"
+            :prop="'owners.'+ i + '.salutation'"
+            :label="$t('merchant.newMerchant.form.salutation')"
+            :rules="listRules.salutation"
           >
-            <el-select v-model="n.nation" :disabled="peopleExist3[i]">
+            <el-select v-model="n.salutation" :disabled="peopleExist2[i]">
               <el-option
-                :label="value"
-                :value="key"
-                v-for="(value, key) in selectList.country"
-                :key="key"
+                :label="item"
+                :value="item"
+                v-for="item in selectList.salutation"
+                :key="item"
               ></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.address'"
+            :prop="'owners.'+ i + '.title'"
+            :label="$t('merchant.newMerchant.form.title')"
+          >
+            <el-select v-model="n.title" :disabled="peopleExist2[i]">
+              <el-option :label="item" :value="item" v-for="item in selectList.title" :key="item"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.nation'"
+            :label="$t('merchant.newMerchant.form.nationality')"
+            :rules="listRules.nation"
+          >
+            <el-select v-model="n.nation" :disabled="peopleExist2[i]">
+              <el-option
+                :label="value"
+                :value="findKey(selectList.country,value)"
+                v-for="value in countryList"
+                :key="value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.address'"
             :label="$t('merchant.newMerchant.form.addressT')"
             :rules="listRules.address"
+          >
+            <el-input v-model.trim="n.address" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.post'"
+            :label="$t('merchant.newMerchant.form.postal_code')"
+            :rules="listRules.post"
+          >
+            <el-input v-model.trim="n.post" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.city'"
+            :label="$t('merchant.newMerchant.form.city')"
+            :rules="listRules.city"
+          >
+            <el-input v-model.trim="n.city" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.country'"
+            :label="$t('merchant.newMerchant.form.country')"
+            :rules="listRules.country"
+          >
+            <el-select v-model="n.country" :disabled="peopleExist2[i]">
+              <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+              <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.empeoy_status'"
+            :label="$t('merchant.newMerchant.form.empeoyment_sataus')"
+            :rules="listRules.empeoyment_sataus"
+          >
+            <el-select v-model="n.empeoy_status" :disabled="peopleExist2[i]">
+              <el-option
+                :label="item"
+                :value="item"
+                v-for="item in selectList.people_empeoy_status"
+                :key="item"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.vofing'"
+            :label="$t('merchant.newMerchant.form.vofing_share')"
+            :rules="listRules.vofing_share"
+          >
+            <el-input v-model.number.trim="n.vofing" :placeholder="$t('settleMent.msg.t5')"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.email'"
+            :label="$t('merchant.newMerchant.form.postT')"
+            :rules="listRules.email"
+          >
+            <el-input v-model.trim="n.email" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.mobile'"
+            :label="$t('merchant.newMerchant.form.concatNumber')"
+          >
+            <el-input v-model.trim="n.mobile" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.id_type'"
+            :label="$t('merchant.newMerchant.form.id_type')"
+            :rules="listRules.id_type"
+          >
+            <el-select v-model="n.id_type" :disabled="peopleExist2[i]">
+              <el-option :label="$t('merchant.newMerchant.form.id_card')" value="national"></el-option>
+              <el-option :label="$t('merchant.newMerchant.form.pass_card')" value="passport"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.idnumber'"
+            :label="$t('merchant.newMerchant.form.idnumber')"
+            :rules="listRules.idnumber"
+          >
+            <el-input v-model.trim="n.idnumber" :disabled="peopleExist2[i]"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.is_legal'"
+            :label="$t('merchant.newMerchant.form.legal_rep')"
+            :rules="listRules.legal_rep"
+          >
+            <el-select v-model="n.is_legal">
+              <el-option :label="$t('merchant.detail.signed.no')" value="0"></el-option>
+              <el-option :label="$t('merchant.detail.signed.yes')" value="1"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.represe'"
+            :label="$t('merchant.newMerchant.form.represeutation')"
+            :rules="listRules.represeutation"
+            v-if="n.is_legal == 1"
+          >
+            <el-select v-model="n.represe" disabled>
+              <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
+            </el-select>
+          </el-form-item>
+        </div>
+      </transition-group>
+
+      <!-- 法定代表人 -->
+      <transition-group name="fade" tag="div" v-if="isBusiness">
+        <div v-for="(n, i) in formData.legals" :key="i">
+          <div class="title-gap">
+            <h3 v-if="i === 0">{{$t('merchant.newMerchant.basic.cap3')}}</h3>
+            <el-button
+              v-if="i === 0"
+              class="puls"
+              type="text"
+              tag="plus"
+              icon="el-icon-plus"
+              @click="changeShow2"
+            ></el-button>
+            <el-button
+              v-else-if="i === formData.legals.length-1"
+              class="puls"
+              type="text"
+              icon="el-icon-minus"
+              @click="changeShow2"
+            ></el-button>
+          </div>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.first_name'"
+            :label="$t('merchant.newMerchant.form.first_name')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.first_name"
+          >
+            <el-input v-model.trim="n.first_name" @blur="checkPeople(n,4,i)"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.last_name'"
+            :label="$t('merchant.newMerchant.form.last_name')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.last_name"
+          >
+            <el-input v-model.trim="n.last_name" @blur="checkPeople(n,4,i)"></el-input>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.birthday'"
+            :label="$t('merchant.newMerchant.form.date_of_birth')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.date_of_birth"
+          >
+            <el-date-picker
+              v-model.trim="n.birthday"
+              type="date"
+              format="dd-MM-yyyy"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              :placeholder="$t('common.chooseDate')"
+              @blur="checkPeople(n,4,i)"
+            ></el-date-picker>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.salutation'"
+            :label="$t('merchant.newMerchant.form.salutation')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.salutation"
+          >
+            <el-select v-model="n.salutation" :disabled="peopleExist3[i]">
+              <el-option
+                :label="item"
+                :value="item"
+                v-for="item in selectList.salutation"
+                :key="item"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.title'"
+            :label="$t('merchant.newMerchant.form.title')"
+          >
+            <el-select v-model="n.title" :disabled="peopleExist3[i]">
+              <el-option :label="item" :value="item" v-for="item in selectList.title" :key="item"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.nation'"
+            :label="$t('merchant.newMerchant.form.nationality')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.nation"
+          >
+            <el-select v-model="n.nation" :disabled="peopleExist3[i]">
+              <el-option
+                :label="value"
+                :value="findKey(selectList.country,value)"
+                v-for="value in countryList"
+                :key="value"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'legals.'+ i + '.address'"
+            :label="$t('merchant.newMerchant.form.addressT')"
+            :rules="hasLegal&&!hasInput ? [] : listRules.address"
           >
             <el-input v-model.trim="n.address" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.post'"
+            :prop="'legals.'+ i + '.post'"
             :label="$t('merchant.newMerchant.form.postal_code')"
-            :rules="listRules.postal_code"
+            :rules="hasLegal&&!hasInput ? [] : listRules.post"
           >
             <el-input v-model.trim="n.post" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.city'"
+            :prop="'legals.'+ i + '.city'"
             :label="$t('merchant.newMerchant.form.city')"
-            :rules="listRules.city"
+            :rules="hasLegal&&!hasInput ? [] : listRules.city"
           >
             <el-input v-model.trim="n.city" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.country'"
+            :prop="'legals.'+ i + '.country'"
             :label="$t('merchant.newMerchant.form.country')"
-            :rules="listRules.country"
+            :rules="hasLegal&&!hasInput ? [] : listRules.country"
           >
-            <el-select v-model="n.country" disabled>
-              <el-option
-                :label="value"
-                :value="key"
-                v-for="(value, key)  in selectList.country"
-                :key="key"
-              ></el-option>
+            <el-select v-model="n.country" :disabled="peopleExist3[i]">
+              <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+              <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
             </el-select>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.empeoy_status'"
+            :prop="'legals.'+ i + '.empeoy_status'"
             :label="$t('merchant.newMerchant.form.empeoyment_sataus')"
-            :rules="listRules.empeoyment_sataus"
+            :rules="hasLegal&&!hasInput ? [] : listRules.empeoyment_sataus"
           >
             <el-select v-model="n.empeoy_status" :disabled="peopleExist3[i]">
               <el-option
@@ -629,9 +654,9 @@
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.represe'"
+            :prop="'legals.'+ i + '.represe'"
             :label="$t('merchant.newMerchant.form.represeutation')"
-            :rules="listRules.represeutation"
+            :rules="hasLegal&&!hasInput ? [] : listRules.represeutation"
           >
             <el-select v-model="n.represe" disabled>
               <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
@@ -639,17 +664,17 @@
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.email'"
+            :prop="'legals.'+ i + '.email'"
             :label="$t('merchant.newMerchant.form.postT')"
-            :rules="listRules.contact_email"
+            :rules="hasLegal&&!hasInput ? [] : listRules.email"
           >
             <el-input v-model.trim="n.email" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
 
           <el-form-item
-            :prop="'legal_representatives.'+ i + '.mobile'"
+            :prop="'legals.'+ i + '.mobile'"
             :label="$t('merchant.newMerchant.form.concatNumber')"
-            :rules="listRules.telephone"
+            :rules="hasLegal&&!hasInput ? [] : listRules.mobile"
           >
             <el-input v-model.trim="n.mobile" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
@@ -657,144 +682,140 @@
       </transition-group>
 
       <!-- 支付通道 -->
+      <div v-if="!isUpdate">
+        <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
 
-      <h3>{{$t('merchant.newMerchant.basic.cap4')}}</h3>
-
-      <el-form-item prop="pid_select" v-if="!isUpdate">
-        <el-select
-          v-model="formData.pid_select"
-          :placeholder="$t('merchant.newMerchant.requiredRule.rule25')"
-        >
-          <el-option
-            v-for="item in list"
-            :key="item.pid_name"
-            :label="item.pid_name"
-            :value="item.pid_name"
-          ></el-option>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item>
-        <el-button
-          v-if="!isUpdate"
-          class="el-button el-button--primary"
-          @click="addList()"
-        >{{$t('common.confirm')}}</el-button>
-      </el-form-item>
-
-      <div class="payList" v-for="(item, index) in list_Select" :key="index">
-        <el-form-item :label="item.pid_name">
-          <el-input-number
-            v-model="item.ratio"
-            :precision="2"
-            :step="0.01"
-            :min="Number(item.ratioMin)"
-          ></el-input-number>
-        </el-form-item>
-        <el-form-item
-          v-if="item.line_type !== ''"
-          :label="$t('merchant.newMerchant.form.accessType')"
-        >
-          <el-select :disabled="true" v-model="item.line_type">
-            <el-option :label="$t('merchant.newMerchant.accessTypes.offline')" value="offline"></el-option>
-            <el-option :label="$t('merchant.newMerchant.accessTypes.online')" value="online"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item
-          v-if="item.finance_type !== ''"
-          :label="$t('merchant.newMerchant.form.applicationType')"
-        >
-          <el-select :disabled="true" v-model="item.finance_type">
-            <el-option :label="$t('merchant.newMerchant.applicationTypes.direct')" value="direct"></el-option>
+        <el-form-item prop="pid_select" v-if="!isUpdate">
+          <el-select
+            v-model="formData.pid_select"
+            :placeholder="$t('merchant.newMerchant.requiredRule.rule25')"
+          >
             <el-option
-              :label="$t('merchant.newMerchant.applicationTypes.indirect')"
-              value="indirect"
+              v-for="item in list"
+              :key="item.pid_name"
+              :label="item.pid_name"
+              :value="item.pid_name"
             ></el-option>
           </el-select>
         </el-form-item>
-        <div v-if="!isUpdate" class="icon_remove">
-          <i class="el-icon-remove" @click="pid_name_remove(item.pid_name)"></i>
+
+        <el-form-item>
+          <el-button
+            v-if="!isUpdate"
+            class="el-button el-button--primary"
+            @click="addList()"
+          >{{$t('common.confirm')}}</el-button>
+        </el-form-item>
+
+        <div class="payList" v-for="(item, index) in mchnt_ratios" :key="index">
+          <el-form-item :label="item.pid_name">
+            <el-input-number
+              v-model="item.ratio"
+              :precision="2"
+              :step="0.01"
+              :min="Number(item.ratioMin)"
+            ></el-input-number>
+          </el-form-item>
+          <el-form-item
+            v-if="item.line_type !== ''"
+            :label="$t('merchant.newMerchant.form.accessType')"
+          >
+            <el-select :disabled="true" v-model="item.line_type">
+              <el-option :label="$t('merchant.newMerchant.accessTypes.offline')" value="offline"></el-option>
+              <el-option :label="$t('merchant.newMerchant.accessTypes.online')" value="online"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item
+            v-if="item.finance_type !== ''"
+            :label="$t('merchant.newMerchant.form.applicationType')"
+          >
+            <el-select :disabled="true" v-model="item.finance_type">
+              <el-option :label="$t('merchant.newMerchant.applicationTypes.direct')" value="direct"></el-option>
+              <el-option
+                :label="$t('merchant.newMerchant.applicationTypes.indirect')"
+                value="indirect"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <div v-if="!isUpdate" class="icon_remove">
+            <i class="el-icon-remove" @click="pid_name_remove(item.pid_name)"></i>
+          </div>
         </div>
-      </div>
 
-      <!-- 门店信息 -->
-      <h3>{{$t('merchant.newMerchant.basic.cap5')}}</h3>
+        <!-- 门店信息 -->
+        <h3>{{$t('merchant.newMerchant.basic.cap5')}}</h3>
 
-      <el-form-item prop="store_name" :label="$t('merchant.newMerchant.form.storename')">
-        <el-input v-model.trim="formData.store_name"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_shopname" :label="$t('merchant.newMerchant.form.storename')">
+          <el-input v-model.trim="formData.store_shopname"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
-        <el-input
-          id="op_type"
-          v-model="formData.mcc"
-          :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
-          readonly
-          class="sub-account-item-info"
+        <el-form-item prop="mcc" :label="$t('merchant.newMerchant.form.QFMCC')">
+          <el-input
+            id="op_type"
+            v-model="formData.mcc"
+            :placeholder="$t('merchant.newMerchant.requiredRule.rule9')"
+            readonly
+            class="sub-account-item-info"
+          >
+            <template slot="append">
+              <i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i>
+            </template>
+          </el-input>
+          <el-tree
+            :data="shopTypes"
+            @node-click="IndustyhandleNodeClick"
+            v-show="isShowIndustyTree"
+            node-key="id"
+            :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
+            draggable
+          ></el-tree>
+        </el-form-item>
+
+        <el-form-item
+          prop="store_expect_amt"
+          :label="$t('merchant.newMerchant.form.expected_volume_transactions')"
         >
-          <template slot="append">
-            <i class="el-icon-arrow-down tree-indic" @click.stop="showIndustyTreeComponent"></i>
-          </template>
-        </el-input>
-        <el-tree
-          :data="shopTypes"
-          @node-click="IndustyhandleNodeClick"
-          v-show="isShowIndustyTree"
-          node-key="id"
-          :props="select==='en-us'?shopTypeProps_en:shopTypeProps_zh"
-          draggable
-        ></el-tree>
-      </el-form-item>
+          <el-input v-model.trim="formData.store_expect_amt"></el-input>
+        </el-form-item>
 
-      <el-form-item
-        prop="expected_volume"
-        :label="$t('merchant.newMerchant.form.expected_volume_transactions')"
-      >
-        <el-input v-model.trim="formData.expected_volume"></el-input>
-      </el-form-item>
+        <el-form-item
+          prop="store_expect_count"
+          :label="$t('merchant.newMerchant.form.expected_couut_transactions')"
+        >
+          <el-input v-model.trim="formData.store_expect_count"></el-input>
+        </el-form-item>
 
-      <el-form-item
-        prop="expected_couut"
-        :label="$t('merchant.newMerchant.form.expected_couut_transactions')"
-      >
-        <el-input v-model.trim="formData.expected_couut"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_address" :label="$t('merchant.newMerchant.form.addressT')">
+          <el-input v-model.trim="formData.store_address"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="store_address" :label="$t('merchant.newMerchant.form.addressT')">
-        <el-input v-model.trim="formData.store_address"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_post" :label="$t('merchant.newMerchant.form.postal_code')">
+          <el-input v-model.trim="formData.store_post"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="store_postal_code" :label="$t('merchant.newMerchant.form.postal_code')">
-        <el-input v-model.trim="formData.store_postal_code"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_city" :label="$t('merchant.newMerchant.form.city')">
+          <el-input v-model.trim="formData.store_city"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="store_city" :label="$t('merchant.newMerchant.form.city')">
-        <el-input v-model.trim="formData.store_city"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_country" :label="$t('merchant.newMerchant.form.country')">
+          <el-select v-model="formData.store_country">
+            <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+            <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
+          </el-select>
+        </el-form-item>
 
-      <el-form-item prop="store_country" :label="$t('merchant.newMerchant.form.country')">
-        <el-select v-model="formData.store_country" disabled>
-          <el-option
-            :label="value"
-            :value="key"
-            v-for="(value, key)  in selectList.country"
-            :key="key"
-          ></el-option>
-        </el-select>
-      </el-form-item>
+        <!-- 结算信息 -->
+        <h3>{{$t('merchant.newMerchant.basic.cap6')}}</h3>
 
-      <!-- 结算信息 -->
-      <h3>{{$t('merchant.newMerchant.basic.cap6')}}</h3>
+        <el-form-item prop="store_iban" :label="$t('merchant.newMerchant.form.accountH')">
+          <el-input v-model.trim="formData.store_iban"></el-input>
+        </el-form-item>
 
-      <el-form-item prop="bankaccount" :label="$t('merchant.newMerchant.form.accountH')">
-        <el-input v-model.trim="formData.bankaccount"></el-input>
-      </el-form-item>
-
-      <el-form-item prop="bankcode" :label="$t('merchant.newMerchant.form.bic')">
-        <el-input v-model.trim="formData.bankcode"></el-input>
-      </el-form-item>
+        <el-form-item prop="store_bic" :label="$t('merchant.newMerchant.form.bic')">
+          <el-input v-model.trim="formData.store_bic"></el-input>
+        </el-form-item>
+      </div>
     </el-form>
-
     <footer>
       <el-button
         type="primary"
@@ -822,62 +843,88 @@ const getParams = key => {
 };
 export default {
   data() {
+    const checkName = (rule, value, callback) => {
+      axios
+        .get(`${config.host}/org/v1/store/check`, {
+          params: {
+            nickname: value,
+            format: "cors"
+          }
+        })
+        .then(res => {
+          if (res.data.respcd !== config.code.OK) {
+            callback(new Error(this.$t("merchant.newMerchant.rule45")));
+          } else {
+            callback();
+          }
+        })
+        .catch(() => {
+          this.$message.error(this.$t("common.netError"));
+        });
+    };
     return {
       select: this.$i18n.locale,
       list: [],
-      list_Select: [],
+      mchnt_ratios: [],
       isLoading: false,
       isUpdate: false,
       qd_uid: "", // 所有代理商id
       isShowTree: false,
       forFlag: false,
       isBusiness: true,
+      peopleExist1: false,
       peopleExist2: [],
       peopleExist3: [],
+      ownerItem: "",
+      legalItem: "",
       formData: {
         user_type: 3,
         pid_select: "",
-        slsm_name: "", // 业务员姓名
-        unify_mcc: "",
-        primary_uid: "", // 一级代理商id
-        secondary_uid: "", // 二级代理商id
+        // slsm_name: "", // 业务员姓名
+        store_unify_mcc: "",
+        first_agent_uid: "", // 一级代理商id
+        second_agent_uid: "", // 二级代理商id
         sls_uid: "", // 业务员id
-        cate: "", // 注册商户的类型
-        businessName: "", // 商户名称
+        mode: "", // 注册商户的类型
+        name: "", // 商户名称
         mchnt_type: "", // 商户类型 1:微小 2：个体商户 3:企业
-        mchnt_type_person: "",
         first_name: "", //名
         last_name: "", //姓
         birthday: "", //出生日期
-        nationality: "", //国籍
+        nation: "", //国籍
         foundation_date: "", //成立日期
         business_purpose: "", //商业目的
         address: "", // 公司地址
-        postal_code: "", //邮编
+        post: "", //邮编
         city: "", //城市
-        country: "DE", //国家
+        country: "", //国家
         empeoy_status: "", //职业
-        contact_email: "", // 邮箱
-        telephone: "", // 公司联系人电话
+        email: "", // 邮箱
+        mobile: "", // 公司联系人电话
         sector: "", //一级行业
-        industry: "", //二级行业
-        industry_key: "", //三级行业
-        reg_number: "", //注册号码
-        reg_issuer: "", //注册机构名
-        store_name: "", // 店铺名称
+        // industry: "", //二级行业
+        // industry_key: "", //三级行业
+        licensenumber: "", //注册号码
+        license_name: "", //注册机构名
+        store_shopname: "", // 店铺名称
         mcc: "", // 店铺行业
-        expected_volume: "", //预计交易额
-        expected_couut: "", //预计交易量
+        store_expect_amt: "", //预计交易额
+        store_expect_count: "", //预计交易量
         store_address: "", // 门店地址
-        store_postal_code: "", //门店邮编
+        store_post: "", //门店邮编
         store_city: "", //门店城市
-        store_country: "DE", //门店国家
-        bankaccount: "", // 银行账号
-        bankcode: "",
+        store_country: "", //门店国家
+        store_iban: "", // 银行账号
+        store_bic: "",
         idnumber: "",
         passport: "",
-        beneficial_owners: [
+        salutation: "",
+        title: "",
+        website: "",
+        owners: [
           {
+            salutation: "",
+            title: "",
             first_name: "",
             last_name: "",
             birthday: "",
@@ -885,7 +932,7 @@ export default {
             address: "",
             post: "",
             city: "",
-            country: "DE",
+            country: "",
             empeoy_status: "",
             vofing: "",
             email: "",
@@ -894,11 +941,12 @@ export default {
             idnumber: "",
             is_legal: "0",
             represe: "ALONE"
-
           }
         ],
-        legal_representatives: [
+        legals: [
           {
+            salutation: "",
+            title: "",
             first_name: "",
             last_name: "",
             birthday: "",
@@ -906,7 +954,7 @@ export default {
             address: "",
             post: "",
             city: "",
-            country: "DE",
+            country: "",
             empeoy_status: "",
             represe: "ALONE",
             email: "",
@@ -920,11 +968,13 @@ export default {
         // industry: [],
         // industry_key: [],
         represe: [],
-        busi_mchnt_type: [],
+        busi_mchnt_type: {},
         person_mchnt_type: [],
         people_empeoy_status: [], //职业类别
         country: {},
-        mchnt_type: []
+        salutation: [],
+        title: []
+        // mchnt_type: []
       },
       channels1: [],
       channels2: [],
@@ -945,6 +995,7 @@ export default {
         value: "id"
       },
       isShowIndustyTree: false,
+
       baseRules: {
         sls_uid: [
           {
@@ -952,17 +1003,18 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule1")
           }
         ],
-        cate: [
+        mode: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule2")
           }
         ],
-        businessName: [
+        name: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule3")
-          }
+          },
+          { validator: checkName, trigger: "blur" }
         ],
         first_name: [
           {
@@ -983,7 +1035,7 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule36")
           }
         ],
-        nationality: [
+        nation: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule37")
@@ -1004,7 +1056,7 @@ export default {
           }
         ],
 
-        postal_code: [
+        post: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
@@ -1022,7 +1074,7 @@ export default {
           }
         ],
 
-        store_postal_code: [
+        store_post: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
@@ -1088,7 +1140,7 @@ export default {
         //   {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule46')}
         // ],
 
-        expected_volume: [
+        store_expect_amt: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule49")
@@ -1105,7 +1157,7 @@ export default {
             }
           }
         ],
-        expected_couut: [
+        store_expect_count: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule50")
@@ -1122,23 +1174,24 @@ export default {
             }
           }
         ],
-        reg_number: [
+        licensenumber: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule52")
           }
         ],
-        reg_issuer: [
+        license_name: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule53")
           }
         ],
-        store_name: [
+        store_shopname: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule20")
-          }
+          },
+          { validator: checkName, trigger: "blur" }
         ],
         store_address: [
           {
@@ -1146,7 +1199,7 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule10")
           }
         ],
-        contact_email: [
+        email: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule4")
@@ -1174,7 +1227,7 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule26")
           }
         ],
-        telephone: [
+        mobile: [
           { required: true, message: this.$t("merchant.newMerchant.rule35") }
         ],
         mcc: [
@@ -1189,13 +1242,13 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule10")
           }
         ],
-        bankaccount: [
+        store_iban: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule17")
           }
         ],
-        bankcode: [
+        store_bic: [
           { required: true, message: this.$t("merchant.newMerchant.rule19") }
         ]
       },
@@ -1222,7 +1275,7 @@ export default {
           }
         ],
 
-        nationality: [
+        nation: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule37")
@@ -1236,7 +1289,7 @@ export default {
           }
         ],
 
-        postal_code: [
+        post: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
@@ -1307,7 +1360,7 @@ export default {
           }
         ],
 
-        contact_email: [
+        email: [
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule4")
@@ -1329,21 +1382,30 @@ export default {
           }
         ],
 
-        telephone: [
+        mobile: [
           { required: true, message: this.$t("merchant.newMerchant.rule35") }
         ],
 
         id_type: [
-          { required: true, message: this.$t("merchant.newMerchant.requiredRule.rule54") }
+          {
+            required: true,
+            message: this.$t("merchant.newMerchant.requiredRule.rule54")
+          }
         ],
-
 
         idnumber: [
-          { required: true, message: this.$t("merchant.newMerchant.requiredRule.rule55") }
+          {
+            required: true,
+            message: this.$t("merchant.newMerchant.requiredRule.rule55")
+          }
         ],
-        
-        
 
+        salutation: [
+          {
+            required: true,
+            message: this.$t("merchant.newMerchant.requiredRule.rule56")
+          }
+        ]
       }
     };
   },
@@ -1351,23 +1413,42 @@ export default {
   computed: {
     isVofingAllow: function() {
       let vofingSum = 0;
-      this.formData.beneficial_owners.forEach(
-        i => (vofingSum += Number(i.vofing))
-      );
+      this.formData.owners.forEach(i => (vofingSum += Number(i.vofing)));
       return vofingSum === 100 ? true : false;
+    },
+    countryList: function() {
+      return Object.values(this.selectList.country).sort();
+    },
+    hasLegal: function() {
+      return this.formData.owners.some(i => i.is_legal == 1);
+    },
+    hasInput: function() {
+      return this.formData.legals.some(i => {
+        let flag = -1;
+        for (let value of Object.values(i)) {
+          if (value.length > 0) {
+            flag++;
+          }
+        }
+        return flag;
+      });
     }
   },
   created() {
     if (this.$route.query) {
       this.isUpdate =
         this.$route.query.command === "edit" || getParams("command") === "edit";
-      !this.isUpdate && this.getChannelList();
-      !this.isUpdate && this.getSalesPersonList();
-      this.getSelectList();
-      this.getPid();
+      // !this.isUpdate && this.getChannelList();
+      // !this.isUpdate && this.getSalesPersonList();
+      !this.isUpdate && this.getPid();
       !this.isUpdate && this.getShopTypes();
+      !this.isUpdate && this.getSalesPersonList();
+      this.ownerItem = JSON.parse(JSON.stringify(this.formData.owners[0]));
+      this.legalItem = JSON.parse(JSON.stringify(this.formData.legals[0]));
       // this.isUpdate && this.getAllSalesperson();
-      // this.isUpdate && this.getDetailInfo()
+      // this.isUpdate && this.getDetailInfo();
+      this.getChannelList();
+      this.getSelectList();
     }
   },
   mounted() {
@@ -1408,6 +1489,9 @@ export default {
     //      this.isShowTree = false;
     //   }
     // },
+    findKey(obj, value, compare = (a, b) => a === b) {
+      return Object.keys(obj).find(k => compare(obj[k], value));
+    },
 
     showTreeComponent(e) {
       this.isShowTree = true;
@@ -1415,7 +1499,7 @@ export default {
 
     IndustyhandleNodeClick(data, node) {
       if (data.level === 3) {
-        this.formData.unify_mcc = data.id;
+        this.formData.store_unify_mcc = data.id;
         this.isShowIndustyTree = false;
         this.select === "en-us"
           ? (this.formData.mcc = data.name_en)
@@ -1459,6 +1543,8 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.channels1 = data.data.list;
+            this.isUpdate &&
+              this.getChannel2List(this.formData.first_agent_uid);
           } else {
             this.$message.error(data.respmsg);
           }
@@ -1469,7 +1555,7 @@ export default {
     },
 
     // 获取二级渠道列表数据
-    selectChannelHandler(groupid) {
+    getChannel2List(groupid) {
       axios
         .get(`${config.host}/org/tools/qudao/list`, {
           params: {
@@ -1481,7 +1567,7 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.channels2 = groupid ? data.data.list : [];
-            this.formData.secondary_uid = "";
+            // this.formData.second_agent_uid = "";
             this.getSalesPersonList();
           } else {
             this.$message.error(data.respmsg);
@@ -1491,16 +1577,25 @@ export default {
           this.$message.error(this.$t("common.netError"));
         });
     },
+    // 选择一级代理商
+    selectChannelHandler(groupid) {
+      this.getChannel2List(groupid);
+      this.formData.second_agent_uid = "";
+      this.formData.sls_uid = "";
+    },
 
     // 选择二级代理商
     selectChannel2Handler() {
       this.getSalesPersonList();
+      this.formData.sls_uid = "";
     },
+
     getSalesPersonList() {
       axios
         .get(`${config.host}/org/tools/slsm`, {
           params: {
-            agent_uid: this.formData.secondary_uid || this.formData.primary_uid,
+            agent_uid:
+              this.formData.second_agent_uid || this.formData.first_agent_uid,
             format: "cors"
           }
         })
@@ -1508,7 +1603,6 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.salesperson = data.data;
-            this.formData.sls_uid = "";
           } else {
             this.$message.error(data.respmsg);
           }
@@ -1540,68 +1634,72 @@ export default {
         });
     },
     // getDetailInfo() {
-    //   axios.get(`${config.host}/org/mchnt/info`, {
-    //     params: {
-    //       userid: this.$route.query.userid || getParams('userid'),
-    //       type: 'bigmerchant',
-    //       format: 'cors'
-    //     }
-    //   })
-    //     .then((res) => {
+    //   axios
+    //     .get(`${config.host}/org/v1/mchnt/info`, {
+    //       params: {
+    //         userid: this.$route.query.userid || getParams("userid"),
+    //         // type: 'bigmerchant',
+    //         format: "cors"
+    //       }
+    //     })
+    //     .then(res => {
     //       let data = res.data;
     //       this.isLoading = false;
     //       if (data.respcd === config.code.OK) {
-    //         this.IsRemit = true
+    //         // this.IsRemit = true
 
-    //         let uinfo = data.data.userinfo;
-    //         let fees = data.data.fee_ratios
-    //         let qdinfo = data.data.qdinfo;
-    //         let vouchers = data.data.vouchers
-    //         let bankinfo = data.data.bankinfo
+    //         // let uinfo = data.data.userinfo;
+    //         // let fees = data.data.fee_ratios
+    //         // let qdinfo = data.data.qdinfo;
+    //         // let vouchers = data.data.vouchers
+    //         // let bankinfo = data.data.bankinfo
+    //         this.formData = { ...data.data.base, ...data.data.ext };
+    //         this.isBusiness = this.formData.user_type === 3 ? 1 : 0;
 
-    //         this.formData.status = uinfo.status
-    //         this.formData.sls_uid = qdinfo.sls_uid
-    //         this.formData.vouchers = vouchers
-    //         this.formData.businessaddr = uinfo.businessaddr
-    //         this.formData.shopname = uinfo.shopname; // 商户名称
-    //         this.formData.cate = uinfo.cate; // 商户类型
-    //         this.formData.unify_mcc = uinfo.unify_mcc
-    //         this.formData.mcc = uinfo.mcc_str
-    //         // this.formData.mcc = +uinfo.mcc; // 行业类别
-    //         this.formData.documentNum = uinfo.idnumber || uinfo.eep || uinfo.passport
-    //         this.formData.address = uinfo.address; //
-    //         this.formData.contact = uinfo.contact
-    //         this.formData.legalperson = uinfo.legalperson; // 联系人姓名
-    //         this.formData.telephone = uinfo.telephone; // 联系电话
-    //         this.formData.contact_email = uinfo.contact_email; // 邮箱地址
-    //         this.formData.br = uinfo.br; // br编号
-    //         this.formData.br_expire_time = uinfo.br_expire_time; // br有效期
-    //         this.formData.ci = uinfo.ci; // ci编号
-    //         this.formData.website = uinfo.website
-    //         this.formData.headbankname = bankinfo.headbankname //
-    //         this.formData.bankProvince = bankinfo.bankProvince //
-    //         this.formData.bankuser = bankinfo.bankuser //
-    //         this.formData.bankaccount = bankinfo.bankaccount //
-    //         this.formData.bankcode = bankinfo.bankcode //
-    //         this.formData.remit_amt = uinfo.remit_amt
-    //         this.formData.user_type = uinfo.user_type + ''
+    //         // this.formData.status = uinfo.status
+    //         // this.formData.sls_uid = qdinfo.sls_uid
+    //         // this.formData.vouchers = vouchers
+    //         // this.formData.businessaddr = uinfo.businessaddr
+    //         // this.formData.shopname = uinfo.shopname; // 商户名称
+    //         // this.formData.mode = uinfo.mode; // 商户类型
+    //         // this.formData.store_unify_mcc = uinfo.store_unify_mcc
+    //         // this.formData.mcc = uinfo.mcc_str
+    //         // // this.formData.mcc = +uinfo.mcc; // 行业类别
+    //         // this.formData.documentNum = uinfo.idnumber || uinfo.eep || uinfo.passport
+    //         // this.formData.address = uinfo.address; //
+    //         // this.formData.contact = uinfo.contact
+    //         // this.formData.legalperson = uinfo.legalperson; // 联系人姓名
+    //         // this.formData.mobile = uinfo.mobile; // 联系电话
+    //         // this.formData.email = uinfo.email; // 邮箱地址
+    //         // this.formData.br = uinfo.br; // br编号
+    //         // this.formData.br_expire_time = uinfo.br_expire_time; // br有效期
+    //         // this.formData.ci = uinfo.ci; // ci编号
+    //         // this.formData.website = uinfo.website
+    //         // this.formData.headbankname = bankinfo.headbankname //
+    //         // this.formData.bankProvince = bankinfo.bankProvince //
+    //         // this.formData.bankuser = bankinfo.bankuser //
+    //         // this.formData.store_iban = bankinfo.store_iban //
+    //         // this.formData.store_bic = bankinfo.store_bic //
+    //         // this.formData.remit_amt = uinfo.remit_amt
+    //         // this.formData.user_type = uinfo.user_type + ''
 
-    //         if(uinfo.passport) {
-    //           this.formData.documentType = "passport"
-    //         } else if (uinfo.idnumber) {
-    //           this.formData.documentType = "idnumber"
-    //         } else {
-    //           this.formData.documentType = "eep"
-    //         }
-    //         this.list_Select = fees
-    //         this.getSalesPersonName(this.salesperson); // 匹配树形结构的销售员name
+    //         // if(uinfo.passport) {
+    //         //   this.formData.documentType = "passport"
+    //         // } else if (uinfo.idnumber) {
+    //         //   this.formData.documentType = "idnumber"
+    //         // } else {
+    //         //   this.formData.documentType = "eep"
+    //         // }
+    //         // this.mchnt_ratios = fees
+    //         // this.getSalesPersonName(this.salesperson); // 匹配树形结构的销售员name
     //       } else {
     //         this.$message.error(data.respmsg);
     //       }
-    //     }).catch(() => {
-    //     this.isLoading = false;
-    //     this.$message.error(this.$t('common.netError'));
-    //   });
+    //     })
+    //     .catch(() => {
+    //       this.isLoading = false;
+    //       this.$message.error(this.$t("common.netError"));
+    //     });
     // },
     // getSalesPersonName(list) {
     //   for(let l of list) {
@@ -1625,6 +1723,7 @@ export default {
         axios
           .get(`${config.host}/org/v1/mchnt/people`, {
             params: {
+              mode: role,
               first_name: n.first_name,
               last_name: n.last_name,
               birthday: n.birthday,
@@ -1634,14 +1733,19 @@ export default {
           .then(res => {
             let data = res.data;
             let isEmpty = JSON.stringify(data.data) === "{}";
-            console.log("isEmpty",isEmpty);
-            
             switch (role) {
               case 2:
+                if (data.data.userid && data.data.userid.length) {
+                  this.peopleExist1 = true;
+                } else {
+                  this.peopleExist1 = false;
+                }
+                break;
+              case 3:
                 if (isEmpty) {
                   this.peopleExist2[i] = false;
                 } else {
-                  let beneficial_owner = this.formData.beneficial_owners[i];
+                  let beneficial_owner = this.formData.owners[i];
                   ({
                     nation: beneficial_owner.nation,
                     city: beneficial_owner.city,
@@ -1651,18 +1755,21 @@ export default {
                     address: beneficial_owner.address,
                     post: beneficial_owner.post,
                     email: beneficial_owner.email,
+                    vofing: beneficial_owner.vofing,
                     id_type: beneficial_owner.id_type,
                     idnumber: beneficial_owner.idnumber,
+                    salutation: beneficial_owner.salutation,
+                    title: beneficial_owner.title
                   } = data.data);
                   this.peopleExist2[i] = true;
                 }
+                this.$forceUpdate();
                 break;
               default:
                 if (isEmpty) {
                   this.peopleExist3[i] = false;
                 } else {
-                  let legal_representative = this.formData
-                    .legal_representatives[i];
+                  let legal_representative = this.formData.legals[i];
                   ({
                     nation: legal_representative.nation,
                     city: legal_representative.city,
@@ -1671,12 +1778,14 @@ export default {
                     empeoy_status: legal_representative.empeoy_status,
                     address: legal_representative.address,
                     post: legal_representative.post,
-                    email: legal_representative.email
+                    email: legal_representative.email,
+                    salutation: legal_representative.salutation,
+                    title: legal_representative.title
                   } = data.data);
                   this.peopleExist3[i] = true;
                 }
+                this.$forceUpdate();
             }
-             this.$forceUpdate();
           })
           .catch(() => {
             this.$message.error(this.$t("common.netError"));
@@ -1696,57 +1805,59 @@ export default {
     },
     create() {
       // 创建商户的提交
-      let params = {
-        sls_uid: this.formData.sls_uid, // 业务员id
-        user_type: this.formData.user_type,
-        mchnt_type: this.isBusiness
-          ? this.formData.mchnt_type
-          : this.formData.mchnt_type_person,
-        address: this.formData.address, // 公司地址
-        post: this.formData.postal_code,
-        city: this.formData.city,
-        country: this.formData.country,
-        store_shopname: this.formData.store_name,
-        store_expect_amt: this.formData.expected_volume,
-        store_expect_count: this.formData.expected_couut,
-        store_post: this.formData.store_postal_code,
-        store_city: this.formData.store_city,
-        store_address: this.formData.store_address,
-        store_country: this.formData.store_country,
-        address: this.formData.address, // 公司地址
-        iban: this.formData.bankaccount,
-        bic: this.formData.bankcode,
-        store_unify_mcc: this.formData.unify_mcc,
-        mchnt_ratios: this.list_Select,
-        format: "cors"
-      };
-      if (this.formData.user_type === 3) {
-        ({
-          business_purpose: params.business_purpose,
-          cate: params.mode,
-          foundation_date: params.foundation_date,
-          sector: params.sector,
-          // industry: params.industry,
-          // industry_key: params.industry_key,
-          businessName: params.name,
-          reg_number: params.licensenumber,
-          reg_issuer: params.license_name,
-          beneficial_owners: params.owners,
-          legal_representatives: params.legals
-        } = this.formData);
-      } else {
-        ({
-          birthday: params.birthday,
-          contact_email: params.email,
-          empeoy_status: params.empeoy_status,
-          first_name: params.first_name,
-          last_name: params.last_name,
-          telephone: params.mobile,
-          idnumber: params.idnumber,
-          passport: params.passport,
-          nationality: params.nation
-        } = this.formData);
-      }
+      // let params = {
+      //   sls_uid: this.formData.sls_uid, // 业务员id
+      //   user_type: this.formData.user_type,
+      //   mchnt_type: this.formData.mchnt_type,
+      //   address: this.formData.address, // 公司地址
+      //   post: this.formData.post,
+      //   city: this.formData.city,
+      //   country: this.formData.country,
+      //   store_shopname: this.formData.store_shopname,
+      //   store_expect_amt: this.formData.store_expect_amt,
+      //   store_expect_count: this.formData.store_expect_count,
+      //   store_post: this.formData.store_post,
+      //   store_city: this.formData.store_city,
+      //   store_address: this.formData.store_address,
+      //   store_country: this.formData.store_country,
+      //   address: this.formData.address, // 公司地址
+      //   store_iban: this.formData.store_iban,
+      //   store_bic: this.formData.store_bic,
+      //   store_unify_mcc: this.formData.store_unify_mcc,
+      //   website: this.formData.website,
+      //   mchnt_ratios: this.mchnt_ratios,
+      //   format: "cors"
+      // };
+      // if (this.formData.user_type === 3) {
+      //   ({
+      //     business_purpose: params.business_purpose,
+      //     mode: params.mode,
+      //     foundation_date: params.foundation_date,
+      //     sector: params.sector,
+      //     // industry: params.industry,
+      //     // industry_key: params.industry_key,
+      //     name: params.name,
+      //     licensenumber: params.licensenumber,
+      //     license_name: params.license_name,
+      //     owners: params.owners,
+      //     legals: params.legals
+      //   } = this.formData);
+      // } else {
+      //   ({
+      //     birthday: params.birthday,
+      //     email: params.email,
+      //     empeoy_status: params.empeoy_status,
+      //     first_name: params.first_name,
+      //     last_name: params.last_name,
+      //     mobile: params.mobile,
+      //     idnumber: params.idnumber,
+      //     passport: params.passport,
+      //     nation: params.nation
+      //   } = this.formData);
+      // }
+      const params = JSON.parse(JSON.stringify(this.formData));
+      params.mchnt_ratios = this.mchnt_ratios;
+      !this.hasInput && delete params.legals;
       let url = this.isUpdate
         ? `${config.host}/org/mchnt/edit`
         : `${config.host}/org/v1/mchnt/signup`;
@@ -1757,11 +1868,11 @@ export default {
       //   params.userid = this.$route.query.userid || getParams('userid')
       //   delete form.store;
       //   delete params.store
-      //   if (!params.primary_uid) {
-      //     delete params.primary_uid
+      //   if (!params.first_agent_uid) {
+      //     delete params.first_agent_uid
       //   }
-      //   if (!params.secondary_uid) {
-      //     delete params.secondary_uid
+      //   if (!params.second_agent_uid) {
+      //     delete params.second_agent_uid
       //   }
       // }
       this.isLoading = true;
@@ -1799,7 +1910,7 @@ export default {
     },
 
     next() {
-      if (this.list_Select.length === 0) {
+      if (this.mchnt_ratios.length === 0) {
         this.$message.error(
           this.$t("merchant.newMerchant.requiredRule.rule25")
         );
@@ -1823,12 +1934,7 @@ export default {
     },
 
     // next() {
-    //   // if(this.isBusiness && !this.isVofingAllow ){
-    //   //    this.$message.error(this.$t('merchant.newMerchant.rule44'))
-    //   // }
-    //   // else{
-    //       this.create()
-    //   // }
+    //   this.create()
     // },
 
     cancelHandler() {
@@ -1842,6 +1948,8 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.selectList = res.data.data;
+            console.log("country", this.selectList.country);
+            console.log("keys", Object.keys(this.selectList.country));
           } else {
             this.$message.error(data.respmsg);
           }
@@ -1870,45 +1978,43 @@ export default {
     addList() {
       let pid_select = this.formData.pid_select;
       let pid_select_array = [];
-      this.list_Select.forEach(element => {
+      this.mchnt_ratios.forEach(element => {
         pid_select_array.push(element.pid_name);
       });
       this.list.forEach(element => {
         if (pid_select_array.indexOf(pid_select) > -1) {
           this.$message.error(this.$t("common.payTip"));
         } else if (element.pid_name === pid_select) {
-          this.list_Select.push(element);
+          this.mchnt_ratios.push(element);
         }
       });
     },
     pid_name_remove(pid_name) {
       // 支付通道点击减号
-      let new_list_select = this.list_Select.filter(element => {
+      let new_list_select = this.mchnt_ratios.filter(element => {
         return element.pid_name !== pid_name;
       });
-      this.list_Select = new_list_select;
+      this.mchnt_ratios = new_list_select;
     },
     changeShow(event) {
       if (event.currentTarget.attributes.tag) {
-        if (this.formData.beneficial_owners.length < 4) {
-          let ownerItem = JSON.parse(JSON.stringify(this.formData.beneficial_owners[0]))
-          this.formData.beneficial_owners.push(ownerItem);
+        if (this.formData.owners.length < 4) {
+          this.formData.owners.push(JSON.parse(JSON.stringify(this.ownerItem)));
         }
       } else {
-        if (this.formData.beneficial_owners.length > 1) {
-          this.formData.beneficial_owners.pop();
+        if (this.formData.owners.length > 1) {
+          this.formData.owners.pop();
         }
       }
     },
     changeShow2(event) {
       if (event.currentTarget.attributes.tag) {
-        if (this.formData.legal_representatives.length < 4) {
-          let legalItem = JSON.parse(JSON.stringify(this.formData.legal_representatives[0]))
-          this.formData.legal_representatives.push(legalItem);
+        if (this.formData.legals.length < 4) {
+          this.formData.legals.push(JSON.parse(JSON.stringify(this.legalItem)));
         }
       } else {
-        if (this.formData.legal_representatives.length > 1) {
-          this.formData.legal_representatives.pop();
+        if (this.formData.legals.length > 1) {
+          this.formData.legals.pop();
         }
       }
     },
@@ -1917,10 +2023,9 @@ export default {
         if (event.currentTarget.tag === false) {
           this.isBusiness = !this.isBusiness;
           this.$refs["baseinfo"].resetFields();
-          this.formData.postal_code = "";
-          this.formData.country = "DE";
+          this.peopleExist1 = false;
           setTimeout(() => {
-            this.list_Select = [];
+            this.mchnt_ratios = [];
           }, 0);
           this.formData.user_type = this.isBusiness ? 3 : 2;
         }

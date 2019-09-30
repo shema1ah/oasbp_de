@@ -57,7 +57,8 @@ const zh = {
     EDIT: '编辑',
     SWIFT: 'SWIFT CODE',
     remark: '备注',
-    payTip: '不可重复选择支付通道'
+    payTip: '不可重复选择支付通道',
+    resend: '重发'
   },
   home: {
     all: '全部',
@@ -250,6 +251,7 @@ const zh = {
       agent1: '一级代理',
       agent2: '二级代理',
       ph: '请先选择一级代理',
+      ph_legal: '请先选择国家',
       audit_state: '商户状态'
     },
     payment: {
@@ -457,7 +459,7 @@ const zh = {
         online: '线上',
         shopAbbreviation: '店铺简称',
         registeredAddress: '注册地址',
-        companyWebsite: '公司网址',
+        website: '网址',
         legalName: '法人姓名',
         bigMerchant: '单店／连锁店',
         first_name: '名',
@@ -478,6 +480,9 @@ const zh = {
         id_card: '国家身份证',
         pass_card: '护照',
         idnumber: '身份证文件号码',
+        salutation: '称谓',
+        title: '称号',
+        
       },
       applicationTypes: {
         direct: '直连',
@@ -516,7 +521,7 @@ const zh = {
         rule27: '请输入联系人姓名',
         rule28: '请输入法人姓名',
         rule29: '请输入注册地址',
-        rule30: '请输入公司网址',
+        rule30: '请输入网址',
         rule31: '请输入店铺简称',
         rule32: '请选择一级代理',
         rule33: '请选择二级代理',
@@ -542,7 +547,7 @@ const zh = {
         rule53: '请输入注册机构名',
         rule54: '请选择身份证明文件',
         rule55: '请输入身份证明文件号码',
-
+        rule56: '请选择称谓',
       },
       lengthRule: {
         rule1: '最多输入4个字符',
@@ -620,6 +625,8 @@ const zh = {
       rule42: '请输入可访问的店铺网址',
       rule43: '请选择销售员',
       rule44: '投票份额的总和必须等于100',
+      rule45: '名称已存在',
+      rule46: '个人已存在',
     },
     api: {
       title: 'API管理',
@@ -706,6 +713,7 @@ const zh = {
       other1: '其它文件2',
       other2: '其它文件3',
       Ger: '德国',
+      CZ: '捷克',
       warmother: ''
     }
   },

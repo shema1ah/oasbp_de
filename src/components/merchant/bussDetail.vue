@@ -27,11 +27,11 @@
       <el-row>
         <el-col :span="10">
           <span class="basic-label">{{$t('shop.detail.basic.la3')}}</span>
-          <span class="basic-content">{{form.base.shopname}}</span>
+          <span class="basic-content">{{form.base.store_shopname}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.QFMCC')+':'}}</span>
-          <span class="basic-content">{{form.ext.unify_mcc}}</span>
+          <span class="basic-content">{{form.ext.store_unify_mcc}}</span>
         </el-col>
       </el-row>
       <el-row>
@@ -39,33 +39,33 @@
           <span
             class="basic-label"
           >{{$t('merchant.newMerchant.form.expected_volume_transactions')+':'}}</span>
-          <span class="basic-content">{{form.base.expect_amt}}</span>
+          <span class="basic-content">{{form.base.store_expect_amt}}</span>
         </el-col>
         <el-col :span="14">
           <span
             class="basic-label"
           >{{$t('merchant.newMerchant.form.expected_couut_transactions')+':'}}</span>
-          <span class="basic-content">{{form.base.expect_count}}</span>
+          <span class="basic-content">{{form.base.store_expect_count}}</span>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="10">
          <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
-          <span class="basic-content">{{form.base.address}}</span>
+          <span class="basic-content">{{form.base.store_address}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
-          <span class="basic-content">{{form.base.post}}</span>
+          <span class="basic-content">{{form.base.store_post}}</span>
         </el-col>
       </el-row>
       <el-row>
         <el-col :span="10">
           <span class="basic-label">{{$t('merchant.newMerchant.form.city')+':'}}</span>
-          <span class="basic-content">{{form.base.city}}</span>
+          <span class="basic-content">{{form.base.store_city}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
-          <span class="basic-content">{{form.ext.country}}</span>
+          <span class="basic-content">{{form.ext.store_country}}</span>
         </el-col>
       </el-row>
     </section>
@@ -76,7 +76,7 @@
         <div class="divider"></div>
       </div>
 
-      <div v-for="item in form.chnl.pid_info" :key="item.pid_name">
+      <div v-for="item in form.chnl.mchnt_ratios" :key="item.pid_name">
         <h3>{{item.pid_name}}</h3>
         <el-row>
           <el-col :span="8">
@@ -104,22 +104,22 @@
       <el-row>
         <el-col :span="10">
           <span class="basic-label">{{$t('merchant.newMerchant.form.accountH')}}:</span>
-          <span class="basic-content">{{form.base.iban}}</span>
+          <span class="basic-content">{{form.base.store_iban}}</span>
         </el-col>
         <el-col :span="14">
           <span class="basic-label">{{$t('merchant.newMerchant.form.bic')}}:</span>
-          <span class="basic-content">{{form.base.bic}}</span>
+          <span class="basic-content">{{form.base.store_bic}}</span>
         </el-col>
       </el-row>
     </section>
 
-    <!-- <footer v-if="isEditable && form.userinfo.is_edit">
+    <!-- <footer v-if="isEditable">
       <el-button @click="editHandler">{{$t('merchant.detail.edit')}}</el-button>
     </footer>
-    <footer v-if="isReEditable && form.userinfo.is_edit">
+    <footer v-if="isReEditable">
       <el-button @click="editHandler">{{$t('merchant.detail.redit')}}</el-button>
       <el-button @click="cancel">{{$t('merchant.detail.basic.close')}}</el-button>
-    </footer>-->
+    </footer> -->
   </div>
 </template>
 <script>
@@ -140,27 +140,27 @@ export default {
   data() {
     return {
       isLoading: false,
-      isEditable: false,
-      isReEditable: false,
+      // isEditable: false,
+      // isReEditable: false,
       form: {
         ext: {
-          country: "",
-          unify_mcc: ""
+          store_country: "",
+          store_unify_mcc: ""
         },
         base: {
-          shopname: "",
+          store_shopname: "",
           userid: this.$route.query.userid || getParams("userid"),
-          address: "",
-          city: "",
-          expect_amt: "",
+          store_address: "",
+          store_city: "",
+          store_expect_amt: "",
           foundation_date: "",
-          bic: "",
-          iban: "",
-          post: "",
-          expect_count: ""
+          store_bic: "",
+          store_iban: "",
+          store_post: "",
+          store_expect_count: ""
         },
         chnl: {
-          pid_info: [
+          mchnt_ratios: [
             {
               qf_pid: "",
               pid_name: "",
@@ -190,20 +190,20 @@ export default {
     };
   },
   created() {
-    this.isEditable = "old".indexOf(this.$route.query.from) > -1;
-    this.isReEditable = this.$route.query.from === "edit";
+    // this.isEditable = "old".indexOf(this.$route.query.from) > -1;
+    // this.isReEditable = this.$route.query.from === "edit";
     this.fetchDetailData();
   },
   methods: {
     cancel() {
       this.$router.push({ name: "shop_manage_list" });
     },
-    editHandler() {
-      this.$router.push({
-        name: "createStore",
-        query: { command: "edit", userid: this.userid }
-      });
-    },
+    // editHandler() {
+    //   this.$router.push({
+    //     name: "createStore",
+    //     query: { command: "edit", userid: this.form.base.userid }
+    //   });
+    // },
     fetchDetailData() {
       axios
         .get(`${config.host}/org/v1/store/info`, {

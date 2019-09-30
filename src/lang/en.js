@@ -17,7 +17,7 @@ const en = {
     prev: 'Previous',
     next: 'Next Step',
     done: 'Finish',
-    register: 'Sign in',
+    register: 'Sign up',
     close: 'Close',
     search: 'Search',
     add: 'Add',
@@ -59,7 +59,8 @@ const en = {
     EDIT: 'EDIT',
     SWIFT: 'SWIFT CODE',
     remark: 'Remark',
-    payTip: 'Non-repeatable selection of the payment channel'
+    payTip: 'Non-repeatable selection of the payment channel',
+    resend: 'resend'
   },
   home: {
       all: 'All',
@@ -252,6 +253,7 @@ const en = {
       agent1: '1st-tier Agent',
       agent2: '2nd-tier Agent',
       ph: 'Please select 1st-tier agent first.',
+      ph_legal: 'Please select Country first.',
       audit_state: 'Merchant Status'
     },
     table: {
@@ -454,8 +456,10 @@ const en = {
         warmfront: '* The photo has to be from inside of the store.', // 必须使用所售商品/经营场所内景照片
         warmback: '* The photo has to be from outside of the store.', // 必须使用经营场所/经营场所外景照片
         status: 'Status',
-        sub: 'Regular merchant',
-        big: 'Restaurants, supermarkets, chain stores',
+        // sub: 'Regular merchant',
+        // big: 'Restaurants, supermarkets, chain stores',
+        sub: 'Merchant',
+        big: 'Big Merchant',
         personal: 'Personal',
         enterprise: 'Enterprise',
         saleMan: 'Salesman',
@@ -500,7 +504,7 @@ const en = {
         online: 'online',
         shopAbbreviation: 'Merchant Abbreviation',
         registeredAddress: 'Register Address',
-        companyWebsite: 'Company Website',
+        website: 'Website',
         legalName: 'Legal Person Name',
         bigMerchant: 'Merchant Type',
         first_name: 'First Name',
@@ -511,7 +515,7 @@ const en = {
         vofing_share: 'Vofing Share',
         expected_volume_transactions: 'Expected Volume Transactions',
         expected_couut_transactions: 'Expected Count Transactions',
-        represeutation: 'Type Of Represeutation',
+        represeutation: 'Represeutation',
         legal_rep: 'Whether it is Legal Representatives',
         reg_number: 'Register Number',
         reg_issuer: 'Register Issuer',
@@ -521,6 +525,8 @@ const en = {
         id_card: 'National ID Card',
         pass_card: 'Passport',
         idnumber: 'Identification Document Number',
+        salutation: 'Salutation',
+        title: 'Title',
       },
       applicationTypes: {
         direct: 'direct',
@@ -558,7 +564,7 @@ const en = {
         rule27: 'Please input contact name',
         rule28: 'Please input Legal Person Name',
         rule29: 'Please input register address',
-        rule30: 'Please input company website',
+        rule30: 'Please input website',
         rule31: 'Please input merchant abbreviation',
         rule32: 'Please select primary agent',
         rule33: 'Please select secondary agent',
@@ -579,11 +585,12 @@ const en = {
         rule48: 'Please select whether it is Legal Representatives',
         rule49: 'Please input expected volume transactions',
         rule50: 'Please input expected count transactions',
-        rule51: 'Please select type of represeutation',
+        rule51: 'Please select represeutation',
         rule52: 'Please input registration number',
         rule53: 'Please input registration issuer',
         rule54: 'Please select Identification document',
         rule55: 'Please input Identification Document Number',
+        rule56: 'Please select Salutation',
       },
       lengthRule: {
         rule1: 'The maxlength is 4',
@@ -660,6 +667,8 @@ const en = {
       rule42: 'Please input a valid website',
       rule43: 'Please select salesperson',
       rule44: 'The total number of vofing share must be equal to 100',
+      rule45: 'Name already exists',
+      rule46: 'Person already exists',
     },
     api: {
       title: 'API Management',
@@ -754,6 +763,7 @@ const en = {
       other1: 'Other supporting document 2',
       other2: 'Other supporting document 3',
       Ger: 'Germany',
+      CZ: 'Czechia',
       warmother: ''
     }
   },

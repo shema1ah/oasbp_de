@@ -52,7 +52,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        loader: 'babel-loader',
+        loader: 'babel-loader?cacheDirectory',
         include: [resolve('src'), resolve('node_modules/webpack-dev-server/client'), resolve('node_modules/qfpay-element-ui/src')]
       },
       {
