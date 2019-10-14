@@ -70,11 +70,11 @@
       </el-form-item>
 
       <el-form-item prop="store_expect_amt" :label="$t('merchant.newMerchant.form.expected_volume_transactions')">
-        <el-input v-model.trim="storeModel.store_expect_amt"></el-input>
+        <el-input :placeholder="$t('merchant.newMerchant.rule47')" v-model.trim="storeModel.store_expect_amt"></el-input>
       </el-form-item>
 
       <el-form-item prop="store_expect_count" :label="$t('merchant.newMerchant.form.expected_couut_transactions')">
-        <el-input v-model.trim="storeModel.store_expect_count"></el-input>
+        <el-input :placeholder="$t('merchant.newMerchant.rule48')" v-model.trim="storeModel.store_expect_count"></el-input>
       </el-form-item>
 
       <el-form-item prop="store_address" :label="$t('merchant.newMerchant.form.addressT')">

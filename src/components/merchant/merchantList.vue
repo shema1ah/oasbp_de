@@ -326,6 +326,7 @@ export default {
           .get(`${config.host}/org/v1/mchnt/audit_status`, {
             params: {
               userid: row.userid,
+              user_type: row.user_type,
               format: "cors"
             }
           })

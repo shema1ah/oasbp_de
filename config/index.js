@@ -13,7 +13,7 @@ module.exports = {
       '/api': {
         // target: 'https://oasbp.qa.qfpay.net',
         // target: 'http://172.100.113.34:8199', // 孔繁星
-        target: 'http://172.100.108.132:8199', // 董文文
+        target: 'http://172.100.108.215:8199', // 董文文
         changeOrigin: true,
         pathRewrite: {  
           '^/api': '/'

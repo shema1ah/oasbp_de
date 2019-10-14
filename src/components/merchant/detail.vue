@@ -34,7 +34,7 @@
         </el-col>
       <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.meiname')+':'}}</span>
-          <span class="basic-content">{{form.base.shopname}}</span>
+          <span class="basic-content">{{form.base.name}}</span>
       </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
@@ -132,17 +132,21 @@
       </el-row>
 
       <el-row v-if="!this.isBusiness">
-         <el-col :span="8">
+         <el-col v-if="form.base.idnumber" :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
           <span class="basic-content">{{form.base.idnumber}}</span>
         </el-col>
-        <el-col :span="8">
+        <el-col v-if="form.ext.passport" :span="8">
          <span class="basic-label">{{$t('merchant.newMerchant.form.passport')+':'}}</span>
           <span class="basic-content">{{form.ext.passport}}</span>
         </el-col>
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
           <span class="basic-content">{{form.base.mobile}}</span>
+        </el-col> 
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
+          <span class="basic-content">{{form.base.email}}</span>
         </el-col> 
       </el-row>
  
@@ -151,10 +155,6 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
           <span class="basic-content">{{form.ext.website}}</span>
         </el-col>
-      <el-col :span="8" v-if="!this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
-          <span class="basic-content">{{form.base.email}}</span>
-        </el-col> 
       </el-row>
     </section>
 
@@ -397,7 +397,7 @@ export default {
           city: "",
           post: "", 
           foundation_date: "", 
-          shopname: "",
+          name: "",
           user_type: "",
           address: "",
           first_agent: "",

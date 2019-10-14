@@ -101,7 +101,7 @@
       </el-form-item>
 
       <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
-        <el-select v-model="formData.country">
+        <el-select @change="resetType" v-model="formData.country">
           <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
           <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
         </el-select>
@@ -288,20 +288,44 @@
       </el-form-item>
 
       <el-form-item
+        prop="id_type"
+        :label="$t('merchant.newMerchant.form.id_type')"
+        v-if="!isBusiness"
+        :rules="listRules.id_type"
+      >
+        <el-select v-model="formData.id_type">
+          <el-option :label="$t('merchant.newMerchant.form.id_card')" value="idnumber"></el-option>
+          <el-option :label="$t('merchant.newMerchant.form.pass_card')" value="passport"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item
         prop="idnumber"
         :label="$t('merchant.newMerchant.form.idnumber')"
         v-if="!isBusiness"
+        :rules="listRules.idnumber"
       >
         <el-input v-model.trim="formData.idnumber"></el-input>
       </el-form-item>
 
-      <el-form-item
-        prop="passport"
-        :label="$t('merchant.newMerchant.form.passport')"
-        v-if="!isBusiness"
-      >
-        <el-input v-model.trim="formData.passport"></el-input>
-      </el-form-item>
+      <!-- <el-form-item
+            :prop="'owners.'+ i + '.id_type'"
+            :label="$t('merchant.newMerchant.form.id_type')"
+            :rules="listRules.id_type"
+          >
+            <el-select v-model="n.id_type" :disabled="peopleExist2[i]">
+              <el-option :label="$t('merchant.newMerchant.form.id_card')" value="national"></el-option>
+              <el-option :label="$t('merchant.newMerchant.form.pass_card')" value="passport"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item
+            :prop="'owners.'+ i + '.idnumber'"
+            :label="$t('merchant.newMerchant.form.idnumber')"
+            :rules="listRules.idnumber"
+          >
+            <el-input v-model.trim="n.idnumber" :disabled="peopleExist2[i]"></el-input>
+      </el-form-item>-->
 
       <!-- 股东信息 -->
       <transition-group name="fade" tag="div" v-if="isBusiness">
@@ -775,14 +799,20 @@
           prop="store_expect_amt"
           :label="$t('merchant.newMerchant.form.expected_volume_transactions')"
         >
-          <el-input v-model.trim="formData.store_expect_amt"></el-input>
+          <el-input
+            :placeholder="$t('merchant.newMerchant.rule47')"
+            v-model.trim="formData.store_expect_amt"
+          ></el-input>
         </el-form-item>
 
         <el-form-item
           prop="store_expect_count"
           :label="$t('merchant.newMerchant.form.expected_couut_transactions')"
         >
-          <el-input v-model.trim="formData.store_expect_count"></el-input>
+          <el-input
+            :placeholder="$t('merchant.newMerchant.rule48')"
+            v-model.trim="formData.store_expect_count"
+          ></el-input>
         </el-form-item>
 
         <el-form-item prop="store_address" :label="$t('merchant.newMerchant.form.addressT')">
@@ -917,7 +947,7 @@ export default {
         store_iban: "", // 银行账号
         store_bic: "",
         idnumber: "",
-        passport: "",
+        id_type: "",
         salutation: "",
         title: "",
         website: "",
@@ -1529,7 +1559,9 @@ export default {
     //     this.$message.error(this.$t('common.netError'));
     //   });
     // },
-
+    resetType() {
+      this.formData.mchnt_type = "";
+    },
     // 获取1级渠道列表
     getChannelList() {
       axios
@@ -1855,7 +1887,16 @@ export default {
       //     nation: params.nation
       //   } = this.formData);
       // }
+
       const params = JSON.parse(JSON.stringify(this.formData));
+      if (!this.isBusiness && this.formData.id_type === "idnumber") {
+        params.idnumber = this.formData.idnumber;
+        delete params.passport;
+      } else if (!this.isBusiness && this.formData.id_type === "passport") {
+        params.passport = this.formData.idnumber;
+        delete params.idnumber;
+      }
+      delete params.id_type;
       params.mchnt_ratios = this.mchnt_ratios;
       !this.hasInput && delete params.legals;
       let url = this.isUpdate
@@ -1948,8 +1989,6 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.selectList = res.data.data;
-            console.log("country", this.selectList.country);
-            console.log("keys", Object.keys(this.selectList.country));
           } else {
             this.$message.error(data.respmsg);
           }

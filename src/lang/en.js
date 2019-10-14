@@ -669,6 +669,8 @@ const en = {
       rule44: 'The total number of vofing share must be equal to 100',
       rule45: 'Name already exists',
       rule46: 'Person already exists',
+      rule47: 'Monthly volumn in EUR Cents',
+      rule48: 'Number of monthly transactions',
     },
     api: {
       title: 'API Management',
@@ -763,7 +765,7 @@ const en = {
       other1: 'Other supporting document 2',
       other2: 'Other supporting document 3',
       Ger: 'Germany',
-      CZ: 'Czechia',
+      CZ: 'Czech Republic',
       warmother: ''
     }
   },
