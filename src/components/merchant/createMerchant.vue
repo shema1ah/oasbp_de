@@ -203,7 +203,10 @@
         :label="$t('merchant.newMerchant.form.business_purpose')"
         v-if="isBusiness"
       >
-        <el-input v-model.trim="formData.business_purpose"></el-input>
+        <el-input
+          :placeholder="$t('merchant.newMerchant.rule49')"
+          v-model.trim="formData.business_purpose"
+        ></el-input>
       </el-form-item>
 
       <el-form-item prop="address" :label="$t('merchant.newMerchant.form.addressT')">
@@ -218,7 +221,7 @@
         <el-input v-model.trim="formData.city"></el-input>
       </el-form-item>
 
-      <el-form-item
+      <!-- <el-form-item
         prop="empeoy_status"
         :label="$t('merchant.newMerchant.form.empeoyment_sataus')"
         v-if="!isBusiness"
@@ -231,7 +234,7 @@
             :key="item"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
 
       <el-form-item prop="email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
         <el-input v-model.trim="formData.email"></el-input>
@@ -245,11 +248,11 @@
         <el-input v-model.trim="formData.mobile"></el-input>
       </el-form-item>
 
-      <el-form-item prop="sector" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
+      <!-- <el-form-item prop="sector" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
         <el-select v-model="formData.sector">
           <el-option :label="item" :value="item" v-for="item in selectList.sector" :key="item"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item>-->
       <!-- 
       <el-form-item prop="industry" :label="$t('merchant.newMerchant.form.industry')" v-if="isBusiness">
         <el-select v-model="formData.industry">
@@ -449,8 +452,12 @@
             :rules="listRules.country"
           >
             <el-select v-model="n.country" :disabled="peopleExist2[i]">
-              <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
-              <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
+              <el-option
+                :label="value"
+                :value="findKey(selectList.country,value)"
+                v-for="value in countryList"
+                :key="value"
+              ></el-option>
             </el-select>
           </el-form-item>
 
@@ -657,8 +664,12 @@
             :rules="hasLegal&&!hasInput ? [] : listRules.country"
           >
             <el-select v-model="n.country" :disabled="peopleExist3[i]">
-              <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
-              <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
+              <el-option
+                :label="value"
+                :value="findKey(selectList.country,value)"
+                v-for="value in countryList"
+                :key="value"
+              ></el-option>
             </el-select>
           </el-form-item>
 
@@ -928,10 +939,10 @@ export default {
         post: "", //邮编
         city: "", //城市
         country: "", //国家
-        empeoy_status: "", //职业
+        // empeoy_status: "", //职业
         email: "", // 邮箱
         mobile: "", // 公司联系人电话
-        sector: "", //一级行业
+        // sector: "", //一级行业
         // industry: "", //二级行业
         // industry_key: "", //三级行业
         licensenumber: "", //注册号码
@@ -994,7 +1005,7 @@ export default {
       },
       shopTypes: [], // 门店行业列表
       selectList: {
-        sector: [],
+        // sector: [],
         // industry: [],
         // industry_key: [],
         represe: [],
@@ -1150,19 +1161,19 @@ export default {
           }
         ],
 
-        empeoy_status: [
-          {
-            required: true,
-            message: this.$t("merchant.newMerchant.requiredRule.rule43")
-          }
-        ],
+        // empeoy_status: [
+        //   {
+        //     required: true,
+        //     message: this.$t("merchant.newMerchant.requiredRule.rule43")
+        //   }
+        // ],
 
-        sector: [
-          {
-            required: true,
-            message: this.$t("merchant.newMerchant.requiredRule.rule44")
-          }
-        ],
+        // sector: [
+        //   {
+        //     required: true,
+        //     message: this.$t("merchant.newMerchant.requiredRule.rule44")
+        //   }
+        // ],
         // 'industry': [
         //   {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule45')}
         // ],

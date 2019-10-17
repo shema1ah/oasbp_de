@@ -91,9 +91,13 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.mertype')+':'}}</span>
           <span class="basic-content">{{form.base.mchnt_type}}</span>
         </el-col>
-        <el-col :span="8" v-if="this.isBusiness">
+        <!-- <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
           <span class="basic-content width-limit">{{form.base.sector}}</span>
+        </el-col> -->
+           <el-col :span="8" v-if="this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
+          <span class="basic-content">{{form.ext.website}}</span>
         </el-col>
         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
@@ -125,10 +129,14 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.title')+':'}}</span>
           <span class="basic-content">{{form.base.title}}</span>
         </el-col>
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
           <span class="basic-content">{{form.base.empeoy_status}}</span>
-        </el-col>
+        </el-col> -->
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
+          <span class="basic-content">{{form.base.email}}</span>
+        </el-col> 
       </el-row>
 
       <el-row v-if="!this.isBusiness">
@@ -144,18 +152,8 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
           <span class="basic-content">{{form.base.mobile}}</span>
         </el-col> 
-        <el-col :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
-          <span class="basic-content">{{form.base.email}}</span>
-        </el-col> 
       </el-row>
  
-    <el-row>
-      <el-col :span="8" v-if="this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
-          <span class="basic-content">{{form.ext.website}}</span>
-        </el-col>
-      </el-row>
     </section>
 
     <!-- 股东信息 -->
@@ -411,7 +409,7 @@ export default {
           license_name: "",
           birthday: "",  // 生日
           nation: "",  // 国籍  
-          empeoy_status: "", //就业状态
+          // empeoy_status: "", //就业状态
           business_purpose: "",
           license_name: "",
           licensenumber: "",

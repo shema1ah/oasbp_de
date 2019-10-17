@@ -671,6 +671,7 @@ const en = {
       rule46: 'Person already exists',
       rule47: 'Monthly volumn in EUR Cents',
       rule48: 'Number of monthly transactions',
+      rule49: 'Types of Goods Sold'
     },
     api: {
       title: 'API Management',
