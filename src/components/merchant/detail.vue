@@ -29,20 +29,6 @@
 
       <el-row v-if="this.isBusiness">
         <el-col :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.bigMerchant')+':'}}</span>
-          <span class="basic-content">{{cate[form.base.cate]}}</span>
-        </el-col>
-      <el-col :span="8" v-if="this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.meiname')+':'}}</span>
-          <span class="basic-content">{{form.base.name}}</span>
-      </el-col>
-        <el-col :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
-          <span class="basic-content">{{form.base.business_purpose}}</span>
-        </el-col>
-      </el-row>
-      <el-row v-if="this.isBusiness">
-        <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.foundation_date')+':'}}</span>
           <span class="basic-content">{{form.base.foundation_date}}</span>
         </el-col>
@@ -95,13 +81,9 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.sector')+':'}}</span>
           <span class="basic-content width-limit">{{form.base.sector}}</span>
         </el-col> -->
-           <el-col :span="8" v-if="this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
-          <span class="basic-content">{{form.ext.website}}</span>
-        </el-col>
-        <el-col :span="8" v-if="!this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
-          <span class="basic-content">{{form.base.nation}}</span>
+          <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
+          <span class="basic-content">{{form.base.business_purpose}}</span>
         </el-col>
       </el-row>
 
@@ -140,20 +122,40 @@
       </el-row>
 
       <el-row v-if="!this.isBusiness">
-         <el-col v-if="form.base.idnumber" :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
-          <span class="basic-content">{{form.base.idnumber}}</span>
+          <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.id_type') +':'}}</span>
+          <span class="basic-content">{{form.base.idnumber ? $t('merchant.newMerchant.form.id_card') : $t('merchant.newMerchant.form.pass_card')}}</span>
         </el-col>
-        <el-col v-if="form.ext.passport" :span="8">
-         <span class="basic-label">{{$t('merchant.newMerchant.form.passport')+':'}}</span>
-          <span class="basic-content">{{form.ext.passport}}</span>
+
+         <el-col :span="8">
+          <span class="basic-label">{{form.base.idnumber ? $t('merchant.newMerchant.form.idnumber') : $t('merchant.newMerchant.form.passport') +':'}}</span>
+          <span class="basic-content">{{form.base.idnumber ? form.base.idnumber : form.ext.passport}}</span>
         </el-col>
+
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
           <span class="basic-content">{{form.base.mobile}}</span>
         </el-col> 
       </el-row>
- 
+
+     <el-row >
+        <el-col :span="8" v-if="this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.bigMerchant')+':'}}</span>
+          <span class="basic-content">{{cate[form.base.cate]}}</span>
+        </el-col>
+      <el-col :span="8" v-if="this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.meiname')+':'}}</span>
+          <span class="basic-content">{{form.base.name}}</span>
+      </el-col>
+        <el-col :span="8" v-if="!this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
+          <span class="basic-content">{{form.base.nation}}</span>
+        </el-col>
+         <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
+          <span class="basic-content">{{form.ext.website}}</span>
+        </el-col>
+      </el-row>
     </section>
 
     <!-- 股东信息 -->

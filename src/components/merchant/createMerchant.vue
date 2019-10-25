@@ -201,7 +201,6 @@
       <el-form-item
         prop="business_purpose"
         :label="$t('merchant.newMerchant.form.business_purpose')"
-        v-if="isBusiness"
       >
         <el-input
           :placeholder="$t('merchant.newMerchant.rule49')"
@@ -285,7 +284,6 @@
       <el-form-item
         prop="website"
         :label="$t('merchant.newMerchant.form.website')"
-        v-if="isBusiness"
       >
         <el-input v-model.trim="formData.website"></el-input>
       </el-form-item>
@@ -709,7 +707,6 @@
           <el-form-item
             :prop="'legals.'+ i + '.mobile'"
             :label="$t('merchant.newMerchant.form.concatNumber')"
-            :rules="hasLegal&&!hasInput ? [] : listRules.mobile"
           >
             <el-input v-model.trim="n.mobile" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
@@ -1268,9 +1265,7 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule26")
           }
         ],
-        mobile: [
-          { required: true, message: this.$t("merchant.newMerchant.rule35") }
-        ],
+
         mcc: [
           {
             required: true,
@@ -1423,9 +1418,6 @@ export default {
           }
         ],
 
-        mobile: [
-          { required: true, message: this.$t("merchant.newMerchant.rule35") }
-        ],
 
         id_type: [
           {
@@ -1455,7 +1447,7 @@ export default {
     isVofingAllow: function() {
       let vofingSum = 0;
       this.formData.owners.forEach(i => (vofingSum += Number(i.vofing)));
-      return vofingSum === 100 ? true : false;
+      return vofingSum <= 100 ? true : false;
     },
     countryList: function() {
       return Object.values(this.selectList.country).sort();
