@@ -240,11 +240,11 @@
       </el-form-item>
 
       <el-form-item
-        prop="mobile"
+        prop="person_mobile"
         :label="$t('merchant.newMerchant.form.concatNumber')"
         v-if="!isBusiness"
       >
-        <el-input v-model.trim="formData.mobile"></el-input>
+        <el-input v-model.trim="formData.person_mobile"></el-input>
       </el-form-item>
 
       <!-- <el-form-item prop="sector" :label="$t('merchant.newMerchant.form.sector')" v-if="isBusiness">
@@ -938,7 +938,7 @@ export default {
         country: "", //国家
         // empeoy_status: "", //职业
         email: "", // 邮箱
-        mobile: "", // 公司联系人电话
+        person_mobile: "", // 公司联系人电话
         // sector: "", //一级行业
         // industry: "", //二级行业
         // industry_key: "", //三级行业
@@ -1884,7 +1884,7 @@ export default {
       //     empeoy_status: params.empeoy_status,
       //     first_name: params.first_name,
       //     last_name: params.last_name,
-      //     mobile: params.mobile,
+      //     person_mobile: params.person_mobile,
       //     idnumber: params.idnumber,
       //     passport: params.passport,
       //     nation: params.nation

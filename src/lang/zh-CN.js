@@ -482,6 +482,7 @@ const zh = {
         idnumber: '身份证文件号码',
         salutation: '称谓',
         title: '称号',
+        videoURL:'视频认证地址'
         
       },
       applicationTypes: {

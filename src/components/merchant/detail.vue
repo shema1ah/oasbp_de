@@ -134,7 +134,7 @@
 
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
-          <span class="basic-content">{{form.base.mobile}}</span>
+          <span class="basic-content">{{form.ext.person_mobile}}</span>
         </el-col> 
       </el-row>
 
@@ -154,6 +154,10 @@
          <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.website')+':'}}</span>
           <span class="basic-content">{{form.ext.website}}</span>
+        </el-col>
+         <el-col :span="8" v-if="!this.isBusiness">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
+          <span class="basic-content width-limit">{{form.ext.url}}</span>
         </el-col>
       </el-row>
     </section>
@@ -387,6 +391,8 @@ export default {
           country: "",
           passport: "",
           website: "",
+          url:"",
+          person_mobile: "",  // 手机号码
           unify_mcc: ""
         },
         base: {
@@ -405,7 +411,6 @@ export default {
           sls_uid: "", // 业务员id
           sls_name: "",
           email: "",   // 邮箱
-          mobile: "",  // 手机号码
           cate: "",
           licensenumber: "",
           license_name: "",

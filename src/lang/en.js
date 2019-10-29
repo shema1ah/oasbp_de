@@ -527,6 +527,7 @@ const en = {
         idnumber: 'Identification Document Number',
         salutation: 'Salutation',
         title: 'Title',
+        videoURL:'VideoIdent URL'
       },
       applicationTypes: {
         direct: 'direct',
