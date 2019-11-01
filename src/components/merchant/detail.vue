@@ -128,7 +128,7 @@
         </el-col>
 
          <el-col :span="8">
-          <span class="basic-label">{{form.base.idnumber ? $t('merchant.newMerchant.form.idnumber') : $t('merchant.newMerchant.form.passport') +':'}}</span>
+          <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
           <span class="basic-content">{{form.base.idnumber ? form.base.idnumber : form.ext.passport}}</span>
         </el-col>
 
@@ -334,6 +334,12 @@
             <el-button v-if="n.sendable" :loading="resendLoding" type="text" @click="sendEmail(n)">{{$t('common.resend')}}</el-button>
           </el-col>
         </el-row>
+    <el-row>
+        <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
+          <span class="basic-content width-limit">{{n.url}}</span>
+        </el-col>
+        </el-row>
       </div>
     </section>
 
@@ -461,6 +467,7 @@ export default {
               person_id: "",
               userid: "",
               url_time: "",
+              url: "",
               email: ""
             }
           ],
@@ -625,7 +632,7 @@ export default {
       }
       .width-limit {
         display: inline-flex;
-        width: 70%;
+        width: 60%;
         overflow-x: scroll;
         white-space: nowrap;
         scrollbar-width:none;

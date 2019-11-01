@@ -474,7 +474,6 @@ const zh = {
         legal_rep: '是否为Legal Representatives',
         reg_number: '注册号码',
         reg_issuer: '注册机构名',
-        idnumber: '国家身份证号码',
         passport: '护照ID',
         id_type: '身份证文件',
         id_card: '国家身份证',
