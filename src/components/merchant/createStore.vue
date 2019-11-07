@@ -223,15 +223,18 @@
 
            'store_post': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule40')},
-            {
+              {
               validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule2')));
-                } else {
-                  cb();
-                }
+              if (!/^\d+\s*\d+$/.test(val)) {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+                );
+              } else {
+                cb();
               }
             }
+
+          }
           ],
             
           'store_city': [
@@ -244,6 +247,17 @@
 
           'store_iban': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
+                {
+            validator: (rule, val, cb) => {
+              if (!/^[A-Z]{2}\d{2}[A-Z\d]{1,30}$/.test(val)) {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+                );
+              } else {
+                cb();
+              }
+            }
+          }
           ],
 
           'store_bic': [

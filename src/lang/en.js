@@ -483,8 +483,8 @@ const en = {
         addressT: 'Street and house number',
         accountName: 'Account Name',
         accountType: 'Bank Name',
-        accountH: 'iban',
-        bic: 'bic',
+        accountH: 'IBAN',
+        bic: 'BIC',
         accountAddress: 'Bank Address',
         moneySettment: 'Starting Point Of Settlement Fund',
         storephone: 'Store Contact Number',
@@ -554,7 +554,7 @@ const en = {
         rule14: 'Please input ci validity',
         rule15: 'Please input account name',
         rule16: 'Please input bank name',
-        rule17: 'Please input iban',
+        rule17: 'Please input IBAN',
         rule18: 'Please input bank address',
         rule19: 'Please input starting point of settlement fund',
         rule20: 'Please input store name',
@@ -643,7 +643,7 @@ const en = {
       rule16: 'Please input company address', // 请输入公司地址
       rule17: 'Please input company contact name', // 请输入公司联系人
       rule18: 'Please input bank name', // 请输入总行名称
-      rule19: 'Please input bic', // 请输入SWIFT代码
+      rule19: 'Please input BIC', // 请输入SWIFT代码
       rule20: 'Please input bank account name', // 请输入银行帐户名称
       rule21: 'Please input store name', // 请输入店铺名称
       rule22: 'Please input store contact number', // 请输入店铺联系电话

@@ -92,7 +92,7 @@
         <el-input v-model.trim="bankinfo.bankCity" @blur="updateAgency('bankCity', $event)"></el-input>
       </el-form-item>
 
-      <el-form-item prop="bankcode" :label="$t('common.SWIFT')">
+      <el-form-item prop="bankcode" :label="$t('merchant.newMerchant.form.bic')">
         <el-input v-model.trim="bankinfo.bankcode" @blur="updateAgency('bankcode', $event)"></el-input>
       </el-form-item>
 
@@ -228,16 +228,26 @@
           ],
           'bankaccount': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule17')},
-            {
-              validator: (rule, val, cb) => {
-                if (!/^[0-9]*$/.test(val) && val != '') {
-                  cb(new Error(this.$t('merchant.newMerchant.specialRule.rule1')));
-                } else {
-                  cb();
-                }
+            // {
+            //   validator: (rule, val, cb) => {
+            //     if (!/^[0-9]*$/.test(val) && val != '') {
+            //       cb(new Error(this.$t('merchant.newMerchant.specialRule.rule1')));
+            //     } else {
+            //       cb();
+            //     }
+            //   }
+            // },
+               {
+            validator: (rule, val, cb) => {
+              if (!/^[A-Z]{2}\d{2}[A-Z\d]{1,30}$/.test(val)) {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+                );
+              } else {
+                cb();
               }
-            },
-            {max: 15, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule6'), trigger: 'blur'}
+            }
+          }
           ],
           'bankCity': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule18')},

@@ -1100,15 +1100,16 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
           },
           {
-            validator: (rule, val, cb) => {
-              if (!/^[0-9]*$/.test(val) && val != "") {
+              validator: (rule, val, cb) => {
+              if (!/^\d+\s*\d+$/.test(val)) {
                 cb(
-                  new Error(this.$t("merchant.newMerchant.specialRule.rule2"))
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
                 );
               } else {
                 cb();
               }
             }
+
           }
         ],
 
@@ -1117,16 +1118,17 @@ export default {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
           },
-          {
-            validator: (rule, val, cb) => {
-              if (!/^[0-9]*$/.test(val) && val != "") {
+           {
+              validator: (rule, val, cb) => {
+              if (!/^\d+\s*\d+$/.test(val)) {
                 cb(
-                  new Error(this.$t("merchant.newMerchant.specialRule.rule2"))
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
                 );
               } else {
                 cb();
               }
             }
+
           }
         ],
 
@@ -1282,7 +1284,19 @@ export default {
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule17")
+          },
+            {
+            validator: (rule, val, cb) => {
+              if (!/^[A-Z]{2}\d{2}[A-Z\d]{1,30}$/.test(val)) {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+                );
+              } else {
+                cb();
+              }
+            }
           }
+
         ],
         store_bic: [
           { required: true, message: this.$t("merchant.newMerchant.rule19") }
@@ -1331,15 +1345,16 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule40")
           },
           {
-            validator: (rule, val, cb) => {
-              if (!/^[0-9]*$/.test(val) && val != "") {
+              validator: (rule, val, cb) => {
+              if (!/^\d+\s*\d+$/.test(val)) {
                 cb(
-                  new Error(this.$t("merchant.newMerchant.specialRule.rule2"))
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
                 );
               } else {
                 cb();
               }
             }
+
           }
         ],
 

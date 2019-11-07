@@ -7,12 +7,12 @@
         <span>{{$t('merchant.detail.basic.close')}}</span>
       </el-button>
     </header>
-    <section class="basic">
+    <section class="basic clearfix">
       <div class="banner">
         <div class="title">{{isBusiness ? $t('merchant.newMerchant.basic.cap1') : $t('merchant.newMerchant.basic.cap7')}}</div>
         <div class="divider"></div>
       </div>
-      <el-row>
+   
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.channel')+':'}}</span>
           <span class="basic-content">{{form.base.first_agent}}</span>
@@ -25,24 +25,21 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.contact')+':'}}</span>
           <span class="basic-content">{{form.base.sls_name}}</span>
         </el-col>
-      </el-row>
-
-      <el-row v-if="this.isBusiness">
-        <el-col :span="8">
+      
+        <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.foundation_date')+':'}}</span>
           <span class="basic-content">{{form.base.foundation_date}}</span>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.reg_number')+':'}}</span>
           <span class="basic-content">{{form.base.licensenumber}}</span>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.reg_issuer')+':'}}</span>
           <span class="basic-content">{{form.base.license_name}}</span>
         </el-col>
-      </el-row>
-
-      <!-- <el-row v-if="this.isBusiness">
+<!--     
+      <el-row v-if="this.isBusiness">
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.industry')+':'}}</span>
           <span class="basic-content width-limit">{{form.base.industry}}</span>
@@ -53,7 +50,7 @@
         </el-col>
       </el-row> -->
 
-      <el-row>
+     
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
           <span class="basic-content">{{form.ext.country}}</span>
@@ -66,9 +63,9 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
           <span class="basic-content">{{form.base.address}}</span>
         </el-col>
-      </el-row>
 
-      <el-row>
+
+      
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
           <span class="basic-content">{{form.base.post}}</span>
@@ -85,29 +82,27 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.business_purpose')+':'}}</span>
           <span class="basic-content">{{form.base.business_purpose}}</span>
         </el-col>
-      </el-row>
+     
 
-      <el-row v-if="!this.isBusiness">
-        <el-col :span="8">
+ 
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
           <span class="basic-content">{{form.base.first_name}}</span>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.last_name')+':'}}</span>
           <span class="basic-content">{{form.base.last_name}}</span>
         </el-col>
-        <el-col :span="8" >
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
           <span class="basic-content">{{form.base.birthday}}</span>
         </el-col>
-      </el-row>
 
-      <el-row v-if="!this.isBusiness">
-        <el-col :span="8">
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.salutation')+':'}}</span>
           <span class="basic-content">{{form.base.salutation}}</span>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.title')+':'}}</span>
           <span class="basic-content">{{form.base.title}}</span>
         </el-col>
@@ -115,30 +110,28 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
           <span class="basic-content">{{form.base.empeoy_status}}</span>
         </el-col> -->
-        <el-col :span="8">
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
           <span class="basic-content">{{form.base.email}}</span>
         </el-col> 
-      </el-row>
+   
 
-      <el-row v-if="!this.isBusiness">
-          <el-col :span="8">
+          <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.id_type') +':'}}</span>
           <span class="basic-content">{{form.base.idnumber ? $t('merchant.newMerchant.form.id_card') : $t('merchant.newMerchant.form.pass_card')}}</span>
         </el-col>
 
-         <el-col :span="8">
+         <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
           <span class="basic-content">{{form.base.idnumber ? form.base.idnumber : form.ext.passport}}</span>
         </el-col>
 
-        <el-col :span="8">
+        <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
           <span class="basic-content">{{form.ext.person_mobile}}</span>
-        </el-col> 
-      </el-row>
+        </el-col>
+      
 
-     <el-row >
         <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.bigMerchant')+':'}}</span>
           <span class="basic-content">{{cate[form.base.cate]}}</span>
@@ -159,7 +152,6 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
           <span class="basic-content width-limit">{{form.ext.url}}</span>
         </el-col>
-      </el-row>
     </section>
 
     <!-- 股东信息 -->
@@ -168,8 +160,8 @@
         <div class="title">{{$t('merchant.newMerchant.basic.cap2')}}</div>
         <div class="divider"></div>
       </div>
-      <div class="list-gap" v-for="(n,i) in form.base.owners" :key="i">
-        <el-row>
+      <div class="list-gap clearfix" v-for="(n,i) in form.base.owners" :key="i">
+
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
             <span class="basic-content">{{n.first_name}}</span>
@@ -182,8 +174,8 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
             <span class="basic-content">{{n.birthday}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+   
+    
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.salutation')+':'}}</span>
             <span class="basic-content">{{n.salutation}}</span>
@@ -196,8 +188,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
             <span class="basic-content">{{n.empeoy_status}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+  
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
             <span class="basic-content">{{n.country}}</span>
@@ -210,8 +201,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
             <span class="basic-content">{{n.address}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+  
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
             <span class="basic-content">{{n.post}}</span>
@@ -224,8 +214,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
             <span class="basic-content">{{n.mobile}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+     
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
             <span class="basic-content width-limit">{{n.nation}}</span>
@@ -238,8 +227,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.id_type')+':'}}</span>
             <span class="basic-content">{{id_type[n.id_type]}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+  
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.idnumber')+':'}}</span>
             <span class="basic-content">{{n.idnumber}}</span>
@@ -252,7 +240,16 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.represeutation')+':'}}</span>
             <span class="basic-content">{{n.represe}}</span>
           </el-col>
-        </el-row>
+         <el-col :span="8" v-if="n.is_legal == 1">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
+          <span class="basic-content width-limit">{{n.url}}</span>
+        </el-col>
+          <el-col :span="8" v-if="n.is_legal == 1">
+            <span class="basic-label">{{$t('common.status')+':'}}</span>
+            <span class="basic-content status-width">{{n.legal_status}}</span>
+            <el-button v-if="n.sendable" :loading="resendLoding" type="text" @click="sendEmail(n)">{{$t('common.resend')}}</el-button>
+          </el-col>
+    
       </div>
     </section>
 
@@ -262,8 +259,8 @@
         <div class="divider"></div>
       </div>
 
-      <div class="list-gap" v-for="(n,i) in form.base.legals" :key="i">
-               <el-row>
+      <div class="list-gap clearfix" v-for="(n,i) in form.base.legals" :key="i">
+           
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.first_name')+':'}}</span>
             <span class="basic-content">{{n.first_name}}</span>
@@ -276,8 +273,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.date_of_birth')+':'}}</span>
             <span class="basic-content">{{n.birthday}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+      
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.salutation')+':'}}</span>
             <span class="basic-content">{{n.salutation}}</span>
@@ -290,8 +286,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
             <span class="basic-content">{{n.empeoy_status}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+     
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.country')+':'}}</span>
             <span class="basic-content">{{n.country}}</span>
@@ -304,8 +299,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.addressT')+':'}}</span>
             <span class="basic-content">{{n.address}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+      
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.postal_code')+':'}}</span>
             <span class="basic-content">{{n.post}}</span>
@@ -318,8 +312,7 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.concatNumber')+':'}}</span>
             <span class="basic-content">{{n.mobile}}</span>
           </el-col>
-        </el-row>
-        <el-row>
+       
           <el-col :span="8">
             <span class="basic-label">{{$t('merchant.newMerchant.form.nationality')+':'}}</span>
             <span class="basic-content width-limit">{{n.nation}}</span>
@@ -328,18 +321,18 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.represeutation')+':'}}</span>
             <span class="basic-content">{{n.represe}}</span>
           </el-col>
+         <el-col :span="8">
+          <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
+          <span class="basic-content width-limit">{{n.url}}</span>
+        </el-col>
           <el-col :span="8">
             <span class="basic-label">{{$t('common.status')+':'}}</span>
             <span class="basic-content status-width">{{n.legal_status}}</span>
             <el-button v-if="n.sendable" :loading="resendLoding" type="text" @click="sendEmail(n)">{{$t('common.resend')}}</el-button>
           </el-col>
-        </el-row>
-    <el-row>
-        <el-col :span="8">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
-          <span class="basic-content width-limit">{{n.url}}</span>
-        </el-col>
-        </el-row>
+   
+     
+       
       </div>
     </section>
 
@@ -612,8 +605,8 @@ export default {
   .shop,
   .rates,
   .payment {
-    .el-row {
-      padding: $smGap 0 0 0;
+    .el-col {
+      padding-top: $smGap;
       .basic-label {
         font-size: $baseSize;
         font-weight: $bolderW;
@@ -642,7 +635,13 @@ export default {
   }
   .list-gap {
     margin-bottom: 20px;
+
   }
+
+  .clearfix {
+     overflow: auto;
+  }
+
   .voucher_photo {
     width: 300px;
     height: 200px;
