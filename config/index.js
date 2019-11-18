@@ -12,8 +12,7 @@ module.exports = {
     proxyTable: {
       '/api': {
         // target: 'https://oasbp.qa.qfpay.net',
-        // target: 'http://172.100.113.34:8199', // 孔繁星
-        target: 'http://172.100.108.140:8199', // 董文文
+        target: 'http://172.100.113.34:3900', // 孔繁星
         changeOrigin: true,
         pathRewrite: {  
           '^/api': '/'

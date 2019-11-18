@@ -35,6 +35,24 @@
         </el-select> -->
       </el-form-item>
       <hr/>
+   
+      <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
+        <el-select  v-model="baseform.country" @change="updateAgency('country', $event)">
+          <el-option :label="$t('shop.newStore.Ger')" value="DE"></el-option>
+          <el-option :label="$t('shop.newStore.CZ')" value="CZ"></el-option>
+        </el-select>
+      </el-form-item>
+
+       <el-form-item prop="currency" :label="$t('agent.currency')">
+        <el-select  v-model="baseform.currency" @change="updateAgency('currency', $event)">
+            <el-option v-for="item in currencyList" :label="item" :value="findKey(currency,item)" :key="item"></el-option>
+        </el-select>
+      </el-form-item>
+       <el-form-item prop="timezone" :label="$t('agent.timezone')">
+          <el-select  v-model="baseform.timezone" @change="updateAgency('timezone', $event)">
+       <el-option v-for="(val, key) in timezone" :label="val" :value="key" :key="key"></el-option>
+         </el-select>
+      </el-form-item>
       <el-form-item prop="address" :label="$t('agent.address')">
         <el-input v-model="baseform.address" @blur="updateAgency('address', $event)"></el-input>
       </el-form-item>
@@ -104,12 +122,13 @@
           @blur="updateAgency('remit_amt', $event)"></el-input>
       </el-form-item>
     </el-form>
-
+<!-- :label="fee.trade_type_name" -->
     <el-form v-show="active === 1 && !isUpdate" ref="payfeeform" >
       <h3>{{$t('agent.payRate')}}</h3>
       <div :label="item.name" v-for="item in payfee" :key="item.name">
         <h4>{{item.name}}</h4>
-        <el-form-item :label="fee.trade_type_name" v-for="(fee, index) in item.busicd" :error="fee.error" :key="`${fee.trade_type_name}${index}`">
+        <el-form-item  v-for="(fee, index) in item.busicd" :error="fee.error" :key="`${fee.trade_type_name}${index}`">
+           <label class="width-limit">{{fee.trade_type_name}}</label>
             <el-input-number v-model.trim="fee.ratio" :disabled="isUpdate" :precision="2" :step="0.01" :min="+fee.ratioMin" :max="5" @change="ratioMinRule($event, fee.ratioMin, fee.trade_type)"></el-input-number>
         </el-form-item>
       </div>
@@ -151,6 +170,9 @@
           parent_uid: '',
           slsm_userid: '',
           auth_province: '',
+          country: '',
+          currency: '',
+          timezone: '',
           // auth_city: '',
           password: ''
         },
@@ -163,6 +185,8 @@
           remit_amt: '', // 结算资金起点
         },
         payfee: [],
+        timezone: {},
+        currency: {},
         levels: [], // 代理商级别
         allAgencys: [], // 所属代理
         areas: [], // 所有省份和城市
@@ -312,13 +336,22 @@
       this.fetchSalesman()
       this.fetchAgencyLevel()
       this.fetchCity()
+      this.fetchOption()
     },
     watch: {
       "baseform.parent_uid"() {
         this.fetchRadio(this.baseform.parent_uid)
       }
     },
+    computed: {
+     currencyList: function() {
+      return Object.values(this.currency).sort();
+    },
+    },
     methods: {
+        findKey(obj, value, compare = (a, b) => a === b) {
+      return Object.keys(obj).find(k => compare(obj[k], value));
+    },
       fetchRadio(agentUid) {
         let p = {
           format: 'cors',
@@ -466,6 +499,18 @@
           let data = res.data
           if (data.respcd === '0000') {
             this.areas = data.data.records
+          } else {
+            this.$message.error(data.resperr)
+          }
+        })
+      },
+       fetchOption() {
+        this.$http(`${config.host}/org/v1/mchnt/config?format=cors`)
+        .then((res) => {
+          let data = res.data
+          if (data.respcd === '0000') {
+            this.timezone = data.data.timezone
+            this.currency = data.data.currency
           } else {
             this.$message.error(data.resperr)
           }
@@ -698,6 +743,15 @@
   display: inline-block;
   vertical-align: top;
   margin-right: 80px;
+      .width-limit {
+        display: inline-flex;
+        width: 300px;
+        color: #717283;
+        overflow-x: scroll;
+        white-space: nowrap;
+        scrollbar-width:none;
+        &::-webkit-scrollbar { display:none }
+      }
 }
 .el-select {
   width: 200px;

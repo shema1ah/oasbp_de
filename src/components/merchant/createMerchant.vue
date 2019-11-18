@@ -85,7 +85,7 @@
                 style="position:absolute;top:38px;z-index:9;width:299px;overflow-y:auto;height:320px;"></el-tree>
       </el-form-item>-->
 
-      <el-form-item
+      <!-- <el-form-item
         :label="$t('merchant.newMerchant.form.bigMerchant')"
         prop="mode"
         v-if="isBusiness"
@@ -94,7 +94,7 @@
           <el-option :label="$t('merchant.newMerchant.form.sub')" value="mchnt"></el-option>
           <el-option :label="$t('merchant.newMerchant.form.big')" value="bigmchnt"></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item prop="name" :label="$t('merchant.newMerchant.form.meiname')" v-if="isBusiness">
         <el-input v-model.trim="formData.name"></el-input>
@@ -287,6 +287,12 @@
       >
         <el-input v-model.trim="formData.website"></el-input>
       </el-form-item>
+
+<!-- 
+      <el-form-item prop="business_email" :label="$t('merchant.newMerchant.form.business_email')" v-if="isBusiness">
+        <el-input v-model.trim="formData.business_email"></el-input>
+      </el-form-item> -->
+
 
       <el-form-item
         prop="id_type"
@@ -740,7 +746,8 @@
         </el-form-item>
 
         <div class="payList" v-for="(item, index) in mchnt_ratios" :key="index">
-          <el-form-item :label="item.pid_name">
+          <el-form-item>
+          <label class="width-limit">{{item.pid_name}}</label>
             <el-input-number
               v-model="item.ratio"
               :precision="2"
@@ -750,17 +757,17 @@
           </el-form-item>
           <el-form-item
             v-if="item.line_type !== ''"
-            :label="$t('merchant.newMerchant.form.accessType')"
           >
+           <label>{{$t('merchant.newMerchant.form.accessType')}}</label>
             <el-select :disabled="true" v-model="item.line_type">
               <el-option :label="$t('merchant.newMerchant.accessTypes.offline')" value="offline"></el-option>
               <el-option :label="$t('merchant.newMerchant.accessTypes.online')" value="online"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item
-            v-if="item.finance_type !== ''"
-            :label="$t('merchant.newMerchant.form.applicationType')"
+            v-if="item.finance_type !== ''"    
           >
+          <label>{{$t('merchant.newMerchant.form.applicationType')}}</label>
             <el-select :disabled="true" v-model="item.finance_type">
               <el-option :label="$t('merchant.newMerchant.applicationTypes.direct')" value="direct"></el-option>
               <el-option
@@ -923,7 +930,7 @@ export default {
         first_agent_uid: "", // 一级代理商id
         second_agent_uid: "", // 二级代理商id
         sls_uid: "", // 业务员id
-        mode: "", // 注册商户的类型
+        // mode: "", // 注册商户的类型
         name: "", // 商户名称
         mchnt_type: "", // 商户类型 1:微小 2：个体商户 3:企业
         first_name: "", //名
@@ -934,6 +941,7 @@ export default {
         business_purpose: "", //商业目的
         address: "", // 公司地址
         post: "", //邮编
+        // business_email : "",
         city: "", //城市
         country: "", //国家
         // empeoy_status: "", //职业
@@ -1041,12 +1049,12 @@ export default {
             message: this.$t("merchant.newMerchant.requiredRule.rule1")
           }
         ],
-        mode: [
-          {
-            required: true,
-            message: this.$t("merchant.newMerchant.requiredRule.rule2")
-          }
-        ],
+        // mode: [
+        //   {
+        //     required: true,
+        //     message: this.$t("merchant.newMerchant.requiredRule.rule2")
+        //   }
+        // ],
         name: [
           {
             required: true,
@@ -1260,6 +1268,28 @@ export default {
             }
           }
         ],
+
+        //      business_email: [
+        //   {
+        //     required: true,
+        //     message: this.$t("merchant.newMerchant.requiredRule.rule57")
+        //   },
+        //   {
+        //     validator: (rule, val, cb) => {
+        //       if (
+        //         !/^[\w-]+[\w-.]*@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z\d]{2,6}$/.test(
+        //           val
+        //         )
+        //       ) {
+        //         cb(
+        //           new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+        //         );
+        //       } else {
+        //         cb();
+        //       }
+        //     }
+        //   }
+        // ],
 
         mchnt_type: [
           {
@@ -1915,6 +1945,7 @@ export default {
         delete params.idnumber;
       }
       delete params.id_type;
+      params.mode = this.isBusiness ? 'bigmchnt' : 'mchnt'
       params.mchnt_ratios = this.mchnt_ratios;
       !this.hasInput && delete params.legals;
       let url = this.isUpdate
@@ -2334,10 +2365,22 @@ export default {
       }
     }
     .payList {
+      .width-limit {
+        display: inline-flex;
+        width: 280px;
+        overflow-x: scroll;
+        white-space: nowrap;
+        scrollbar-width:none;
+        &::-webkit-scrollbar { display:none }
+      }
+      label {
+        color: #717283;
+      }
+
       .icon_remove {
         width: $midGap;
         display: inline-block;
-        margin-top: $bigGap;
+        margin-top: 48px;
         .el-icon-remove {
           cursor: pointer;
           font-size: $xgSize;

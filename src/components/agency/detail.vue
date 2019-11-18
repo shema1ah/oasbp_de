@@ -10,6 +10,9 @@
       <li><em>{{$t('agent.agentLevel')}}：</em><span>{{base.levelcode === 1 ? $t('agent.agentLevel1') : (base.levelcode === 2 ? $t('agent.agentLevel2'): $t('agent.agentLevel3'))}} {{base.parent_name}}</span></li>
       <li><em>{{$t('agent.agentNickname')}}：</em><span>{{base.short_name}}</span></li>
       <li><em>{{$t('agent.agentArea')}}：</em><span>{{base.auth_province}} {{base.auth_city}}</span></li>
+       <li><em>{{$t('merchant.newMerchant.form.country')}}：</em><span>{{countryList[base.country]}}</span></li>
+        <li><em>{{$t('agent.currency')}}：</em><span>{{currency[base.currency]}}</span></li>
+         <li><em>{{$t('agent.timezone')}}：</em><span>{{timezone[base.timezone]}}</span></li>
       <li><em>{{$t('agent.address')}}：</em><span>{{base.address}}</span></li>
       <li><em>{{$t('agent.contact')}}：</em><span>{{base.business_name}}</span></li>
       <li><em>{{$t('agent.legal')}}：</em><span>{{base.legal_name}}</span></li>
@@ -50,7 +53,14 @@
           is_edit: 0
         },
         bankinfo: {},
-        payfee: {}
+        payfee: {}, 
+        timezone: {}, 
+        currency: {}, 
+        countryList:{
+          "DE": this.$t('shop.newStore.Ger'), 
+           "CZ": this.$t('shop.newStore.CZ')
+
+        }
       }
     },
     computed: {
@@ -61,6 +71,7 @@
     created() {
       let agencyId = this.$route.params.id
       this.fetchData(agencyId)
+       this.fetchOption()
     },
     methods: {
       fetchData(agencyId) {
@@ -77,6 +88,18 @@
             localStorage.setItem('baseEdit', JSON.stringify(agency.agent_base))
             localStorage.setItem('bankinfoEdit', JSON.stringify(agency.agent_bankinfo))
             localStorage.setItem('payfeeEdit', JSON.stringify(agency.agent_payfee))
+          } else {
+            this.$message.error(data.resperr)
+          }
+        })
+      },
+           fetchOption() {
+        this.$http(`${config.host}/org/v1/mchnt/config?format=cors`)
+        .then((res) => {
+          let data = res.data
+          if (data.respcd === '0000') {
+            this.timezone = data.data.timezone
+            this.currency = data.data.currency
           } else {
             this.$message.error(data.resperr)
           }

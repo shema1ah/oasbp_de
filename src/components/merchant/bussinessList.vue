@@ -118,11 +118,10 @@
           <el-form-item v-if="item.type" :label="$t('merchant.payment.desc')">
             <el-input v-model="item['state_memo']" disabled type="text"></el-input>
           </el-form-item>
-
+   <!-- :disabled="item.type === 1 && item.state !== 2" -->
           <el-button
             type="text"
-            v-if="item.is_edit"
-            :disabled="item.type === 1 && item.state !== 2"
+            v-if="item.is_edit" 
             :loading="formPayment['loading' + index]"
             @click="submit(index)"
           >{{ $t('common.submit') }}</el-button>
