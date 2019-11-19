@@ -149,10 +149,10 @@
           <span class="basic-content">{{form.ext.website}}</span>
         </el-col>
 
-          <!-- <el-col :span="8" v-if="this.isBusiness">
+          <el-col :span="8" v-if="this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.business_email')+':'}}</span>
           <span class="basic-content">{{form.base.business_email}}</span>
-        </el-col>  -->
+        </el-col> 
    
          <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>

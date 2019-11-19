@@ -9,7 +9,7 @@
       <li><em>{{$t('agent.agentName')}}：</em><span>{{base.name}}</span></li>
       <li><em>{{$t('agent.agentLevel')}}：</em><span>{{base.levelcode === 1 ? $t('agent.agentLevel1') : (base.levelcode === 2 ? $t('agent.agentLevel2'): $t('agent.agentLevel3'))}} {{base.parent_name}}</span></li>
       <li><em>{{$t('agent.agentNickname')}}：</em><span>{{base.short_name}}</span></li>
-      <li><em>{{$t('agent.agentArea')}}：</em><span>{{base.auth_province}} {{base.auth_city}}</span></li>
+      <!-- <li><em>{{$t('agent.agentArea')}}：</em><span>{{base.auth_province}} {{base.auth_city}}</span></li> -->
        <li><em>{{$t('merchant.newMerchant.form.country')}}：</em><span>{{countryList[base.country]}}</span></li>
         <li><em>{{$t('agent.currency')}}：</em><span>{{currency[base.currency]}}</span></li>
          <li><em>{{$t('agent.timezone')}}：</em><span>{{timezone[base.timezone]}}</span></li>
@@ -26,9 +26,9 @@
     <ul>
       <li><em>{{$t('merchant.detail.basic.la17')}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankuser}}</span></li>
       <li><em>{{$t('merchant.detail.basic.la18')}}</em>&nbsp;&nbsp;<span>{{bankinfo.headbankname}}</span></li>
-      <li><em>{{$t('merchant.detail.basic.la19')}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankaccount}}</span></li>
+      <li><em>{{$t('merchant.newMerchant.form.accountH')+':'}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankaccount}}</span></li>
       <li><em>{{$t('merchant.detail.basic.la20')}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankCity}}</span></li>
-      <li><em>{{$t('shop.detail.basic.la13')}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankcode}}</span></li>
+      <li><em>{{$t('merchant.newMerchant.form.bic')+':'}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankcode}}</span></li>
       <li><em>{{$t('merchant.detail.basic.la21')}}</em>&nbsp;&nbsp;<span>{{bankinfo.remit_amt}}</span></li>
     </ul>
     <h3>{{$t('agent.payRate')}}</h3>

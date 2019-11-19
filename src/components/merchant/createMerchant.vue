@@ -288,10 +288,10 @@
         <el-input v-model.trim="formData.website"></el-input>
       </el-form-item>
 
-<!-- 
+
       <el-form-item prop="business_email" :label="$t('merchant.newMerchant.form.business_email')" v-if="isBusiness">
         <el-input v-model.trim="formData.business_email"></el-input>
-      </el-form-item> -->
+      </el-form-item>
 
 
       <el-form-item
@@ -499,6 +499,7 @@
           <el-form-item
             :prop="'owners.'+ i + '.mobile'"
             :label="$t('merchant.newMerchant.form.concatNumber')"
+            :rules="listRules.mobile"
           >
             <el-input v-model.trim="n.mobile" :disabled="peopleExist2[i]"></el-input>
           </el-form-item>
@@ -713,6 +714,7 @@
           <el-form-item
             :prop="'legals.'+ i + '.mobile'"
             :label="$t('merchant.newMerchant.form.concatNumber')"
+            :rules="listRules.mobile"
           >
             <el-input v-model.trim="n.mobile" :disabled="peopleExist3[i]"></el-input>
           </el-form-item>
@@ -941,7 +943,7 @@ export default {
         business_purpose: "", //商业目的
         address: "", // 公司地址
         post: "", //邮编
-        // business_email : "",
+        business_email : "",
         city: "", //城市
         country: "", //国家
         // empeoy_status: "", //职业
@@ -1161,6 +1163,20 @@ export default {
           }
         ],
 
+         person_mobile: [
+                 {
+            validator: (rule, val, cb) => {
+              if (!/^\+\d{7,15}$/.test(val) && val != "") {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule3"))
+                );
+              } else {
+                cb();
+              }
+            }
+          }
+        ],
+
         store_country: [
           {
             required: true,
@@ -1269,27 +1285,27 @@ export default {
           }
         ],
 
-        //      business_email: [
-        //   {
-        //     required: true,
-        //     message: this.$t("merchant.newMerchant.requiredRule.rule57")
-        //   },
-        //   {
-        //     validator: (rule, val, cb) => {
-        //       if (
-        //         !/^[\w-]+[\w-.]*@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z\d]{2,6}$/.test(
-        //           val
-        //         )
-        //       ) {
-        //         cb(
-        //           new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
-        //         );
-        //       } else {
-        //         cb();
-        //       }
-        //     }
-        //   }
-        // ],
+             business_email: [
+          {
+            required: true,
+            message: this.$t("merchant.newMerchant.requiredRule.rule57")
+          },
+          {
+            validator: (rule, val, cb) => {
+              if (
+                !/^[\w-]+[\w-.]*@[a-zA-Z\d-]+(\.[a-zA-Z\d-]+)*\.[a-zA-Z\d]{2,6}$/.test(
+                  val
+                )
+              ) {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule1"))
+                );
+              } else {
+                cb();
+              }
+            }
+          }
+        ],
 
         mchnt_type: [
           {
@@ -1399,6 +1415,20 @@ export default {
           {
             required: true,
             message: this.$t("merchant.newMerchant.requiredRule.rule42")
+          }
+        ],
+
+           mobile: [
+                 {
+            validator: (rule, val, cb) => {
+              if (!/^\+\d{7,15}$/.test(val) && val != "") {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule3"))
+                );
+              } else {
+                cb();
+              }
+            }
           }
         ],
 

@@ -607,7 +607,8 @@ const en = {
       },
       specialRule: {
         rule1: 'Incorrect format',
-        rule2: 'Type is required number'
+        rule2: 'Type is required number',
+        rule3: "Type must start with '+', followed by 7 to 15 digits"    
       },
       doctype: {
         type1: 'Passport',

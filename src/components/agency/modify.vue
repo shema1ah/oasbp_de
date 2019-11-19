@@ -26,14 +26,14 @@
       <el-form-item prop="short_name" :label="$t('agent.agentNickname')">
         <el-input v-model="baseform.short_name" @blur="updateAgency('short_name', $event)"></el-input>
       </el-form-item>
-      <el-form-item prop="auth_province" :label="$t('agent.agentArea')" style="width:446px" ref="province">
+      <!-- <el-form-item prop="auth_province" :label="$t('agent.agentArea')" style="width:446px" ref="province">
         <el-select v-model="baseform.auth_province" @change="selectProvince">
           <el-option v-for="province in areas" :label="province.areaname" :value="province.areaname" :key="province.areaid"></el-option>
         </el-select>
-        <!-- <el-select style="margin-left:10px;" ref="city" v-model="baseform.auth_city" @change="selectCity">
+      </el-form-item> -->
+         <!-- <el-select style="margin-left:10px;" ref="city" v-model="baseform.auth_city" @change="selectCity">
           <el-option v-for="city in citys" :label="city.cityname" :value="city.cityid" :key="city.cityid"></el-option>
         </el-select> -->
-      </el-form-item>
       <hr/>
    
       <el-form-item prop="country" :label="$t('merchant.newMerchant.form.country')">
@@ -50,7 +50,7 @@
       </el-form-item>
        <el-form-item prop="timezone" :label="$t('agent.timezone')">
           <el-select  v-model="baseform.timezone" @change="updateAgency('timezone', $event)">
-       <el-option v-for="(val, key) in timezone" :label="val" :value="key" :key="key"></el-option>
+       <el-option v-for="val in timezoneList" :label="val" :value="val" :key="val"></el-option>
          </el-select>
       </el-form-item>
       <el-form-item prop="address" :label="$t('agent.address')">
@@ -169,7 +169,7 @@
           levelcode: '',
           parent_uid: '',
           slsm_userid: '',
-          auth_province: '',
+          // auth_province: '',
           country: '',
           currency: '',
           timezone: '',
@@ -189,7 +189,7 @@
         currency: {},
         levels: [], // 代理商级别
         allAgencys: [], // 所属代理
-        areas: [], // 所有省份和城市
+        // areas: [], // 所有省份和城市
         // citys: [], // 当前省的所有城市
         sales: [], // 业务员 列表
         isRegisterLoading: false,
@@ -202,9 +202,9 @@
           'levelcode': [
             {required: true, message: this.$t('agent.pleaseSelect') + this.$t('agent.agentLevel')}
           ],
-          'auth_province': [
-            {required: true, message: this.$t('agent.pleaseSelect') + this.$t('agent.agentArea')}
-          ],
+          // 'auth_province': [
+          //   {required: true, message: this.$t('agent.pleaseSelect') + this.$t('agent.agentArea')}
+          // ],
           'short_name': [
             {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.agentNickname')}
           ],
@@ -218,10 +218,32 @@
             {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.legal')}
           ],
           'business_mobile': [
-            {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.contactMobile')}
+            {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.contactMobile')},
+                    {
+            validator: (rule, val, cb) => {
+              if (!/^\+\d{7,15}$/.test(val) && val != "") {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule3"))
+                );
+              } else {
+                cb();
+              }
+            }
+          }
           ],
           'mobile': [
-            {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.legalMobile')}
+            {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.legalMobile')},
+                    {
+            validator: (rule, val, cb) => {
+              if (!/^\+\d{7,15}$/.test(val) && val != "") {
+                cb(
+                  new Error(this.$t("merchant.newMerchant.specialRule.rule3"))
+                );
+              } else {
+                cb();
+              }
+            }
+          }
           ],
           'username': [
             {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.username'), trigger: 'blur'},
@@ -335,7 +357,7 @@
       }
       this.fetchSalesman()
       this.fetchAgencyLevel()
-      this.fetchCity()
+      // this.fetchCity()
       this.fetchOption()
     },
     watch: {
@@ -346,6 +368,9 @@
     computed: {
      currencyList: function() {
       return Object.values(this.currency).sort();
+    },
+    timezoneList: function() {
+      return Object.values(this.timezone).sort((a,b)=> a-b);
     },
     },
     methods: {
@@ -457,15 +482,15 @@
         }
         this.baseform.parent_uid = ''
       },
-      selectProvince(value) {
-        this.areas.map((area, index) => {
-          if (area.areaname === value) {
-            if (this.isUpdate) {
-              this.updateAgency('updateProvince', area.areaname)
-            }
-          }
-        })
-      },
+      // selectProvince(value) {
+      //   this.areas.map((area, index) => {
+      //     if (area.areaname === value) {
+      //       if (this.isUpdate) {
+      //         this.updateAgency('updateProvince', area.areaname)
+      //       }
+      //     }
+      //   })
+      // },
       fetchAgencyLevel() {
         this.$http(`${config.host}/org/tools/level?format=cors`)
         .then((res) => {
@@ -491,19 +516,19 @@
           }
         })
       },
-      fetchCity() {
-        this.isLoading = true
-        this.$http(`${config.host}/org/tools/areacities?format=cors`)
-        .then((res) => {
-          this.isLoading = false
-          let data = res.data
-          if (data.respcd === '0000') {
-            this.areas = data.data.records
-          } else {
-            this.$message.error(data.resperr)
-          }
-        })
-      },
+      // fetchCity() {
+      //   this.isLoading = true
+      //   this.$http(`${config.host}/org/tools/areacities?format=cors`)
+      //   .then((res) => {
+      //     this.isLoading = false
+      //     let data = res.data
+      //     if (data.respcd === '0000') {
+      //       this.areas = data.data.records
+      //     } else {
+      //       this.$message.error(data.resperr)
+      //     }
+      //   })
+      // },
        fetchOption() {
         this.$http(`${config.host}/org/v1/mchnt/config?format=cors`)
         .then((res) => {
@@ -549,7 +574,7 @@
         let paramsBase = JSON.parse(JSON.stringify(this.baseform))
         // paramsBase.auth_province = this.$refs.province.selected.label || ''
         // paramsBase.auth_city = this.$refs.city.selected.label || ''
-        paramsBase.auth_province = this.baseform.auth_province
+        // paramsBase.auth_province = this.baseform.auth_province
         this.payfeeT = this.refee(this.payfee)
         this.$http({
           method: 'post',

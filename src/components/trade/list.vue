@@ -74,6 +74,12 @@
           @blur="secondaryAgentHandleBlur"
         ></el-autocomplete>
       </el-form-item>
+     <el-form-item :label="$t('shop.form.mchntid')">
+        <el-input v-model="formData.mchnt_userid"></el-input>
+      </el-form-item>
+  <el-form-item :label="$t('shop.form.submchntid')">
+        <el-input v-model="formData.store_userid"></el-input>
+      </el-form-item>
       <div class="buttons">
         <el-button type="primary" @click="search()">{{$t('common.search')}}</el-button>
         <el-button @click="reset()">{{$t('common.reset')}}</el-button>
@@ -191,7 +197,9 @@
           paytypes: this.formData.paytypes,
           mchnt_id: this.formData.mchnt_id,
           primary_agentid: this.formData.primary_agentid,
-          secondary_agentid: this.formData.secondary_agentid
+          secondary_agentid: this.formData.secondary_agentid,
+          mchnt_userid: this.formData.mchnt_userid,
+          store_userid: this.formData.store_userid
         }
         this.$http(`${config.host}/org/trade/list`, {
           params
@@ -358,7 +366,9 @@
           secondary_agent: '',
           secondary_agentid: '',
           mchnt_name: '',
-          mchnt_id: ''
+          mchnt_id: '',
+          mchnt_userid: '',
+          store_userid: ''
         }
       }
     }

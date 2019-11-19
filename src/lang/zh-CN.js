@@ -563,7 +563,8 @@ const zh = {
       },
       specialRule: {
         rule1: '格式不正确',
-        rule2: '输入类型必须是数字'
+        rule2: '输入类型必须是数字',
+        rule3: "输入类型必须以'+'开始，接7-15位数字"
       },
       doctype: {
         type1: '护照',
