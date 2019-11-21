@@ -123,7 +123,7 @@
       </el-form-item>
     </el-form>
 <!-- :label="fee.trade_type_name" -->
-    <el-form v-show="active === 1 && !isUpdate" ref="payfeeform" >
+    <!-- <el-form v-show="active === 1 && !isUpdate" ref="payfeeform" >
       <h3>{{$t('agent.payRate')}}</h3>
       <div :label="item.name" v-for="item in payfee" :key="item.name">
         <h4>{{item.name}}</h4>
@@ -132,7 +132,7 @@
             <el-input-number v-model.trim="fee.ratio" :disabled="isUpdate" :precision="2" :step="0.01" :min="+fee.ratioMin" :max="5" @change="ratioMinRule($event, fee.ratioMin, fee.trade_type)"></el-input-number>
         </el-form-item>
       </div>
-    </el-form>
+    </el-form> -->
 
     <footer v-if="isUpdate">
       <el-button v-show="active === 1" type="primary" @click="goback">{{$t('common.done')}}</el-button>

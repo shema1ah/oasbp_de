@@ -31,13 +31,13 @@
       <li><em>{{$t('merchant.newMerchant.form.bic')+':'}}</em>&nbsp;&nbsp;<span>{{bankinfo.bankcode}}</span></li>
       <li><em>{{$t('merchant.detail.basic.la21')}}</em>&nbsp;&nbsp;<span>{{bankinfo.remit_amt}}</span></li>
     </ul>
-    <h3>{{$t('agent.payRate')}}</h3>
+    <!-- <h3>{{$t('agent.payRate')}}</h3>
     <div v-for="item in payfee" :key="item.name">
         <h4>{{item.name}}</h4>
         <ul v-for="fee in item.busicd" :key="fee.trade_type_name">
           <li><em>{{fee.trade_type_name}}: </em><span>{{fee.ratio}}</span></li>
         </ul>
-    </div>
+    </div> -->
     <el-button size="large" @click="cancel()">{{$t('common.close')}}</el-button>
     <el-button v-if="hasEditPerm && !!base.is_edit" size="large" type="primary" @click="editAgency()">{{$t('common.edit')}}</el-button>
   </div>

@@ -593,7 +593,7 @@ const en = {
         rule54: 'Please select Identification document',
         rule55: 'Please input Identification Document Number',
         rule56: 'Please select Salutation',
-        rule57: 'Please input Business Email',
+        rule57: 'Please input business email',
       },
       lengthRule: {
         rule1: 'The maxlength is 4',
