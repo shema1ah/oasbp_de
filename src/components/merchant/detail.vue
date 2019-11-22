@@ -359,6 +359,7 @@
 import config from "config";
 import axios from "axios";
 import { formatDate } from "../../common/js/util";
+import Store from '../../assets/js/store';
 const getParams = key => {
   // 获取参数
   let url = window.location.hash.split("?")[1] || "";
@@ -378,6 +379,7 @@ export default {
       isReEditable: false,
       isCreateShop: false,
       isBusiness: true,
+      resend_interval: 0,
       userid: this.$route.query.userid || getParams("userid"), // 商户ID
       cate: {
         merchant: this.$t("merchant.detail.cate.merchant"),
@@ -478,6 +480,7 @@ export default {
     this.isEditable = this.$route.query.from === "old";
     this.isReEditable = this.$route.query.from === "edit";
     this.fetchDetailData();
+    this.resend_interval = Store.get('configList').resend_interval 
   },
   methods: {
     cancel() {
@@ -545,8 +548,8 @@ export default {
       const sdate = new Date(n.url_time); 
       const now = new Date(); 
       const days = now.getTime() - sdate.getTime(); 
-      const day = parseInt(days / (1000 * 60 * 60 * 24)); 
-      　　return day >= 14 ? 1 : 0;
+      const day = parseInt(days / 1000); 
+      　　return day >= this.resend_interval ? 1 : 0;
       },
 
     sendEmail(n) {

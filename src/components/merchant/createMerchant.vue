@@ -878,6 +878,7 @@ import axios from "axios";
 import qs from "qs";
 import _ from "lodash";
 import { formatDate } from "../../common/js/util";
+import Store from '../../assets/js/store';
 const getParams = key => {
   // 获取参数
   let url = window.location.hash.split("?")[1] || "";
@@ -1556,7 +1557,7 @@ export default {
       // this.isUpdate && this.getAllSalesperson();
       // this.isUpdate && this.getDetailInfo();
       this.getChannelList();
-      this.getSelectList();
+      this.selectList = Store.get('configList')
     }
   },
   mounted() {
@@ -2059,22 +2060,6 @@ export default {
 
     cancelHandler() {
       this.$router.push({ name: "mchnt_manage_list" });
-    },
-
-    getSelectList() {
-      axios
-        .get(`${config.host}/org/v1/mchnt/config?format=cors`)
-        .then(res => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.selectList = res.data.data;
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        })
-        .catch(() => {
-          this.$message.error(this.$t("common.netError"));
-        });
     },
 
     // 商户自动入网获取通道pid配置信息

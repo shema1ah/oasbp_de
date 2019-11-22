@@ -90,6 +90,7 @@
 <script>
   import axios from 'axios';
   import config from '../../config';
+  import Store from '../../assets/js/store';
   const navmap = {
       home: ["1"],
       mchnt_manage_list: ["2", "2-1"], // 商户列表
@@ -188,6 +189,7 @@
       }).catch(() => {
 
       })
+      this.getConfig()
     },
     methods: {
       navTo(route) {
@@ -221,7 +223,23 @@
           this.loading = false;
           this.$message.error(this.$t('common.netError'));
         });
-      }
+      },
+      getConfig() {
+      axios
+        .get(`${config.host}/org/v1/mchnt/config?format=cors`)
+        .then(res => {
+          let data = res.data;
+          if (data.respcd === config.code.OK) {
+            let configList = res.data.data
+            Store.set('configList', configList)
+          } else {
+            this.$message.error(data.respmsg);
+          }
+        })
+        .catch(() => {
+          this.$message.error(this.$t("common.netError"));
+        });
+    }
 
     }
   }

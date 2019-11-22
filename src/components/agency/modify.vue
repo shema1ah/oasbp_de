@@ -208,6 +208,15 @@
           'short_name': [
             {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.agentNickname')}
           ],
+             'country': [
+            {required: true, message: this.$t('agent.pleaseSelect') + this.$t('merchant.newMerchant.form.country')}
+          ],
+             'currency': [
+            {required: true, message: this.$t('agent.pleaseSelect') + this.$t('agent.currency')}
+          ],
+             'timezone': [
+            {required: true, message: this.$t('agent.pleaseSelect') + this.$t('agent.timezone')}
+          ],
           'address': [
             {required: true, message: this.$t('agent.pleaseEnter') + this.$t('agent.address')}
           ],

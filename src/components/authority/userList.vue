@@ -33,7 +33,7 @@
       <el-table-column prop="nickname" :label="$t('authority.panel.userName')"></el-table-column>
       <el-table-column prop="role_name" :label="$t('authority.table.role')"></el-table-column>
       <el-table-column prop="username" :label="$t('authority.table.account')" min-width="80"></el-table-column>
-      <el-table-column prop="join_time" :label="$t('authority.table.rTime')" min-width="100"></el-table-column>
+      <el-table-column prop="jointime" :label="$t('authority.table.rTime')" min-width="100"></el-table-column>
       <el-table-column :label="$t('authority.panel.state')" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.state === 1 ? $t('authority.panel.open') : $t('authority.panel.close') }}</span>
