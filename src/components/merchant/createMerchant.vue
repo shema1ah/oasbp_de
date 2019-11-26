@@ -235,7 +235,7 @@
         </el-select>
       </el-form-item>-->
 
-      <el-form-item prop="email" :label="$t('merchant.newMerchant.form.postT')" v-if="!isBusiness">
+      <el-form-item prop="email" :rules="isBusiness ? baseRules.business_email : baseRules.email" :label="isBusiness ? $t('merchant.newMerchant.form.business_email') : $t('merchant.newMerchant.form.postT')">
         <el-input v-model.trim="formData.email"></el-input>
       </el-form-item>
 
@@ -286,11 +286,6 @@
         :label="$t('merchant.newMerchant.form.website')"
       >
         <el-input v-model.trim="formData.website"></el-input>
-      </el-form-item>
-
-
-      <el-form-item prop="business_email" :label="$t('merchant.newMerchant.form.business_email')" v-if="isBusiness">
-        <el-input v-model.trim="formData.business_email"></el-input>
       </el-form-item>
 
 
@@ -944,7 +939,6 @@ export default {
         business_purpose: "", //商业目的
         address: "", // 公司地址
         post: "", //邮编
-        business_email : "",
         city: "", //城市
         country: "", //国家
         // empeoy_status: "", //职业

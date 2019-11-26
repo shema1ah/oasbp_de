@@ -45,6 +45,7 @@
 
 <script>
   import config from 'config'
+  import Store from '../../assets/js/store'
   export default {
     data() {
       return {
@@ -71,7 +72,9 @@
     created() {
       let agencyId = this.$route.params.id
       this.fetchData(agencyId)
-       this.fetchOption()
+      let configList = Store.get('configList')
+      this.timezone = configList.timezone
+      this.currency = configList.currency
     },
     methods: {
       fetchData(agencyId) {
@@ -88,18 +91,6 @@
             localStorage.setItem('baseEdit', JSON.stringify(agency.agent_base))
             localStorage.setItem('bankinfoEdit', JSON.stringify(agency.agent_bankinfo))
             localStorage.setItem('payfeeEdit', JSON.stringify(agency.agent_payfee))
-          } else {
-            this.$message.error(data.resperr)
-          }
-        })
-      },
-           fetchOption() {
-        this.$http(`${config.host}/org/v1/mchnt/config?format=cors`)
-        .then((res) => {
-          let data = res.data
-          if (data.respcd === '0000') {
-            this.timezone = data.data.timezone
-            this.currency = data.data.currency
           } else {
             this.$message.error(data.resperr)
           }

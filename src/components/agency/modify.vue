@@ -153,6 +153,7 @@
   import qs from 'qs'
   import axios from 'axios'
   import config from 'config'
+  import Store from '../../assets/js/store'
   export default {
     data() {
       return {
@@ -367,7 +368,9 @@
       this.fetchSalesman()
       this.fetchAgencyLevel()
       // this.fetchCity()
-      this.fetchOption()
+      let configList = Store.get('configList')
+      this.timezone = configList.timezone
+      this.currency = configList.currency
     },
     watch: {
       "baseform.parent_uid"() {
@@ -538,18 +541,6 @@
       //     }
       //   })
       // },
-       fetchOption() {
-        this.$http(`${config.host}/org/v1/mchnt/config?format=cors`)
-        .then((res) => {
-          let data = res.data
-          if (data.respcd === '0000') {
-            this.timezone = data.data.timezone
-            this.currency = data.data.currency
-          } else {
-            this.$message.error(data.resperr)
-          }
-        })
-      },
       clearRegisterError() {
         this.isRegistered = true
         this.usernameErrorMessage = ''

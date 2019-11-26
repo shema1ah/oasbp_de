@@ -114,8 +114,12 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
           <span class="basic-content">{{form.base.email}}</span>
         </el-col> 
-   
 
+           <el-col :span="8">
+          <span class="basic-label">{{isBusiness ? $t('merchant.newMerchant.form.business_email') : $t('merchant.newMerchant.form.postT') +':'}}</span>
+          <span class="basic-content">{{form.base.email}}</span>
+        </el-col> 
+   
           <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.id_type') +':'}}</span>
           <span class="basic-content">{{form.base.idnumber ? $t('merchant.newMerchant.form.id_card') : $t('merchant.newMerchant.form.pass_card')}}</span>
@@ -149,10 +153,6 @@
           <span class="basic-content">{{form.ext.website}}</span>
         </el-col>
 
-          <el-col :span="8" v-if="this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.business_email')+':'}}</span>
-          <span class="basic-content">{{form.base.business_email}}</span>
-        </el-col> 
    
          <el-col :span="8" v-if="!this.isBusiness">
           <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
