@@ -176,7 +176,7 @@
         return cellValue
       },
       formatStatus(row, column, cellValue) {
-        return cellValue === 1 ? this.$t('trade.common.success') : this.$t('trade.common.failed')
+        return cellValue === 0 ? this.$t('trade.common.failed') : this.$t('trade.common.success') 
       },
       fetchData() {
         if (this.formData.date.length < 2) {
