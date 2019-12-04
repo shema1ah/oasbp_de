@@ -17,7 +17,7 @@
           :clearable="false">
         </el-date-picker>
       </el-form-item>
-      <el-form-item :label="$t('trade.common.merchantName')">
+      <el-form-item :label="$t('trade.common.shopName')">
         <el-autocomplete
           v-model="formData.mchnt_name"
           :debounce="600"
@@ -99,7 +99,7 @@
 
     <el-table :data="trades" stripe>
       <el-table-column prop="base.sysdtm" :label="$t('trade.common.tradeDate')" width="115"></el-table-column>
-      <el-table-column prop="base.shopname" :label="$t('trade.common.merchantName')"></el-table-column>
+      <el-table-column prop="base.shopname" :label="$t('trade.common.shopName')"></el-table-column>
       <el-table-column prop="base.primary" :label="$t('trade.common.firstAgent')"></el-table-column>
       <el-table-column prop="base.secondary" :label="$t('trade.common.secondAgent')"></el-table-column>
       <el-table-column prop="base.busicd_info" :label="$t('trade.common.payPass')"></el-table-column>

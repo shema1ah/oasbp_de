@@ -42,7 +42,7 @@
           <el-option :label="$t('trade.common.failed')" value="0"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item :label="$t('trade.common.merchantName')">
+      <el-form-item :label="$t('trade.common.shopName')">
         <el-autocomplete
           v-model="formData.mchnt_name"
           :debounce="600"
@@ -95,6 +95,7 @@
       <el-table-column prop="txamt" :formatter="formatYuan" :label="$t('trade.common.tradeAmount')"></el-table-column>
       <el-table-column prop="settlefee" :formatter="formatYuan" :label="$t('trade.common.fee')"></el-table-column>
       <el-table-column prop="trade_type" :formatter="formatType" :label="$t('trade.common.tradeType')"></el-table-column>
+      <el-table-column prop="trade_detail" :label="$t('settleMent.panel.payType')"></el-table-column>
       <el-table-column prop="trade_status" :formatter="formatStatus" :label="$t('common.status')"></el-table-column>
     </el-table>
 
@@ -198,6 +199,7 @@
           mchnt_id: this.formData.mchnt_id,
           primary_agentid: this.formData.primary_agentid,
           secondary_agentid: this.formData.secondary_agentid,
+          mchnt_name: this.formData.mchnt_name,
           mchnt_userid: this.formData.mchnt_userid,
           store_userid: this.formData.store_userid
         }
