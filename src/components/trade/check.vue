@@ -24,7 +24,7 @@
       <el-table-column prop="syssn" :label="$t('trade.common.tradeSum')" min-width="150"></el-table-column>
       <el-table-column prop="name" :label="$t('trade.common.merchantName')" min-width="120"></el-table-column>
       <el-table-column prop="shopname" :label="$t('trade.common.shopName')" min-width="100"></el-table-column>
-      <el-table-column prop="telephone" :label="$t('trade.common.phone')" min-width="140"></el-table-column>
+      <!-- <el-table-column prop="telephone" :label="$t('trade.common.phone')" min-width="140"></el-table-column> -->
       <el-table-column prop="sysdtm" :label="$t('trade.common.tradeTime')" min-width="170"></el-table-column>
       <el-table-column :label="$t('trade.common.tradeAmount')" min-width="110">
         <template slot-scope="scope">
@@ -75,10 +75,10 @@
           <span class="line-label">{{ $t('trade.common.shopName') }}</span>
           <div class="line-content">{{ tradeInfo.shopname }}</div>
         </div>
-        <div class="line-row">
+        <!-- <div class="line-row">
           <span class="line-label">{{ $t('trade.common.phone') }}</span>
           <div class="line-content">{{ tradeInfo.telephone }}</div>
-        </div>
+        </div> -->
         <div class="line-row">
           <span class="line-label">{{ $t('trade.common.tradeTime') }}</span>
           <div class="line-content">{{ tradeInfo.sysdtm }}</div>

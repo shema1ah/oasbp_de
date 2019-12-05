@@ -280,8 +280,8 @@ const en = {
       creating: 'creating',
       creatsucc: 'create success',
       creatFailed: 'create failed',
-      inReg: 'underway',
-      succ: 'success',
+      inReg: 'In progress',
+      succ: 'Successful',
       fail: 'failure'
     },
     payment: {
