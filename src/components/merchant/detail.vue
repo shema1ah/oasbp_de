@@ -110,10 +110,6 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.empeoyment_sataus')+':'}}</span>
           <span class="basic-content">{{form.base.empeoy_status}}</span>
         </el-col> -->
-        <el-col :span="8" v-if="!this.isBusiness">
-          <span class="basic-label">{{$t('merchant.newMerchant.form.postT')+':'}}</span>
-          <span class="basic-content">{{form.base.email}}</span>
-        </el-col> 
 
            <el-col :span="8">
           <span class="basic-label">{{isBusiness ? $t('merchant.newMerchant.form.business_email') : $t('merchant.newMerchant.form.postT') +':'}}</span>

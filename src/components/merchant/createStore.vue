@@ -234,7 +234,8 @@
               }
             }
 
-          }
+          },
+           {max: 10, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule4'), trigger: 'blur'}
           ],
             
           'store_city': [

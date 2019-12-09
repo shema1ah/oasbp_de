@@ -1136,7 +1136,8 @@ export default {
               }
             }
 
-          }
+          },
+           {max: 10, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule4'), trigger: 'blur'}
         ],
 
         store_post: [
@@ -1155,7 +1156,8 @@ export default {
               }
             }
 
-          }
+          },
+           {max: 10, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule4'), trigger: 'blur'}
         ],
 
         city: [
@@ -1417,7 +1419,8 @@ export default {
               }
             }
 
-          }
+          },
+           {max: 10, min: 0, message: this.$t('merchant.newMerchant.lengthRule.rule4'), trigger: 'blur'}
         ],
 
         city: [

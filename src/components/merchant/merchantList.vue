@@ -183,8 +183,8 @@ export default {
       },
       merStatusList: [
         this.$t("merchant.table.bank"),
-        this.$t("merchant.table.creating"),
-        this.$t("merchant.table.creatsucc")
+        this.$t("merchant.table.inReg"),
+        this.$t("merchant.table.succ")
       ],
       signup_succ: false,
       err_msg_toggle: true,
@@ -343,7 +343,7 @@ export default {
                   this.signup_status = 2;
                   break;
                 default:
-                  this.merStatusList[2] = this.$t("merchant.table.creatFailed");
+                  this.merStatusList[2] = this.$t("merchant.table.fail");
                   this.signup_status = 3;
               }
             } else {

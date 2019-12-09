@@ -135,7 +135,7 @@
     </el-dialog>
 
     <el-dialog
-      :title="$t('merchant.table.merstatus')"
+      :title="$t('merchant.table.stostatus')"
       :visible.sync="statusDialogVisible"
       width="40%"
       center

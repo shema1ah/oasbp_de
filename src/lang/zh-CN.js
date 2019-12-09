@@ -293,9 +293,6 @@ const zh = {
       wechatM: '微信商户号',
       wechatpay: '微信支付',
       bank: '银行',
-      creating: '创建中',
-      creatsucc: '创建成功',
-      creatFailed: '创建失败',
       inReg: '进件中',
       succ: '进件成功',
       fail: '进件失败'

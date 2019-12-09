@@ -276,13 +276,10 @@ const en = {
       pid: 'Alipay Service Provider ID',
       wechatM: 'WeChat Official Account ID',
       wechatpay: 'WeChat Pay',
-      bank: 'SolerisBank',
-      creating: 'creating',
-      creatsucc: 'create success',
-      creatFailed: 'create failed',
+      bank: 'SolarisBank',
       inReg: 'In progress',
       succ: 'Successful',
-      fail: 'failure'
+      fail: 'Failed'
     },
     payment: {
       title: 'Payment Channel',
