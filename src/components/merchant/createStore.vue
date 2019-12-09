@@ -129,25 +129,26 @@
   }
   export default {
     data() {
-      const checkName = (rule, value, callback) => {
+     const checkShopName = (rule, value, callback) => {
       axios
-        .get(`${config.host}/org/v1/store/check`, {
+        .get(`${config.host}/org/v1/tools/name_exist`, {
           params: {
-            nickname: value,
+            mode: 'shopname',
+            check_name: value,
             format: "cors"
           }
         })
         .then(res => {
           if (res.data.respcd !== config.code.OK) {
-             callback(new Error(this.$t("merchant.newMerchant.rule45")));
+            callback(new Error(this.$t("merchant.newMerchant.rule45")));
           } else {
-             callback();
+            callback();
           }
         })
         .catch(() => {
           this.$message.error(this.$t("common.netError"));
-        });     
-      };
+        });
+    };
       return {
         select: this.$i18n.locale,
         pid_select: [],
@@ -186,7 +187,7 @@
         storeRules: {
           'store_shopname': [
             {required: true, message: this.$t('merchant.newMerchant.requiredRule.rule20')},
-            { validator: checkName, trigger: 'blur' }
+            { validator: checkShopName, trigger: 'blur' }
           ],
 
           'store_address': [
