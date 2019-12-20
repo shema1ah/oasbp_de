@@ -58,7 +58,7 @@ const zh = {
     SWIFT: 'SWIFT CODE',
     remark: '备注',
     payTip: '不可重复选择支付通道',
-    resend: '重发'
+    resend: '重发邮件'
   },
   home: {
     all: '全部',

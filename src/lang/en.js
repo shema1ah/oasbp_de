@@ -60,7 +60,7 @@ const en = {
     SWIFT: 'SWIFT CODE',
     remark: 'Remark',
     payTip: 'Non-repeatable selection of the payment channel',
-    resend: 'resend'
+    resend: 'Resend Email'
   },
   home: {
       all: 'All',

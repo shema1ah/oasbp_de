@@ -154,6 +154,12 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
           <span class="basic-content width-limit">{{form.ext.url}}</span>
         </el-col>
+
+        <el-col :span="8" v-if="!this.isBusiness">
+          <span class="basic-label">{{$t('common.status')+':'}}</span>
+          <span class="basic-content status-width">{{form.base.person_status}}</span>
+          <el-button style="padding : 0" v-if="sendable" :loading="resendLoding" type="text" @click="sendEmail()">{{$t('common.resend')}}</el-button>
+        </el-col>
     </section>
 
     <!-- 股东信息 -->
@@ -249,7 +255,7 @@
           <el-col :span="8" v-if="n.is_legal == 1">
             <span class="basic-label">{{$t('common.status')+':'}}</span>
             <span class="basic-content status-width">{{n.legal_status}}</span>
-            <el-button v-if="n.sendable" :loading="resendLoding" type="text" @click="sendEmail(n)">{{$t('common.resend')}}</el-button>
+            <el-button style="padding : 0" v-if="n.sendable" :loading="n.resendLoding" type="text" @click="sendEmail(true, n)">{{$t('common.resend')}}</el-button>
           </el-col>
     
       </div>
@@ -330,7 +336,7 @@
           <el-col :span="8">
             <span class="basic-label">{{$t('common.status')+':'}}</span>
             <span class="basic-content status-width">{{n.legal_status}}</span>
-            <el-button v-if="n.sendable" :loading="resendLoding" type="text" @click="sendEmail(n)">{{$t('common.resend')}}</el-button>
+            <el-button style="padding : 0" v-if="n.sendable" :loading="n.resendLoding" type="text" @click="sendEmail(true, n)">{{$t('common.resend')}}</el-button>
           </el-col>
    
      
@@ -375,6 +381,7 @@ export default {
       isReEditable: false,
       isCreateShop: false,
       isBusiness: true,
+      sendable: false,
       resend_interval: 0,
       userid: this.$route.query.userid || getParams("userid"), // 商户ID
       cate: {
@@ -506,9 +513,21 @@ export default {
           this.isLoading = false;
           if (data.respcd === config.code.OK) {
             this.form = data.data;
-            this.form.base.legals.forEach(i => {
+          if(this.isBusiness){
+             this.form.base.legals.forEach(i => {
              i.sendable = this.dateCount(i) && i.legal_status !== 'successful'
+             i.resendLoding = false
             });
+            this.form.base.owners.forEach(i => {
+              if (i.is_legal === "1"){
+               i.sendable = this.dateCount(i) && i.legal_status !== 'successful'
+              i.resendLoding = false
+              }
+            })
+          }else{
+           this.sendable = this.dateCount() && this.form.base.person_status !== 'successful'
+          }
+                   
             this.form.base.foundation_date = formatDate(
               this.form.base.foundation_date,
               "dd/MM/yyyy"
@@ -541,23 +560,29 @@ export default {
         });
   },
       dateCount(n){
-      const sdate = new Date(n.url_time); 
+      const sdate = n ? new Date(n.url_time) : new Date(this.form.base.url_time); 
       const now = new Date(); 
       const days = now.getTime() - sdate.getTime(); 
       const day = parseInt(days / 1000); 
       　　return day >= this.resend_interval ? 1 : 0;
       },
 
-    sendEmail(n) {
+    sendEmail(isLegal, n) {
+      if (isLegal){
+         n.resendLoding = true
+          this.$forceUpdate()
+      }else {
+     this.resendLoding = true
+      }      
         axios
         .get(`${config.host}/org/v1/mchnt/sendemail`, {
           params: {
-            userid: n.userid,
-            person_id: n.person_id,
-            email: n.email,
+            userid: isLegal ? n.userid : this.form.base.userid,
+            person_id: isLegal ? n.person_id : this.form.base.person_id,
+            email:isLegal ? n.email : this.form.base.email,
             format: "cors"
           }
-        })
+        })  
         .then(res => {
           let data = res.data;
           if (data.respcd === config.code.OK) { 
@@ -568,7 +593,15 @@ export default {
         })
         .catch(() => {
           this.$message.error(this.$t("common.netError"));
-        });
+        })
+        .finally(() => {
+      if (isLegal){
+         n.resendLoding = false
+          this.$forceUpdate()
+      }else {
+     this.resendLoding = false
+      } 
+        })
     },
     createShop() {
       this.$router.push({
