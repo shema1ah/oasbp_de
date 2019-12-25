@@ -76,8 +76,8 @@ const zh = {
     bar: {
       title: '商户交易趋势图',
       legend: {
-        mer: '商户',
-        submer: '店铺'
+        mer: '个人商户',
+        submer: '企业商户'
       }
     },
     pie: {

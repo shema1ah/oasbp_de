@@ -46,7 +46,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item :label="$t('merchant.newMerchant.form.channel2')" prop="second_agent_uid">
+      <!-- <el-form-item :label="$t('merchant.newMerchant.form.channel2')" prop="second_agent_uid">
         <el-select
           v-model="formData.second_agent_uid"
           :placeholder="$t('merchant.form.ph')"
@@ -59,7 +59,7 @@
             :key="item.qd_uid"
           ></el-option>
         </el-select>
-      </el-form-item>
+      </el-form-item> -->
 
       <el-form-item :label="$t('merchant.newMerchant.form.saleMan')" prop="sls_uid">
         <el-select v-model="formData.sls_uid">
@@ -947,7 +947,7 @@ export default {
         // slsm_name: "", // 业务员姓名
         store_unify_mcc: "",
         first_agent_uid: "", // 一级代理商id
-        second_agent_uid: "", // 二级代理商id
+        // second_agent_uid: "", // 二级代理商id
         sls_uid: "", // 业务员id
         // mode: "", // 注册商户的类型
         name: "", // 商户名称
@@ -1041,7 +1041,7 @@ export default {
         // mchnt_type: []
       },
       channels1: [],
-      channels2: [],
+      // channels2: [],
       salesperson: [],
       defaultProps: {
         children: "slsm",
@@ -1566,7 +1566,6 @@ export default {
       this.isUpdate =
         this.$route.query.command === "edit" || getParams("command") === "edit";
       // !this.isUpdate && this.getChannelList();
-      // !this.isUpdate && this.getSalesPersonList();
       !this.isUpdate && this.getPid();
       !this.isUpdate && this.getShopTypes();
       !this.isUpdate && this.getSalesPersonList();
@@ -1672,8 +1671,8 @@ export default {
           let data = res.data;
           if (data.respcd === config.code.OK) {
             this.channels1 = data.data.list;
-            this.isUpdate &&
-              this.getChannel2List(this.formData.first_agent_uid);
+            // this.isUpdate &&
+            //   this.getChannel2List(this.formData.first_agent_uid);
           } else {
             this.$message.error(data.respmsg);
           }
@@ -1684,47 +1683,48 @@ export default {
     },
 
     // 获取二级渠道列表数据
-    getChannel2List(groupid) {
-      axios
-        .get(`${config.host}/org/tools/qudao/list`, {
-          params: {
-            groupid: groupid,
-            format: "cors"
-          }
-        })
-        .then(res => {
-          let data = res.data;
-          if (data.respcd === config.code.OK) {
-            this.channels2 = groupid ? data.data.list : [];
-            // this.formData.second_agent_uid = "";
-            this.getSalesPersonList();
-          } else {
-            this.$message.error(data.respmsg);
-          }
-        })
-        .catch(() => {
-          this.$message.error(this.$t("common.netError"));
-        });
-    },
+    // getChannel2List(groupid) {
+    //   axios
+    //     .get(`${config.host}/org/tools/qudao/list`, {
+    //       params: {
+    //         groupid: groupid,
+    //         format: "cors"
+    //       }
+    //     })
+    //     .then(res => {
+    //       let data = res.data;
+    //       if (data.respcd === config.code.OK) {
+    //         this.channels2 = groupid ? data.data.list : [];
+    //         // this.formData.second_agent_uid = "";
+    //         this.getSalesPersonList();
+    //       } else {
+    //         this.$message.error(data.respmsg);
+    //       }
+    //     })
+    //     .catch(() => {
+    //       this.$message.error(this.$t("common.netError"));
+    //     });
+    // },
     // 选择一级代理商
-    selectChannelHandler(groupid) {
-      this.getChannel2List(groupid);
-      this.formData.second_agent_uid = "";
+    selectChannelHandler() {
+      // this.getChannel2List(groupid);
+      // this.formData.second_agent_uid = "";
+      this.getSalesPersonList();
       this.formData.sls_uid = "";
     },
 
     // 选择二级代理商
-    selectChannel2Handler() {
-      this.getSalesPersonList();
-      this.formData.sls_uid = "";
-    },
+    // selectChannel2Handler() {
+    //   this.getSalesPersonList();
+    //   this.formData.sls_uid = "";
+    // },
 
     getSalesPersonList() {
       axios
         .get(`${config.host}/org/tools/slsm`, {
           params: {
-            agent_uid:
-              this.formData.second_agent_uid || this.formData.first_agent_uid,
+            agent_uid: this.formData.first_agent_uid,
+              // this.formData.second_agent_uid || this.formData.first_agent_uid,
             format: "cors"
           }
         })

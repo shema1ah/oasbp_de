@@ -17,10 +17,10 @@
           <span class="basic-label">{{$t('merchant.newMerchant.form.channel')+':'}}</span>
           <span class="basic-content">{{form.base.first_agent}}</span>
         </el-col>
-        <el-col :span="8">
+        <!-- <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.channel2')+':'}}</span>
           <span class="basic-content">{{form.base.second_agent}}</span>
-        </el-col>
+        </el-col> -->
         <el-col :span="8">
           <span class="basic-label">{{$t('merchant.newMerchant.form.contact')+':'}}</span>
           <span class="basic-content">{{form.base.sls_name}}</span>
@@ -394,7 +394,7 @@ export default {
       },
       is_legal: {
         0: this.$t('merchant.detail.signed.no'),
-        1: this.$t('merchant.detail.signed.yes')
+        2: this.$t('merchant.detail.signed.yes')
       },
       form: {
         ext: {
@@ -417,7 +417,7 @@ export default {
           user_type: "",
           address: "",
           first_agent: "",
-          second_agent: "",
+          // second_agent: "",
           sls_uid: "", // 业务员id
           sls_name: "",
           email: "",   // 邮箱

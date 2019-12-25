@@ -65,9 +65,9 @@ const en = {
   home: {
       all: 'All',
       title: 'Homepage',
-      amt: 'Transaction Amount',
+      amt: 'Net Transaction Amount',
       cnt: 'Total Transactions',
-      curamt: 'Current Transaction Amount',
+      curamt: 'Current Net Transaction Amount',
       curcnt: 'Current Total Transactions',
       curnewmchnt: 'Current New Merchants',
       curnewstore: 'Current New Stores',
@@ -78,8 +78,8 @@ const en = {
       bar: {
         title: 'Trend Chart Of Merchants Trading',
         legend: {
-          mer: 'merchant',
-          submer: 'submerchant'
+          mer: 'Freelancer',
+          submer: 'Business'
         }
       },
       pie: {
@@ -87,7 +87,7 @@ const en = {
       },
       cumu: {
         title: 'Analysis Of The Accumulated Data',
-        totle_mount: 'Total Transaction Amount',
+        totle_mount: 'Total Net Transaction Amount',
         totle_count: 'Total Transactions',
         totle_mchnt_num: 'Total Number Of Merchants',
         totle_store_num: 'Total Number Of Stores',
