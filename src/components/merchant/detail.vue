@@ -244,15 +244,15 @@
             <span class="basic-label">{{$t('merchant.newMerchant.form.legal_rep')+':'}}</span>
             <span class="basic-content">{{is_legal[n.is_legal]}}</span>
           </el-col>
-          <el-col :span="8" v-if="n.is_legal == 1">
+          <el-col :span="8" v-if="n.is_legal === '1' || n.is_legal === '2'">
             <span class="basic-label">{{$t('merchant.newMerchant.form.represeutation')+':'}}</span>
             <span class="basic-content">{{n.represe}}</span>
           </el-col>
-         <el-col :span="8" v-if="n.is_legal == 1">
+         <el-col :span="8" v-if="n.is_legal === '1' || n.is_legal === '2'">
           <span class="basic-label">{{$t('merchant.newMerchant.form.videoURL')+':'}}</span>
           <span class="basic-content width-limit">{{n.url}}</span>
         </el-col>
-          <el-col :span="8" v-if="n.is_legal == 1">
+          <el-col :span="8" v-if="n.is_legal === '1' || n.is_legal === '2'">
             <span class="basic-label">{{$t('common.status')+':'}}</span>
             <span class="basic-content status-width">{{n.legal_status}}</span>
             <el-button style="padding : 0" v-if="n.sendable" :loading="n.resendLoding" type="text" @click="sendEmail(true, n)">{{$t('common.resend')}}</el-button>
@@ -394,6 +394,7 @@ export default {
       },
       is_legal: {
         0: this.$t('merchant.detail.signed.no'),
+        1: this.$t('merchant.detail.signed.yes'),
         2: this.$t('merchant.detail.signed.yes')
       },
       form: {
@@ -519,7 +520,7 @@ export default {
              i.resendLoding = false
             });
             this.form.base.owners.forEach(i => {
-              if (i.is_legal === "1"){
+              if (i.is_legal === "1" || i.is_legal === "2"){
                i.sendable = this.dateCount(i) && i.legal_status !== 'successful'
               i.resendLoding = false
               }

@@ -533,7 +533,7 @@
             :prop="'owners.'+ i + '.represe'"
             :label="$t('merchant.newMerchant.form.represeutation')"
             :rules="listRules.represeutation"
-            v-if="n.is_legal == 1"
+            v-if="n.is_legal === '1'"
           >
             <el-select v-model="n.represe" disabled>
               <el-option :label="item" :value="item" v-for="item in selectList.represe" :key="item"></el-option>
@@ -1547,7 +1547,7 @@ export default {
       return Object.values(this.selectList.country).sort();
     },
     hasLegal: function() {
-      return this.formData.owners.some(i => i.is_legal == 1);
+      return this.formData.owners.some(i => i.is_legal === '1');
     },
     hasInput: function() {
       return this.formData.legals.some(i => {
